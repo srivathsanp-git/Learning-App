@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Disney Learning Adventure! 🌟</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',Arial,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%);min-height:100vh;overflow-x:hidden}
+button{cursor:pointer;border:none;font-family:inherit;transition:transform .15s}
+button:active{transform:scale(.94)!important}
+
+/* ── SCREENS ── */
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding:0 0 48px}
+.screen.active{display:flex}
+
+/* ── HOME ── */
+#home{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);justify-content:center;padding:24px}
+.home-content{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:900px}
+.title-row{display:flex;align-items:center;gap:12px}
+.star{font-size:38px;animation:spinStar 3s linear infinite}
+@keyframes spinStar{0%{transform:rotate(0)scale(1)}50%{transform:rotate(180deg)scale(1.3)}100%{transform:rotate(360deg)scale(1)}}
+.main-title{font-size:clamp(26px,5vw,52px);font-weight:900;background:linear-gradient(90deg,#FFD700,#FF6B9D,#4ECDC4,#A855F7,#FFD700);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;line-height:1.2}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
+.subtitle{color:#FFD700;font-size:clamp(16px,3vw,24px);font-weight:700}
+.parade{display:flex;gap:8px;font-size:34px}
+.parade span{display:inline-block;animation:wobble .8s ease-in-out infinite alternate}
+.parade span:nth-child(2n){animation-delay:.1s}.parade span:nth-child(3n){animation-delay:.2s}
+.parade span:nth-child(4n){animation-delay:.3s}.parade span:nth-child(5n){animation-delay:.15s}
+.parade span:nth-child(6n){animation-delay:.25s}.parade span:nth-child(7n){animation-delay:.35s}
+@keyframes wobble{0%{transform:translateY(0)rotate(-5deg)}100%{transform:translateY(-10px)rotate(5deg)}}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;width:100%}
+.menu-card{border-radius:28px;padding:30px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;border:none;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .2s,box-shadow .2s}
+.menu-card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.mc-char{font-size:54px;animation:bounce 1.2s ease-in-out infinite alternate}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.mc-emoji{font-size:26px}.mc-title{font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.mc-desc{font-size:14px;color:rgba(255,255,255,.85);font-weight:600}
+.mc-with{font-size:13px;color:rgba(255,255,255,.75);font-style:italic;font-weight:600}
+.footer-hint{color:#FFD700;font-size:18px;font-weight:700;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+
+/* ── GAME HEADER ── */
+.game-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(0,0,0,.35);backdrop-filter:blur(10px);border-bottom:2px solid rgba(255,255,255,.15);gap:10px;position:sticky;top:0;z-index:10}
+.back-btn{background:rgba(255,255,255,.15);color:#fff;font-size:15px;font-weight:800;padding:10px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+.back-btn:hover{background:rgba(255,255,255,.25)}
+.g-title{font-size:clamp(16px,3vw,26px);font-weight:900;color:#fff;text-align:center;flex:1;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.mode-btn{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:13px;font-weight:800;padding:10px 14px;border-radius:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(255,140,0,.4)}
+.mode-btn:hover{transform:scale(1.05)}
+
+/* ── LEARN CARDS ── */
+.learn-prompt{color:#FFD700;font-size:18px;font-weight:700;animation:pulse 2s ease-in-out infinite;margin-top:18px;padding:0 16px;text-align:center}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;width:100%;max-width:860px;padding:0 18px}
+.learn-card{border-radius:24px;padding:26px 18px;border:4px solid;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.learn-card:hover{transform:translateY(-6px) scale(1.04)}
+.lc-icon{font-size:50px;animation:bounce 1.2s ease-in-out infinite alternate}
+.lc-name{font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.4)}
+.lc-sub{font-size:19px}.lc-char{font-size:34px}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{border-radius:28px;border:4px solid;padding:28px 24px;max-width:480px;width:100%;text-align:center;animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+@keyframes popIn{from{transform:scale(.4) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.mod-header{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
+.mod-big{font-size:48px}.mod-title{font-size:32px;font-weight:900;color:#222}
+.mod-char{font-size:40px}.mod-icons{font-size:26px;margin-bottom:8px}
+.mod-desc{font-size:18px;font-weight:700;color:#333;margin-bottom:6px}
+.mod-months{font-size:15px;color:#555;font-weight:600;margin-bottom:10px}
+.mod-facts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.mod-fact{background:rgba(255,255,255,.55);border-radius:12px;padding:7px 14px;font-size:15px;font-weight:600;color:#333}
+.mod-quote{font-size:15px;font-style:italic;color:#555;margin-bottom:4px}
+.mod-who{font-size:13px;font-weight:700;color:#666;margin-bottom:14px}
+.mod-close{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:17px;font-weight:800;padding:11px 30px;border-radius:22px;border:none}
+.mod-close:hover{transform:scale(1.05)}
+
+/* ── MONTHS / DAYS GRID ── */
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;width:100%;max-width:860px;padding:0 16px}
+.mini-card{border-radius:16px;padding:14px 8px;border:3px solid;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mini-card:hover{transform:translateY(-4px) scale(1.06)}
+.mini-card.active{transform:translateY(-6px) scale(1.08);box-shadow:0 12px 28px rgba(0,0,0,.5)}
+.mi-num{font-size:11px;font-weight:900;color:rgba(255,255,255,.8)}
+.mi-emoji{font-size:26px}.mi-name{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);text-align:center}
+.mi-char{font-size:20px}
+.info-card{width:100%;max-width:500px;border-radius:20px;border:4px solid;padding:22px 24px;text-align:center;animation:slideUp .3s ease-out;margin:0 16px}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ic-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
+.ic-big{font-size:42px}.ic-name{font-size:24px;font-weight:900;color:#222}
+.ic-sub{font-size:13px;color:#555;font-weight:600}.ic-char{font-size:40px}
+.ic-season{font-size:17px;font-weight:700;color:#333;margin-bottom:7px}
+.ic-fact{font-size:18px;font-weight:800;color:#222;margin-bottom:6px}
+.ic-who{font-size:14px;color:#555;font-style:italic}
+
+/* ── DAYS RAIL ── */
+.days-rail{display:flex;flex-wrap:wrap;gap:10px;width:100%;max-width:900px;padding:0 12px;justify-content:center}
+.day-card{min-width:86px;border-radius:16px;padding:14px 10px;border:3px solid;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.day-card:hover{transform:translateY(-4px) scale(1.06)}
+.day-card.active{transform:translateY(-6px) scale(1.08);box-shadow:0 12px 28px rgba(0,0,0,.5)}
+.week-seq{width:100%;max-width:860px;background:rgba(255,255,255,.07);border-radius:18px;padding:14px 18px;border:2px solid rgba(255,255,255,.15);margin:0 16px}
+.ws-title{color:#FFD700;font-size:15px;font-weight:700;margin-bottom:8px;text-align:center}
+.ws-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px}
+.ws-item{display:flex;align-items:center;gap:2px;font-weight:800;font-size:13px}
+.ws-arrow{color:rgba(255,255,255,.35);font-size:11px;margin:0 2px}
+
+/* ── QUIZ ── */
+.score-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;padding:16px 20px 0}
+.score-badge{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:17px;font-weight:900;padding:8px 18px;border-radius:20px;box-shadow:0 4px 12px rgba(255,140,0,.4)}
+.prog-badge{background:rgba(255,255,255,.15);color:#fff;font-size:15px;font-weight:700;padding:8px 16px;border-radius:20px;border:2px solid rgba(255,255,255,.25)}
+.q-card{width:100%;max-width:600px;border-radius:28px;padding:28px 24px;text-align:center;border:4px solid rgba(255,255,255,.3);display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 16px;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.q-char{font-size:54px;animation:bounce 1s ease-in-out infinite alternate}
+.q-text{font-size:clamp(17px,3vw,23px);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4);line-height:1.3}
+.q-icon{font-size:38px}
+.q-hint{font-size:15px;color:rgba(255,255,255,.85);font-weight:600;font-style:italic;background:rgba(0,0,0,.15);border-radius:12px;padding:7px 14px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:600px;padding:0 16px}
+.opt-btn{background:rgba(255,255,255,.12);color:#fff;font-size:clamp(14px,2.5vw,19px);font-weight:800;padding:16px 10px;border-radius:18px;border:3px solid rgba(255,255,255,.25);display:flex;flex-direction:column;align-items:center;gap:5px;text-shadow:0 1px 4px rgba(0,0,0,.3);box-shadow:0 4px 14px rgba(0,0,0,.2);transition:all .2s}
+.opt-btn:hover{background:rgba(255,255,255,.22);transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.opt-btn.correct{background:linear-gradient(135deg,#2ECC71,#27AE60)!important;border-color:#27AE60!important;transform:scale(1.05)!important;box-shadow:0 8px 28px rgba(46,204,113,.6)!important;animation:correctPop .4s cubic-bezier(.175,.885,.32,1.275)}
+.opt-btn.wrong{background:linear-gradient(135deg,#E74C3C,#C0392B)!important;border-color:#C0392B!important;animation:shake .5s ease-in-out}
+@keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1.05)}}
+@keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-8px) rotate(-2deg)}40%{transform:translate(8px) rotate(2deg)}60%{transform:translate(-6px)}80%{transform:translate(6px)}}
+.opt-emoji{font-size:30px}.opt-label{font-size:clamp(13px,2vw,17px);text-align:center}
+.next-btn{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:19px;font-weight:900;padding:15px 38px;border-radius:26px;border:none;box-shadow:0 8px 22px rgba(255,140,0,.5);animation:glowPulse 2s ease-in-out infinite;margin-top:6px}
+.next-btn:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 12px 30px rgba(255,140,0,.6)}
+@keyframes glowPulse{0%,100%{box-shadow:0 8px 22px rgba(255,140,0,.5)}50%{box-shadow:0 8px 34px rgba(255,140,0,.8)}}
+
+/* ── CELEBRATION ── */
+#celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;align-items:center;justify-content:center;overflow:hidden}
+#celebration.show{display:flex}
+.balloon{position:absolute;bottom:-80px;font-size:36px;animation:balloonFly 3.5s ease-in forwards;pointer-events:none}
+@keyframes balloonFly{0%{opacity:1;transform:translateY(0) rotate(-5deg)}80%{opacity:1}100%{opacity:0;transform:translateY(-110vh) rotate(12deg)}}
+.cel-box{background:linear-gradient(135deg,#FFD700,#FF6B9D,#A855F7);border:6px solid #fff;border-radius:32px;padding:36px 52px;text-align:center;box-shadow:0 20px 80px rgba(0,0,0,.5);animation:popIn .4s cubic-bezier(.175,.885,.32,1.275) forwards;pointer-events:none}
+.cel-stars{font-size:30px;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.cel-icon{font-size:70px;animation:jump .5s ease-in-out infinite alternate}
+@keyframes jump{from{transform:translateY(0) scale(1)}to{transform:translateY(-16px) scale(1.1)}}
+.cel-title{font-size:50px;font-weight:900;color:#fff;text-shadow:0 4px 12px rgba(0,0,0,.3);letter-spacing:4px}
+.cel-msg{font-size:20px;font-weight:700;color:#fff;margin-top:6px;text-shadow:0 2px 6px rgba(0,0,0,.2)}
+.cel-chars{display:flex;gap:12px;justify-content:center;font-size:34px;margin-top:10px}
+.cel-chars span{animation:wiggle .4s ease-in-out infinite alternate}
+.cel-chars span:nth-child(2){animation-delay:.1s}.cel-chars span:nth-child(3){animation-delay:.2s}.cel-chars span:nth-child(4){animation-delay:.3s}
+@keyframes wiggle{from{transform:rotate(-15deg) scale(1)}to{transform:rotate(15deg) scale(1.2)}}
+
+/* ── FLOATERS (home bg) ── */
+.floater{position:fixed;pointer-events:none;z-index:0;opacity:.6;animation:floatUp linear infinite;bottom:-60px}
+@keyframes floatUp{0%{opacity:.6;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Floating background emojis -->
+<div id="floaters"></div>
+
+<!-- Celebration overlay -->
+<div id="celebration">
+  <div id="cel-balloons"></div>
+  <div class="cel-box">
+    <div class="cel-stars">⭐⭐⭐</div>
+    <div class="cel-icon">🎉</div>
+    <div class="cel-title">AMAZING!</div>
+    <div class="cel-msg" id="cel-msg">You got it right!</div>
+    <div class="cel-chars"><span>👸</span><span>🤠</span><span>🐭</span><span>🚀</span></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div style="position:relative;z-index:1;width:100%" class="home-content">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:24px">
+      <div class="title-row">
+        <span class="star">⭐</span>
+        <h1 class="main-title">Disney Learning Adventure!</h1>
+        <span class="star">⭐</span>
+      </div>
+      <p class="subtitle">What do you want to learn today? 🎉</p>
+      <div class="parade">
+        <span title="Elsa">👸</span><span title="Woody">🤠</span><span title="Mickey">🐭</span>
+        <span title="Minnie">🐭</span><span title="Buzz">🚀</span><span title="Donald">🦆</span>
+        <span title="Goofy">🐶</span><span title="Pluto">🐕</span>
+      </div>
+    </div>
+    <div class="menu-grid" style="padding:0 16px;max-width:860px;width:100%">
+      <button class="menu-card" style="background:linear-gradient(135deg,#FF6B9D,#FF8E53)" onclick="go('seasons')">
+        <div class="mc-char">👸</div><div class="mc-emoji">🌸❄️☀️🍂</div>
+        <div class="mc-title">Seasons</div>
+        <div class="mc-desc">Spring, Summer, Fall & Winter!</div>
+        <div class="mc-with">with Elsa!</div>
+      </button>
+      <button class="menu-card" style="background:linear-gradient(135deg,#4ECDC4,#44A8B3)" onclick="go('months')">
+        <div class="mc-char">🤠</div><div class="mc-emoji">📅</div>
+        <div class="mc-title">Months</div>
+        <div class="mc-desc">All 12 months of the year!</div>
+        <div class="mc-with">with Woody!</div>
+      </button>
+      <button class="menu-card" style="background:linear-gradient(135deg,#A855F7,#7C3AED)" onclick="go('days')">
+        <div class="mc-char">🐭</div><div class="mc-emoji">📆</div>
+        <div class="mc-title">Days of the Week</div>
+        <div class="mc-desc">Monday through Sunday!</div>
+        <div class="mc-with">with Mickey!</div>
+      </button>
+    </div>
+    <p class="footer-hint">🌟 Tap a picture to start playing! 🌟</p>
+  </div>
+</div>
+
+<!-- SEASONS -->
+<div class="screen" id="seasons">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">⬅ Home</button>
+    <span class="g-title" id="seasons-title">🌸❄️ Seasons!</span>
+    <button class="mode-btn" id="seasons-mode-btn" onclick="toggleMode('seasons')">Quiz Time! 🎯</button>
+  </div>
+  <div id="seasons-learn">
+    <p class="learn-prompt">Tap a season to learn about it! 👆</p>
+    <div class="learn-grid" id="seasons-learn-cards"></div>
+  </div>
+  <div id="seasons-quiz" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;gap:18px">
+    <div class="score-row">
+      <span class="score-badge" id="seasons-score">⭐ Score: 0</span>
+      <span class="prog-badge" id="seasons-prog">Question 1 of 8</span>
+    </div>
+    <div class="q-card" id="seasons-qcard"></div>
+    <div class="opts-grid" id="seasons-opts"></div>
+    <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next Question ➡</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" id="modal-inner">
+    <div class="mod-header"><span class="mod-big" id="m-emoji"></span><h3 class="mod-title" id="m-title"></h3><span class="mod-char" id="m-char"></span></div>
+    <div class="mod-icons" id="m-icons"></div>
+    <p class="mod-desc" id="m-desc"></p>
+    <p class="mod-months" id="m-months"></p>
+    <div class="mod-facts" id="m-facts"></div>
+    <p class="mod-quote" id="m-quote"></p>
+    <p class="mod-who" id="m-who"></p>
+    <button class="mod-close" onclick="closeModal()">Got it! 👍</button>
+  </div>
+</div>
+
+<!-- MONTHS -->
+<div class="screen" id="months">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">⬅ Home</button>
+    <span class="g-title" id="months-title">📅 Months of the Year!</span>
+    <button class="mode-btn" id="months-mode-btn" onclick="toggleMode('months')">Quiz Time! 🎯</button>
+  </div>
+  <div id="months-learn">
+    <p class="learn-prompt">Tap a month to learn about it! 👆</p>
+    <div class="mini-grid" id="months-learn-cards"></div>
+    <div id="months-info" style="display:none;margin-top:14px"></div>
+  </div>
+  <div id="months-quiz" style="display:none;width:100%;flex-direction:column;align-items:center;gap:18px">
+    <div class="score-row">
+      <span class="score-badge" id="months-score">⭐ Score: 0</span>
+      <span class="prog-badge" id="months-prog">Question 1 of 10</span>
+    </div>
+    <div class="q-card" id="months-qcard"></div>
+    <div class="opts-grid" id="months-opts"></div>
+    <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next Question ➡</button>
+  </div>
+</div>
+
+<!-- DAYS -->
+<div class="screen" id="days">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">⬅ Home</button>
+    <span class="g-title" id="days-title">📆 Days of the Week!</span>
+    <button class="mode-btn" id="days-mode-btn" onclick="toggleMode('days')">Quiz Time! 🎯</button>
+  </div>
+  <div id="days-learn">
+    <p class="learn-prompt">Tap a day to learn about it! 👆</p>
+    <div class="days-rail" id="days-learn-cards"></div>
+    <div id="days-info" style="display:none;margin-top:14px;width:100%;display:none;flex-direction:column;align-items:center"></div>
+    <div class="week-seq" style="margin-top:14px">
+      <p class="ws-title">The Week in Order:</p>
+      <div class="ws-row" id="week-row"></div>
+    </div>
+  </div>
+  <div id="days-quiz" style="display:none;width:100%;flex-direction:column;align-items:center;gap:18px">
+    <div class="score-row">
+      <span class="score-badge" id="days-score">⭐ Score: 0</span>
+      <span class="prog-badge" id="days-prog">Question 1 of 10</span>
+    </div>
+    <div class="q-card" id="days-qcard"></div>
+    <div class="opts-grid" id="days-opts"></div>
+    <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next Question ➡</button>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────
+const SEASONS=[
+  {name:'Spring',emoji:'🌸',icons:'🌸🌺🌷🌼🦋🐝',color:'linear-gradient(135deg,#FFB7C5,#FF69B4)',bg:'#fff0f5',border:'#FF69B4',char:'👸',charName:'Elsa',desc:'Flowers bloom and birds sing!',months:'March, April, May',facts:['Flowers bloom in spring! 🌸','Baby animals are born! 🐣','It gets warmer! ☀️'],quote:'The flowers are so beautiful!'},
+  {name:'Summer',emoji:'☀️',icons:'☀️🌊🏖️🍦🌻🦀',color:'linear-gradient(135deg,#FFD700,#FF8C00)',bg:'#fffde7',border:'#FF8C00',char:'🤠',charName:'Woody',desc:'Hot and sunny days!',months:'June, July, August',facts:['It is very hot and sunny! ☀️','We go swimming! 🏊','School is out! 🎉'],quote:"Yeehaw! Let's go to the beach!"},
+  {name:'Fall',emoji:'🍂',icons:'🍂🍁🎃🌰🦃🍎',color:'linear-gradient(135deg,#FF6B35,#D2691E)',bg:'#fff3e0',border:'#D2691E',char:'🚀',charName:'Buzz',desc:'Leaves change colors!',months:'September, October, November',facts:['Leaves turn orange and red! 🍂','Halloween and Thanksgiving! 🎃','It gets cooler! 🧣'],quote:'To infinity and beyond... the pumpkin patch!'},
+  {name:'Winter',emoji:'❄️',icons:'❄️⛄🎿🧊🦌🎁',color:'linear-gradient(135deg,#87CEEB,#4169E1)',bg:'#e3f2fd',border:'#4169E1',char:'👸',charName:'Elsa',desc:'Cold and snowy!',months:'December, January, February',facts:['It is cold and snowy! ❄️','We wear coats and scarves! 🧣','Christmas and New Year! 🎄'],quote:'The cold never bothered me anyway! ❄️'},
+];
+
+const MONTHS=[
+  {name:'January',  num:1,  emoji:'⛄',season:'Winter', color:'#87CEEB',char:'👸',charName:'Elsa',   fact:'New Year starts! 🎉'},
+  {name:'February', num:2,  emoji:'💝',season:'Winter', color:'#FF69B4',char:'👸',charName:'Anna',   fact:"Valentine's Day! 💕"},
+  {name:'March',    num:3,  emoji:'🌸',season:'Spring', color:'#98FB98',char:'🦋',charName:'Tinker', fact:'Spring begins! 🌷'},
+  {name:'April',    num:4,  emoji:'🌧️',season:'Spring', color:'#7BC8F6',char:'🐭',charName:'Mickey', fact:'April showers! 🌈'},
+  {name:'May',      num:5,  emoji:'🌺',season:'Spring', color:'#DDA0DD',char:'🌸',charName:'Belle',  fact:'Flowers everywhere! 🌻'},
+  {name:'June',     num:6,  emoji:'☀️',season:'Summer', color:'#FFD700',char:'🤠',charName:'Woody',  fact:'Summer starts! 🏖️'},
+  {name:'July',     num:7,  emoji:'🎆',season:'Summer', color:'#FF4500',char:'🚀',charName:'Buzz',   fact:'Fireworks! 🎇'},
+  {name:'August',   num:8,  emoji:'🌻',season:'Summer', color:'#FFA500',char:'🦆',charName:'Donald', fact:'Hottest month! 🌡️'},
+  {name:'September',num:9,  emoji:'🍎',season:'Fall',   color:'#CD853F',char:'🐕',charName:'Pluto',  fact:'Back to school! 🎒'},
+  {name:'October',  num:10, emoji:'🎃',season:'Fall',   color:'#FF6B35',char:'🐶',charName:'Goofy',  fact:'Halloween! 👻'},
+  {name:'November', num:11, emoji:'🦃',season:'Fall',   color:'#A0522D',char:'🤠',charName:'Woody',  fact:'Thanksgiving! 🍽️'},
+  {name:'December', num:12, emoji:'🎄',season:'Winter', color:'#2E8B57',char:'👸',charName:'Elsa',   fact:'Christmas! 🎁'},
+];
+
+const DAYS=[
+  {name:'Monday',   short:'Mon',num:1,emoji:'🌙',color:'#9B59B6',char:'🐭',charName:'Mickey', activity:'Go to school! 🎒',      fact:'Start of the school week! 📚'},
+  {name:'Tuesday',  short:'Tue',num:2,emoji:'🔥',color:'#E74C3C',char:'🐭',charName:'Minnie', activity:'Play outside! 🌳',      fact:'Taco Tuesday! 🌮'},
+  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#3498DB',char:'🦆',charName:'Donald', activity:'Arts and crafts! 🎨',   fact:"Halfway through the week!"},
+  {name:'Thursday', short:'Thu',num:4,emoji:'⚡',color:'#F39C12',char:'🐶',charName:'Goofy',  activity:'Read books! 📖',        fact:'Almost Friday! 🎉'},
+  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#27AE60',char:'🤠',charName:'Woody',  activity:'Game night! 🎲',        fact:'TGIF — weekend is here!'},
+  {name:'Saturday', short:'Sat',num:6,emoji:'🌟',color:'#FF6B9D',char:'🚀',charName:'Buzz',   activity:'Go to the park! 🛝',   fact:'Weekend fun day! 🎡'},
+  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FF8C00',char:'👸',charName:'Elsa',   activity:'Family time! 👨‍👩‍👧',      fact:'Relax and rest day! 😴'},
+];
+
+const ORD=['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
+
+// ─── STATE ──────────────────────────────────────────────────────
+const state={
+  seasons:{mode:'learn',score:0,qi:0,questions:[],selected:null},
+  months: {mode:'learn',score:0,qi:0,questions:[],selected:null,active:null},
+  days:   {mode:'learn',score:0,qi:0,questions:[],selected:null,active:null},
+};
+
+// ─── HELPERS ────────────────────────────────────────────────────
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function pick(arr,exclude,n){return shuffle(arr.filter(x=>x!==exclude)).slice(0,n).map(x=>x.name)}
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='seasons') initSeasons();
+  if(id==='months')  initMonths();
+  if(id==='days')    initDays();
+}
+
+// ─── CELEBRATION ────────────────────────────────────────────────
+function celebrate(msg){
+  const cel=document.getElementById('celebration');
+  document.getElementById('cel-msg').textContent=msg;
+  const bc=document.getElementById('cel-balloons');
+  bc.innerHTML='';
+  const b=['🎈','🎉','🎊','⭐','🌟','💫','✨','🎀','🦋','🌈'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    d.className='balloon';
+    d.textContent=b[i%b.length];
+    d.style.left=Math.random()*90+5+'%';
+    d.style.animationDelay=Math.random()*1.5+'s';
+    d.style.fontSize=(26+Math.random()*24)+'px';
+    bc.appendChild(d);
+  }
+  cel.classList.add('show');
+  setTimeout(()=>cel.classList.remove('show'),3500);
+}
+
+// ─── MODAL ──────────────────────────────────────────────────────
+function openModal(s){
+  document.getElementById('m-emoji').textContent=s.emoji;
+  document.getElementById('m-title').textContent=s.name;
+  document.getElementById('m-char').textContent=s.char;
+  document.getElementById('m-icons').textContent=s.icons;
+  document.getElementById('m-desc').textContent=s.desc;
+  document.getElementById('m-months').textContent='📅 '+s.months;
+  document.getElementById('m-facts').innerHTML=s.facts.map(f=>`<div class="mod-fact">${f}</div>`).join('');
+  document.getElementById('m-quote').textContent='"'+s.quote+'"';
+  document.getElementById('m-who').textContent='— '+s.charName;
+  const mi=document.getElementById('modal-inner');
+  mi.style.background=s.bg;
+  mi.style.borderColor=s.border;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+// ─── FLOATING BG EMOJIS ─────────────────────────────────────────
+(function(){
+  const em=['⭐','🌟','✨','🎈','🎉','🌈','💫','🦋','🌺','🎀'];
+  const c=document.getElementById('floaters');
+  for(let i=0;i<12;i++){
+    const d=document.createElement('div');
+    d.className='floater';
+    d.textContent=em[i%em.length];
+    d.style.left=Math.random()*90+5+'%';
+    d.style.animationDelay=Math.random()*5+'s';
+    d.style.animationDuration=(5+Math.random()*5)+'s';
+    d.style.fontSize=(18+Math.random()*22)+'px';
+    c.appendChild(d);
+  }
+})();
+
+// ─── SEASONS ────────────────────────────────────────────────────
+function initSeasons(){
+  const s=state.seasons;
+  // Build learn cards
+  const lc=document.getElementById('seasons-learn-cards');
+  lc.innerHTML='';
+  SEASONS.forEach(sea=>{
+    const b=document.createElement('button');
+    b.className='learn-card';
+    b.style.background=sea.color;
+    b.style.borderColor=sea.border;
+    b.innerHTML=`<div class="lc-icon">${sea.emoji}</div><div class="lc-name">${sea.name}</div><div class="lc-sub">${sea.icons}</div><div class="lc-char">${sea.char}</div>`;
+    b.onclick=()=>openModal(sea);
+    lc.appendChild(b);
+  });
+  // Build quiz questions if needed
+  if(!s.questions.length) buildSeasonsQ();
+  renderMode('seasons');
+}
+
+function buildSeasonsQ(){
+  const qs=[];
+  SEASONS.forEach(s=>{
+    qs.push({prompt:`Which season has ${s.emoji}?`,answer:s.name,hint:s.desc,icon:s.emoji,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
+    qs.push({prompt:`Which season does ${s.charName} love?`,answer:s.name,hint:s.quote,icon:s.char,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
+    qs.push({prompt:`Months: ${s.months} — which season?`,answer:s.name,hint:s.desc,icon:s.emoji,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
+  });
+  state.seasons.questions=shuffle(qs).slice(0,8);
+}
+
+function toggleMode(game){
+  const s=state[game];
+  s.mode=s.mode==='learn'?'quiz':'learn';
+  if(s.mode==='quiz'&&!s.questions.length){
+    if(game==='seasons')buildSeasonsQ();
+    if(game==='months')buildMonthsQ();
+    if(game==='days')buildDaysQ();
+  }
+  renderMode(game);
+}
+
+function renderMode(game){
+  const s=state[game];
+  const btn=document.getElementById(game+'-mode-btn');
+  const learn=document.getElementById(game+'-learn');
+  const quiz=document.getElementById(game+'-quiz');
+  if(s.mode==='learn'){
+    btn.textContent='Quiz Time! 🎯';
+    learn.style.display='';
+    quiz.style.display='none';
+  } else {
+    btn.textContent='Learn Mode 📚';
+    learn.style.display='none';
+    quiz.style.display='flex';
+    renderQ(game);
+  }
+}
+
+function renderQ(game){
+  const s=state[game];
+  const q=s.questions[s.qi];
+  if(!q)return;
+  s.selected=null;
+
+  // Season uses inline data; months/days look up from arrays
+  let seasonData=null;
+  if(game==='seasons') seasonData=SEASONS.find(x=>x.name===q.answer);
+
+  document.getElementById(game+'-score').textContent='⭐ Score: '+s.score;
+  document.getElementById(game+'-prog').textContent='Question '+(s.qi+1)+' of '+s.questions.length;
+
+  const qc=document.getElementById(game+'-qcard');
+  const cardBg=game==='seasons'?seasonData.color:game==='months'?`linear-gradient(135deg,${q.color},${q.color}aa)`:(`linear-gradient(135deg,${q.color},${q.color}99)`);
+  qc.style.background=cardBg;
+  qc.innerHTML=`<div class="q-char">${q.char}</div><div class="q-text">${q.prompt}</div><div class="q-icon">${q.icon}</div><div class="q-hint">${q.hint}</div>`;
+
+  const og=document.getElementById(game+'-opts');
+  og.innerHTML='';
+  q.options.forEach(opt=>{
+    let optData;
+    if(game==='seasons')optData=SEASONS.find(x=>x.name===opt);
+    else if(game==='months')optData=MONTHS.find(x=>x.name===opt);
+    else optData=DAYS.find(x=>x.name===opt);
+
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.dataset.opt=opt;
+    b.style.setProperty('--opt-color',optData?optData.color||optData.border:'#fff');
+    const emoji=optData?optData.emoji:'❓';
+    b.innerHTML=`<span class="opt-emoji">${emoji}</span><span class="opt-label">${opt}</span>`;
+    b.onclick=()=>answerQ(game,opt);
+    og.appendChild(b);
+  });
+
+  document.getElementById(game+'-next').style.display='none';
+}
+
+function answerQ(game,opt){
+  const s=state[game];
+  if(s.selected)return;
+  s.selected=opt;
+  const q=s.questions[s.qi];
+  const correct=opt===q.answer;
+
+  document.querySelectorAll('#'+game+'-opts .opt-btn').forEach(b=>{
+    if(b.dataset.opt===q.answer) b.classList.add('correct');
+    else if(b.dataset.opt===opt) b.classList.add('wrong');
+  });
+
+  if(correct){
+    s.score++;
+    celebrate(`🌟 "${opt}" is correct! You're a SUPERSTAR! 🌟`);
+  }
+
+  const nb=document.getElementById(game+'-next');
+  nb.style.display='';
+  nb.textContent=s.qi+1<s.questions.length?'Next Question ➡':'Play Again! 🔄';
+}
+
+function nextQ(game){
+  const s=state[game];
+  s.qi++;
+  if(s.qi>=s.questions.length){
+    s.qi=0;
+    if(game==='seasons')buildSeasonsQ();
+    if(game==='months')buildMonthsQ();
+    if(game==='days')buildDaysQ();
+  }
+  renderQ(game);
+}
+
+// ─── MONTHS ─────────────────────────────────────────────────────
+function initMonths(){
+  const lc=document.getElementById('months-learn-cards');
+  lc.innerHTML='';
+  MONTHS.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mini-card';
+    b.id='mc-'+m.name;
+    b.style.background=`linear-gradient(135deg,${m.color},${m.color}cc)`;
+    b.style.borderColor=m.color;
+    b.innerHTML=`<div class="mi-num">${m.num}</div><div class="mi-emoji">${m.emoji}</div><div class="mi-name">${m.name}</div><div class="mi-char">${m.char}</div>`;
+    b.onclick=()=>{
+      const prev=state.months.active;
+      if(prev)document.getElementById('mc-'+prev)?.classList.remove('active');
+      if(prev===m.name){state.months.active=null;document.getElementById('months-info').style.display='none';return;}
+      state.months.active=m.name;
+      b.classList.add('active');
+      showMonthInfo(m);
+    };
+    lc.appendChild(b);
+  });
+  if(!state.months.questions.length) buildMonthsQ();
+  renderMode('months');
+}
+
+function showMonthInfo(m){
+  const d=document.getElementById('months-info');
+  d.style.display='flex';
+  d.style.justifyContent='center';
+  d.innerHTML=`<div class="info-card" style="background:${m.color}33;border-color:${m.color}">
+    <div class="ic-row"><span class="ic-big">${m.emoji}</span><div><div class="ic-name">${m.name}</div><div class="ic-sub">Month #${m.num}</div></div><span class="ic-char">${m.char}</span></div>
+    <div class="ic-season">🍃 Season: ${m.season}</div>
+    <div class="ic-fact">✨ ${m.fact}</div>
+    <div class="ic-who">${m.charName} says hi! 👋</div>
+  </div>`;
+}
+
+function buildMonthsQ(){
+  const qs=[];
+  MONTHS.forEach((m,i)=>{
+    qs.push({prompt:`Which month is ${ORD[i]} in the year?`,answer:m.name,hint:m.fact,icon:m.emoji,char:m.char,color:m.color,options:shuffle([m.name,...pick(MONTHS,m,3)])});
+    qs.push({prompt:`${m.emoji} Which month has: ${m.fact.split('!')[0]}?`,answer:m.name,hint:`Month #${m.num}`,icon:m.emoji,char:m.char,color:m.color,options:shuffle([m.name,...pick(MONTHS,m,3)])});
+  });
+  state.months.questions=shuffle(qs).slice(0,10);
+}
+
+// ─── DAYS ────────────────────────────────────────────────────────
+function initDays(){
+  const lc=document.getElementById('days-learn-cards');
+  lc.innerHTML='';
+  DAYS.forEach(d=>{
+    const b=document.createElement('button');
+    b.className='day-card';
+    b.id='dc-'+d.name;
+    b.style.background=`linear-gradient(135deg,${d.color},${d.color}bb)`;
+    b.style.borderColor=d.color;
+    b.innerHTML=`<div class="mi-num">${d.num}</div><div class="mi-emoji">${d.emoji}</div><div class="mi-name">${d.short}</div><div class="mi-char">${d.char}</div>`;
+    b.onclick=()=>{
+      const prev=state.days.active;
+      if(prev)document.getElementById('dc-'+prev)?.classList.remove('active');
+      if(prev===d.name){state.days.active=null;const di=document.getElementById('days-info');di.style.display='none';return;}
+      state.days.active=d.name;
+      b.classList.add('active');
+      showDayInfo(d);
+    };
+    lc.appendChild(b);
+  });
+
+  // Week sequence row
+  const wr=document.getElementById('week-row');
+  wr.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const sp=document.createElement('div');
+    sp.className='ws-item';
+    sp.style.color=d.color;
+    sp.innerHTML=`<span style="font-size:16px">${d.emoji}</span><span class="ws-name">${d.short}</span>`;
+    wr.appendChild(sp);
+    if(i<6){const arr=document.createElement('span');arr.className='ws-arrow';arr.textContent='→';wr.appendChild(arr);}
+  });
+
+  if(!state.days.questions.length) buildDaysQ();
+  renderMode('days');
+}
+
+function showDayInfo(d){
+  const di=document.getElementById('days-info');
+  di.style.display='flex';
+  di.style.justifyContent='center';
+  di.innerHTML=`<div class="info-card" style="background:${d.color}33;border-color:${d.color}">
+    <div class="ic-row"><span class="ic-big">${d.emoji}</span><div><div class="ic-name" style="color:${d.color}">${d.name}</div><div class="ic-sub">Day ${d.num} of the week</div></div><span class="ic-char">${d.char}</span></div>
+    <div class="ic-season">🎯 ${d.activity}</div>
+    <div class="ic-fact">💡 ${d.fact}</div>
+    <div class="ic-who">${d.charName} says: "Have a great ${d.name}!" 😄</div>
+  </div>`;
+}
+
+function buildDaysQ(){
+  const qs=[];
+  const ord=['1st','2nd','3rd','4th','5th','6th','7th'];
+  DAYS.forEach((d,i)=>{
+    qs.push({prompt:`Which day is the ${ord[i]} day of the week?`,answer:d.name,hint:d.activity,icon:d.emoji,char:d.char,color:d.color,options:shuffle([d.name,...pick(DAYS,d,3)])});
+    qs.push({prompt:`${d.emoji} ${d.activity} What day is this?`,answer:d.name,hint:d.fact,icon:d.emoji,char:d.char,color:d.color,options:shuffle([d.name,...pick(DAYS,d,3)])});
+  });
+  state.days.questions=shuffle(qs).slice(0,10);
+}
+</script>
+</body>
+</html>
