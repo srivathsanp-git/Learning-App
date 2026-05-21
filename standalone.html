@@ -290,6 +290,22 @@ button:active{transform:scale(.94)!important}
 </div>
 
 <script>
+// ─── SPEECH ─────────────────────────────────────────────────────
+let _voices=[];
+function _loadVoices(){_voices=window.speechSynthesis?window.speechSynthesis.getVoices():[];}
+if(window.speechSynthesis){window.speechSynthesis.onvoiceschanged=_loadVoices;_loadVoices();}
+function speak(t){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  const clean=t.replace(/[\u{1F000}-\u{1FFFF}]/gu,'').replace(/[☀-➿⬀-⯿\u{1F300}-\u{1F9FF}]/gu,'').replace(/[&]/g,'and').replace(/\s+/g,' ').trim();
+  const u=new SpeechSynthesisUtterance(clean);
+  const v=_voices.find(v=>v.lang.startsWith('en')&&/samantha|karen|moira|tessa|zira|victoria|fiona|allison|ava|susan|nicky/i.test(v.name))
+          ||_voices.find(v=>v.lang==='en-US')||_voices.find(v=>v.lang.startsWith('en'))||_voices[0];
+  if(v)u.voice=v;
+  u.rate=0.88; u.pitch=1.3; u.volume=1;
+  window.speechSynthesis.speak(u);
+}
+
 // ─── DATA ───────────────────────────────────────────────────────
 const SEASONS=[
   {name:'Spring',emoji:'🌸',icons:'🌸🌺🌷🌼🦋🐝',color:'linear-gradient(135deg,#FFB7C5,#FF69B4)',bg:'#fff0f5',border:'#FF69B4',char:'👸',charName:'Elsa',desc:'Flowers bloom and birds sing!',months:'March, April, May',facts:['Flowers bloom in spring! 🌸','Baby animals are born! 🐣','It gets warmer! ☀️'],quote:'The flowers are so beautiful!'},
@@ -340,9 +356,10 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='seasons') initSeasons();
-  if(id==='months')  initMonths();
-  if(id==='days')    initDays();
+  if(id==='seasons'){initSeasons();speak('Let us learn about Seasons! Tap a season card to find out more!');}
+  if(id==='months') {initMonths(); speak('Let us learn about the Months of the Year! Tap a month to learn about it!');}
+  if(id==='days')   {initDays();   speak('Let us learn about the Days of the Week! Tap a day to find out more!');}
+  if(id==='home')   window.speechSynthesis&&window.speechSynthesis.cancel();
 }
 
 // ─── CELEBRATION ────────────────────────────────────────────────
@@ -362,6 +379,7 @@ function celebrate(msg){
     bc.appendChild(d);
   }
   cel.classList.add('show');
+  speak(`Amazing! ${msg.replace(/["""🌟]/g,'').trim()}`);
   setTimeout(()=>cel.classList.remove('show'),3500);
 }
 
@@ -380,8 +398,9 @@ function openModal(s){
   mi.style.background=s.bg;
   mi.style.borderColor=s.border;
   document.getElementById('modal').classList.add('open');
+  speak(`${s.name}! ${s.desc}. ${s.facts.join('. ')}. ${s.charName} says... ${s.quote}`);
 }
-function closeModal(){document.getElementById('modal').classList.remove('open')}
+function closeModal(){window.speechSynthesis&&window.speechSynthesis.cancel();document.getElementById('modal').classList.remove('open')}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 
 // ─── FLOATING BG EMOJIS ─────────────────────────────────────────
@@ -454,7 +473,8 @@ function renderMode(game){
     btn.textContent='Learn Mode 📚';
     learn.style.display='none';
     quiz.style.display='flex';
-    renderQ(game);
+    speak('Quiz time! Let us see what you know!');
+    setTimeout(()=>renderQ(game),1800);
   }
 }
 
@@ -495,6 +515,7 @@ function renderQ(game){
   });
 
   document.getElementById(game+'-next').style.display='none';
+  speak(q.prompt);
 }
 
 function answerQ(game,opt){
@@ -511,7 +532,9 @@ function answerQ(game,opt){
 
   if(correct){
     s.score++;
-    celebrate(`🌟 "${opt}" is correct! You're a SUPERSTAR! 🌟`);
+    celebrate(`${opt} is correct! You are a SUPERSTAR!`);
+  } else {
+    speak(`Oops! That is not right. The answer is ${q.answer}! Try the next one!`);
   }
 
   const nb=document.getElementById(game+'-next');
@@ -566,6 +589,7 @@ function showMonthInfo(m){
     <div class="ic-fact">✨ ${m.fact}</div>
     <div class="ic-who">${m.charName} says hi! 👋</div>
   </div>`;
+  speak(`${m.name}! Month number ${m.num}. It is in ${m.season}. ${m.fact}. ${m.charName} says hello!`);
 }
 
 function buildMonthsQ(){
@@ -625,6 +649,7 @@ function showDayInfo(d){
     <div class="ic-fact">💡 ${d.fact}</div>
     <div class="ic-who">${d.charName} says: "Have a great ${d.name}!" 😄</div>
   </div>`;
+  speak(`${d.name}! It is day number ${d.num} of the week. ${d.activity}. ${d.fact}. ${d.charName} says: Have a great ${d.name}!`);
 }
 
 function buildDaysQ(){
