@@ -359,9 +359,9 @@ function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adven
 // ─── DATA ───────────────────────────────────────────────────────
 const SEASONS=[
   {name:'Spring',emoji:'🌸',icons:'🌸🌺🌷🌼🦋🐝',color:'linear-gradient(135deg,#FFB7C5,#FF69B4)',bg:'#fff0f5',border:'#FF69B4',char:'👸',charName:'Elsa',desc:'Flowers bloom and birds sing!',months:'March, April, May',facts:['Flowers bloom in spring! 🌸','Baby animals are born! 🐣','It gets warmer! ☀️'],quote:'The flowers are so beautiful!'},
-  {name:'Summer',emoji:'☀️',icons:'☀️🌊🏖️🍦🌻🦀',color:'linear-gradient(135deg,#FFD700,#FF8C00)',bg:'#fffde7',border:'#FF8C00',char:'🤠',charName:'Woody',desc:'Hot and sunny days!',months:'June, July, August',facts:['It is very hot and sunny! ☀️','We go swimming! 🏊','School is out! 🎉'],quote:"Yeehaw! Let's go to the beach!"},
+  {name:'Summer',emoji:'☀️',icons:'☀️🌊🏖️🍦🌻🦀',color:'linear-gradient(135deg,#FFD700,#FF8C00)',bg:'#fffde7',border:'#FF8C00',char:'🤠',charName:'Woody',desc:'It gets hot and sunny!',months:'June, July, August',facts:['It is very hot and sunny! ☀️','We go swimming! 🏊','School is out! 🎉'],quote:"Yeehaw! Let's go to the beach!"},
   {name:'Fall',emoji:'🍂',icons:'🍂🍁🎃🌰🦃🍎',color:'linear-gradient(135deg,#FF6B35,#D2691E)',bg:'#fff3e0',border:'#D2691E',char:'🚀',charName:'Buzz',desc:'Leaves change colors!',months:'September, October, November',facts:['Leaves turn orange and red! 🍂','Halloween and Thanksgiving! 🎃','It gets cooler! 🧣'],quote:'To infinity and beyond... the pumpkin patch!'},
-  {name:'Winter',emoji:'❄️',icons:'❄️⛄🎿🧊🦌🎁',color:'linear-gradient(135deg,#87CEEB,#4169E1)',bg:'#e3f2fd',border:'#4169E1',char:'👸',charName:'Elsa',desc:'Cold and snowy!',months:'December, January, February',facts:['It is cold and snowy! ❄️','We wear coats and scarves! 🧣','Christmas and New Year! 🎄'],quote:'The cold never bothered me anyway! ❄️'},
+  {name:'Winter',emoji:'❄️',icons:'❄️⛄🎿🧊🦌🎁',color:'linear-gradient(135deg,#87CEEB,#4169E1)',bg:'#e3f2fd',border:'#4169E1',char:'👸',charName:'Elsa',desc:'It gets cold and snowy!',months:'December, January, February',facts:['It is cold and snowy! ❄️','We wear coats and scarves! 🧣','Christmas and New Year! 🎄'],quote:'The cold never bothered me anyway! ❄️'},
 ];
 
 const MONTHS=[
@@ -382,11 +382,11 @@ const MONTHS=[
 const DAYS=[
   {name:'Monday',   short:'Mon',num:1,emoji:'🌙',color:'#9B59B6',char:'🐭',charName:'Mickey', activity:'Go to school! 🎒',      fact:'Start of the school week! 📚'},
   {name:'Tuesday',  short:'Tue',num:2,emoji:'🔥',color:'#E74C3C',char:'🐭',charName:'Minnie', activity:'Play outside! 🌳',      fact:'Taco Tuesday! 🌮'},
-  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#3498DB',char:'🦆',charName:'Donald', activity:'Arts and crafts! 🎨',   fact:"Halfway through the week!"},
+  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#3498DB',char:'🦆',charName:'Donald', activity:'Do arts and crafts! 🎨',   fact:"Halfway through the week!"},
   {name:'Thursday', short:'Thu',num:4,emoji:'⚡',color:'#F39C12',char:'🐶',charName:'Goofy',  activity:'Read books! 📖',        fact:'Almost Friday! 🎉'},
-  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#27AE60',char:'🤠',charName:'Woody',  activity:'Game night! 🎲',        fact:'TGIF — weekend is here!'},
+  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#27AE60',char:'🤠',charName:'Woody',  activity:'Have game night! 🎲',        fact:'TGIF — weekend is here!'},
   {name:'Saturday', short:'Sat',num:6,emoji:'🌟',color:'#FF6B9D',char:'🚀',charName:'Buzz',   activity:'Go to the park! 🛝',   fact:'Weekend fun day! 🎡'},
-  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FF8C00',char:'👸',charName:'Elsa',   activity:'Family time! 👨‍👩‍👧',      fact:'Relax and rest day! 😴'},
+  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FF8C00',char:'👸',charName:'Elsa',   activity:'Have family time! 👨‍👩‍👧',      fact:'Relax and rest day! 😴'},
 ];
 
 const ORD=['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
@@ -506,7 +506,7 @@ function showSeasonInfo(s){
     <div class="ic-fact">✨ ${s.desc}</div>
     <div class="ic-who">${s.charName} says: "${s.quote}"</div>
   </div>`;
-  speak(`${s.name}. ${s.desc}. The months in ${s.name} are ${s.months}. ${s.charName} says: ${s.quote}`);
+  speak(`${s.name}. The months in ${s.name} are ${s.months}. ${s.name} is when ${s.desc.charAt(0).toLowerCase()+s.desc.slice(1)} ${s.charName} says: ${s.quote}`);
 }
 
 function buildSeasonsQ(){
@@ -659,7 +659,7 @@ function showMonthInfo(m){
     <div class="ic-fact">✨ ${m.fact}</div>
     <div class="ic-who">${m.charName} says hi! 👋</div>
   </div>`;
-  speak(`${m.name}. Month number ${m.num}. It is in ${m.season}. ${m.fact}. ${m.charName} says hi!`);
+  speak(`${m.name}. ${m.name} is month number ${m.num}. It is in ${m.season}. ${m.fact} ${m.charName} says hi!`);
 }
 
 function buildMonthsQ(){
@@ -719,7 +719,7 @@ function showDayInfo(d){
     <div class="ic-fact">💡 ${d.fact}</div>
     <div class="ic-who">${d.charName} says: "Have a great ${d.name}!" 😄</div>
   </div>`;
-  speak(`${d.name}. Day number ${d.num} of the week. ${d.activity}. ${d.fact}. ${d.charName} says: Have a great ${d.name}!`);
+  speak(`${d.name}. ${d.name} is day ${d.num} of the week. On ${d.name} we ${d.activity.split('!')[0].toLowerCase()}! ${d.charName} says: Have a great ${d.name}!`);
 }
 
 function buildDaysQ(){
