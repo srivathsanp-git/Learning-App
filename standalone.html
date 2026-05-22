@@ -358,62 +358,66 @@ function speak(t){
 function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
 // ─── REVEAL SEQUENCE ─────────────────────────────────────────────
-const _BASE_CPS=14,  // Polly Joanna speech rate (chars/sec, no pauses)
-      _PERIOD_PAUSE=0.45,  // seconds Polly pauses after a period
-      _COMMA_PAUSE=0.18,   // seconds Polly pauses after a comma
-      _NARRATION_RATE=0.82;
-let _revealTimers=[];
-function _clearRevealTimers(){_revealTimers.forEach(clearTimeout);_revealTimers=[];}
+const _BASE_CPS=14,_NARRATION_RATE=0.82;
+let _revealTimers=[],_narrationId=0,_clipResolvers=[];
 
-// Returns the position (seconds) inside the Polly audio file where `name` is spoken.
-// Accounts for natural pauses at periods and commas before that word.
-function _calcTrigger(text,name){
-  const pos=text.indexOf(name);
-  if(pos<0)return 9999;
-  const pre=text.slice(0,pos);
-  const periods=(pre.match(/\./g)||[]).length;
-  const commas=(pre.match(/,/g)||[]).length;
-  return pos/_BASE_CPS + periods*_PERIOD_PAUSE + commas*_COMMA_PAUSE;
+function _clearRevealTimers(){
+  _revealTimers.forEach(clearTimeout);_revealTimers=[];
+  _narrationId++;
+  const rs=[..._clipResolvers];_clipResolvers=[];rs.forEach(f=>f()); // abort pending clips
 }
 
-function speakNarration(text,items){
-  _clearRevealTimers();_lastText=text;
-  const clean=text.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim();
-  if(!clean)return;
-  cancelSpeech();
-  const triggers=items.map(({id,name})=>({id,t:_calcTrigger(text,name),done:false}));
-  const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
-  if(_ttsMode!=='fallback'){
-    const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
-    audio.playbackRate=_NARRATION_RATE;
-    _sfxAudio=audio;
-    const self=audio;
-    audio.addEventListener('timeupdate',()=>{
-      if(_sfxAudio!==self)return;
-      triggers.forEach(tr=>{if(!tr.done&&audio.currentTime>=tr.t){tr.done=true;document.getElementById(tr.id)?.classList.add('show');}});
-    });
-    audio.addEventListener('ended',()=>{if(_sfxAudio===self)enableClicks();});
-    audio.addEventListener('error',()=>{if(_sfxAudio===self)enableClicks();});
-    audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
-      _sfxAudio=null;_ttsMode='fallback';_fallbackNarration(clean,text,items,enableClicks);
-    });
-  }else{_fallbackNarration(clean,text,items,enableClicks);}
+// Play one audio clip; resolves when clip ends (or is aborted).
+function _playClip(clean){
+  return new Promise(resolve=>{
+    if(!clean){resolve();return;}
+    let settled=false;
+    const fin=()=>{if(!settled){settled=true;_clipResolvers=_clipResolvers.filter(x=>x!==fin);resolve();}};
+    _clipResolvers.push(fin);
+    // safety timeout so the sequence always advances even if audio events don't fire
+    _revealTimers.push(setTimeout(fin,Math.max(700,(clean.length/(_BASE_CPS*_NARRATION_RATE))*1000+800)));
+    if(_ttsMode!=='fallback'){
+      const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
+      audio.playbackRate=_NARRATION_RATE;_sfxAudio=audio;
+      audio.addEventListener('ended',fin,{once:true});
+      audio.addEventListener('error',fin,{once:true});
+      audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
+        _sfxAudio=null;_ttsMode='fallback';_clipFallback(clean,fin);
+      });
+    }else{_clipFallback(clean,fin);}
+  });
 }
 
-function _fallbackNarration(clean,text,items,enableClicks){
+function _clipFallback(clean,fin){
   if(_bestVoice&&window.speechSynthesis){
     speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(clean);
-    u.voice=_bestVoice;u.rate=_NARRATION_RATE;u.pitch=1.1;u.volume=1;speechSynthesis.speak(u);
+    u.voice=_bestVoice;u.rate=_NARRATION_RATE;u.pitch=1.1;u.volume=1;
+    u.onend=fin;u.onerror=()=>setTimeout(fin,100);speechSynthesis.speak(u);
   }else if(window.responsiveVoice){
-    responsiveVoice.cancel();responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:_NARRATION_RATE,volume:1});
+    responsiveVoice.cancel();
+    responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:_NARRATION_RATE,volume:1,onend:fin});
   }
-  const BASE=400;let last=BASE;
-  items.forEach(({id,name})=>{
-    const t=_calcTrigger(text,name);
-    const d=t<9999?BASE+Math.round((t/_NARRATION_RATE)*1000):last+700;
-    last=d;_revealTimers.push(setTimeout(()=>document.getElementById(id)?.classList.add('show'),d));
-  });
-  _revealTimers.push(setTimeout(enableClicks,last+1600));
+}
+
+// Plays intro, then for each item: shows card + speaks name together, then plays outro.
+// Perfect sync: card appears the moment its name audio starts.
+async function speakNarration(intro,items,outro){
+  const myId=++_narrationId;
+  cancelSpeech();
+  _lastText=[intro,...items.map(x=>x.name),outro].filter(Boolean).join('. ');
+  const strip=t=>t?t.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim():'';
+  const alive=()=>_narrationId===myId;
+  const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
+  try{
+    if(intro&&alive())await _playClip(strip(intro));
+    for(const{id,name}of items){
+      if(!alive())return;
+      document.getElementById(id)?.classList.add('show'); // card appears as name starts
+      await _playClip(strip(name));
+    }
+    if(outro&&alive())await _playClip(strip(outro));
+    if(alive())enableClicks();
+  }catch(e){if(alive())enableClicks();}
 }
 
 // ─── DATA ───────────────────────────────────────────────────────
@@ -557,7 +561,7 @@ function initSeasons(){
   });
   if(!s.questions.length) buildSeasonsQ();
   renderMode('seasons');
-  speakNarration('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
+  speakNarration('Every year has four seasons.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Each season feels different outside. Tap a card to learn about it!');
 }
 
 function showSeasonInfo(s){
@@ -719,7 +723,7 @@ function initMonths(){
   });
   if(!state.months.questions.length) buildMonthsQ();
   renderMode('months');
-  speakNarration('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})));
+  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap a month to learn about it!');
 }
 
 function showMonthInfo(m){
@@ -781,7 +785,7 @@ function initDays(){
 
   if(!state.days.questions.length) buildDaysQ();
   renderMode('days');
-  speakNarration('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})));
+  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to learn about it!');
 }
 
 function showDayInfo(d){
