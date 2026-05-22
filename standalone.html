@@ -298,24 +298,60 @@ button:active{transform:scale(.94)!important}
 
 <script>
 // ─── SPEECH ─────────────────────────────────────────────────────
-let _lastText='';
+let _lastText='',_sfxAudio=null,_ttsMode='auto',_bestVoice=null;
+
+(function initVoices(){
+  if(!window.speechSynthesis)return;
+  function pick(){
+    const vs=speechSynthesis.getVoices();if(!vs.length)return;
+    const tests=[
+      v=>/Aria.*Natural|Jenny.*Natural|Ana.*Natural|Zira.*Natural/i.test(v.name),
+      v=>/Samantha|Karen|Moira/i.test(v.name)&&v.lang.startsWith('en'),
+      v=>v.name==='Google US English',
+      v=>v.lang==='en-US'&&/Microsoft/i.test(v.name),
+      v=>v.lang==='en-US',
+      v=>v.lang.startsWith('en'),
+    ];
+    for(const t of tests){const v=vs.find(t);if(v){_bestVoice=v;break;}}
+  }
+  pick();speechSynthesis.onvoiceschanged=pick;
+})();
+
+function cancelSpeech(){
+  try{if(_sfxAudio){_sfxAudio.pause();_sfxAudio.src='';_sfxAudio=null;}}catch(e){}
+  try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
+  try{if(window.responsiveVoice)responsiveVoice.cancel();}catch(e){}
+}
+
+function _speakFallback(clean){
+  if(_bestVoice&&window.speechSynthesis){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(clean);
+    u.voice=_bestVoice;u.rate=0.88;u.pitch=1.15;u.volume=1;
+    speechSynthesis.speak(u);
+  }else if(window.responsiveVoice){
+    responsiveVoice.cancel();
+    responsiveVoice.speak(clean,'UK English Female',{pitch:1.1,rate:0.88,volume:1});
+  }
+}
+
 function speak(t){
   try{
     _lastText=t;
     const clean=t.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim();
     if(!clean)return;
-    if(window.responsiveVoice){
-      responsiveVoice.cancel();
-      responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:1.0,volume:1});
-    }else if(window.speechSynthesis){
-      window.speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(clean);
-      u.pitch=1.6;u.rate=1.08;u.volume=1;
-      window.speechSynthesis.speak(u);
-    }
-  }catch(e){}
+    cancelSpeech();
+    if(_ttsMode!=='fallback'){
+      // Amazon Polly "Joanna" via StreamElements free API — clear, natural voice
+      const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
+      audio.playbackRate=0.9;_sfxAudio=audio;
+      audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
+        _sfxAudio=null;_ttsMode='fallback';_speakFallback(clean);
+      });
+    }else{_speakFallback(clean);}
+  }catch(e){try{_speakFallback(t.replace(/[^\x00-\x7E]/g,' ').trim());}catch(e2){}}
 }
-function replaySpeak(){speak(_lastText||'Heeello! Welcome to Disney Learning Adventure! Tap a picture to start playing!');}
+function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
 
 // ─── DATA ───────────────────────────────────────────────────────
@@ -371,7 +407,7 @@ function go(id){
   if(id==='seasons'){initSeasons();speak('Let us learn about Seasons! Tap a season card to find out more.');}
   if(id==='months') {initMonths(); speak('Let us learn about the Months of the Year! Tap a month to learn about it.');}
   if(id==='days')   {initDays();   speak('Let us learn about the Days of the Week! Tap a day to find out more.');}
-  if(id==='home'){try{window.responsiveVoice&&responsiveVoice.cancel();window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}}
+  if(id==='home'){cancelSpeech();}
 }
 
 // ─── CELEBRATION ────────────────────────────────────────────────
@@ -412,7 +448,7 @@ function openModal(s){
   document.getElementById('modal').classList.add('open');
   speak(`${s.name}! ${s.desc}. ${s.facts.join('. ')}. ${s.charName} says: ${s.quote}.`);
 }
-function closeModal(){try{window.responsiveVoice&&responsiveVoice.cancel();window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}document.getElementById('modal').classList.remove('open')}
+function closeModal(){cancelSpeech();document.getElementById('modal').classList.remove('open')}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 
 // ─── FLOATING BG EMOJIS ─────────────────────────────────────────
