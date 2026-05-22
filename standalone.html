@@ -683,13 +683,13 @@ const SHAPES=[
   {name:'Circle',   emoji:'⭕',color:'#FF6FB5',fact:'A circle is perfectly round — like the sun!'},
   {name:'Square',   emoji:'🟦',color:'#A77BFF',fact:'A square has 4 equal sides and 4 corners!'},
   {name:'Triangle', emoji:'🔺',color:'#6FE3C8',fact:'A triangle has 3 sides and 3 pointy corners!'},
-  {name:'Rectangle',emoji:'📄',color:'#FFD86E',fact:'A rectangle has 2 long sides and 2 short sides!'},
+  {name:'Rectangle',points:'10,25 90,25 90,75 10,75',color:'#FFD86E',fact:'A rectangle has 2 long sides and 2 short sides!'},
   {name:'Star',     emoji:'⭐',color:'#FF9AC4',fact:'A star has 5 pointy points all around!'},
   {name:'Heart',    emoji:'❤️',color:'#FF6FB5',fact:'A heart is the shape we use for love!'},
   {name:'Diamond',  emoji:'🔷',color:'#7FB4FF',fact:'A diamond is like a square standing on its tip!'},
   {name:'Oval',     emoji:'🥚',color:'#FFB39B',fact:'An oval is a stretched circle, like an egg!'},
-  {name:'Pentagon', emoji:'🏠',color:'#A77BFF',fact:'A pentagon has 5 sides — like home plate!'},
-  {name:'Hexagon',  emoji:'🐝',color:'#6FE3C8',fact:'A hexagon has 6 sides — like a honeycomb!'},
+  {name:'Pentagon', points:'50,9 91,39 75,87 25,87 9,39',color:'#A77BFF',fact:'A pentagon has 5 sides — like home plate!'},
+  {name:'Hexagon',  points:'50,7 87,29 87,71 50,93 13,71 13,29',color:'#6FE3C8',fact:'A hexagon has 6 sides — like a honeycomb!'},
 ];
 
 const COLORS=[
@@ -876,8 +876,9 @@ function buildQ(game){
     state.numbers.questions=shuffle(qs).slice(0,10);
   }else if(game==='shapes'){
     SHAPES.forEach(s=>{
-      qs.push({prompt:`${s.emoji} What shape is this?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SHAPES,s,3)});
-      qs.push({prompt:`${s.fact.split('!')[0]}. What shape?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SHAPES,s,3)});
+      const icon=shapeIcon(s,60);
+      qs.push({prompt:'What shape is this?',answer:s.name,hint:s.fact,icon,color:s.color,options:pickOpts(SHAPES,s,3)});
+      qs.push({prompt:`${s.fact.split('!')[0]}. What shape?`,answer:s.name,hint:s.fact,icon,color:s.color,options:pickOpts(SHAPES,s,3)});
     });
     state.shapes.questions=shuffle(qs).slice(0,10);
   }else if(game==='colors'){
@@ -922,11 +923,13 @@ function renderQ(game){
       // alphabet quiz can have letter answers or word answers
       optItem=ALPHABET.find(x=>x.name===opt||x.word===opt);
     }
-    const emoji=optItem?(optItem.emoji||'❓'):'❓';
+    const optIcon=game==='shapes'&&optItem
+      ? shapeIcon(optItem,30,optItem.color)
+      : (optItem?(optItem.emoji||'❓'):'❓');
     const b=document.createElement('button');
     b.className='opt-btn';
     b.dataset.opt=opt;
-    b.innerHTML=`<span class="opt-emoji">${emoji}</span><span class="opt-label">${opt}</span>`;
+    b.innerHTML=`<span class="opt-emoji">${optIcon}</span><span class="opt-label">${opt}</span>`;
     b.onclick=()=>answerQ(game,opt);
     og.appendChild(b);
   });
@@ -1061,6 +1064,17 @@ function initNumbers(){
 }
 
 // ─── SHAPES ──────────────────────────────────────────────────────
+// Returns an SVG polygon for polygon-based shapes, else the emoji span.
+// fill='white' for colored-card contexts; fill=color for white-bg contexts.
+function shapeIcon(sh,size,fill){
+  if(sh.points){
+    const f=fill||'rgba(255,255,255,0.93)';
+    const stroke=fill&&fill!=='rgba(255,255,255,0.93)'?'none':'rgba(255,255,255,0.4)';
+    return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" style="display:block;overflow:visible"><polygon points="${sh.points}" fill="${f}" stroke="${stroke}" stroke-width="2"/></svg>`;
+  }
+  return sh.emoji;
+}
+
 function initShapes(){
   const s=state.shapes;s.mode='learn';s.active=null;
   document.getElementById('shapes-info').style.display='none';
@@ -1070,11 +1084,11 @@ function initShapes(){
     b.className='learn-card card-pre';b.id='sh-'+sh.name;
     b.style.background=`linear-gradient(135deg,${sh.color},${sh.color}bb)`;
     b.style.boxShadow=`0 12px 30px ${sh.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${sh.emoji}</div><div class="lc-name">${sh.name}</div>`;
+    b.innerHTML=`<div class="lc-icon">${shapeIcon(sh,52)}</div><div class="lc-name">${sh.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('shapes',sh,
-        `<div class="info-card"><div class="ic-row"><span class="ic-big">${sh.emoji}</span><div><div class="ic-name">${sh.name}</div></div></div><div class="ic-fact">${sh.fact}</div></div>`,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${shapeIcon(sh,52,sh.color)}</span><div><div class="ic-name">${sh.name}</div></div></div><div class="ic-fact">${sh.fact}</div></div>`,
         `${sh.name}. ${sh.fact}`
       );
     };
