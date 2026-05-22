@@ -305,7 +305,7 @@ let _lastText='',_sfxAudio=null,_ttsMode='auto',_bestVoice=null;
   function pick(){
     const vs=speechSynthesis.getVoices();if(!vs.length)return;
     const tests=[
-      v=>/Aria.*Natural|Jenny.*Natural|Ana.*Natural|Zira.*Natural/i.test(v.name),
+      v=>/Aria.*Natural|Jenny.*Natural|Zira.*Natural/i.test(v.name)&&v.lang==='en-US',
       v=>/Samantha|Karen|Moira/i.test(v.name)&&v.lang.startsWith('en'),
       v=>v.name==='Google US English',
       v=>v.lang==='en-US'&&/Microsoft/i.test(v.name),
