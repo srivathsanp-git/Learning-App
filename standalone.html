@@ -5,379 +5,500 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#1a1a2e"/>
-<title>Disney Learning Adventure! 🌟</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#FFE3F1"/>
+<title>Fairy Meadow Learning! ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
 <style>
-:root{--spring:cubic-bezier(.34,1.56,.64,1);--ease-out:cubic-bezier(.22,1,.36,1);--glass-bg:rgba(255,255,255,.07);--glass-border:rgba(255,255,255,.11);--shadow-card:0 2px 8px rgba(0,0,0,.25),0 8px 32px rgba(0,0,0,.35);--shadow-elevated:0 4px 16px rgba(0,0,0,.3),0 16px 48px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.06)}
-html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',Arial,sans-serif;background:#070714;background-image:radial-gradient(ellipse at 15% 0%,rgba(100,60,240,.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 100%,rgba(30,80,220,.15) 0%,transparent 55%),linear-gradient(170deg,#080718,#0a0f24,#07091c);min-height:100vh;overflow-x:hidden}
-button{cursor:pointer;border:none;font-family:inherit;transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out),opacity .15s}
-button:active{transform:scale(.93)!important;opacity:.82!important}
+:root{
+  --bg:linear-gradient(160deg,#FFE3F1 0%,#E8DFFF 50%,#DFF6FF 100%);
+  --primary:#FF6FB5;
+  --accent:#A77BFF;
+  --accent2:#6FE3C8;
+  --accent3:#FFD86E;
+  --text:#3D1F4F;
+  --text-soft:#7A5B8E;
+  --surface:#fff;
+  --card-shadow:0 12px 30px rgba(255,111,181,0.25),0 2px 0 rgba(255,255,255,0.9) inset;
+  --card-radius:28px;
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Quicksand',Arial,sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden;color:var(--text)}
+h1,h2,h3,.fredoka{font-family:'Fredoka',sans-serif}
+button{cursor:pointer;border:none;font-family:'Quicksand',sans-serif;transition:transform .18s var(--ease-out),box-shadow .18s;font-weight:600}
+button:active{transform:scale(.93)!important;opacity:.85!important}
+input,textarea{-webkit-user-select:text;user-select:text}
 
 /* ── SCREENS ── */
-.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding:0 0 56px}
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding-bottom:max(56px,env(safe-area-inset-bottom,0px));background:var(--bg)}
 .screen.active{display:flex;animation:screenEnter .42s var(--ease-out) both}
-@keyframes screenEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes screenEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── HOME ── */
-#home{justify-content:center;padding:24px}
-.home-content{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:900px}
-.title-row{display:flex;align-items:center;gap:12px}
-.star{font-size:38px;animation:spinStar 3s linear infinite}
-@keyframes spinStar{0%{transform:rotate(0)scale(1)}50%{transform:rotate(180deg)scale(1.3)}100%{transform:rotate(360deg)scale(1)}}
-.main-title{font-size:clamp(26px,5vw,52px);font-weight:900;letter-spacing:-.02em;background:linear-gradient(90deg,#FFD700,#FF6B9D,#4ECDC4,#A855F7,#FFD700);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;line-height:1.2}
-@keyframes shimmer{0%{background-position:0%}100%{background-position:300%}}
-.subtitle{color:rgba(255,215,0,.88);font-size:clamp(16px,3vw,22px);font-weight:700;letter-spacing:.01em}
-.parade{display:flex;gap:8px;font-size:34px}
-.parade span{display:inline-block;animation:wobble .8s ease-in-out infinite alternate}
-.parade span:nth-child(2n){animation-delay:.1s}.parade span:nth-child(3n){animation-delay:.2s}
-.parade span:nth-child(4n){animation-delay:.3s}.parade span:nth-child(5n){animation-delay:.15s}
-.parade span:nth-child(6n){animation-delay:.25s}.parade span:nth-child(7n){animation-delay:.35s}
-@keyframes wobble{0%{transform:translateY(0)rotate(-5deg)}100%{transform:translateY(-10px)rotate(5deg)}}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;width:100%}
-.menu-card{border-radius:28px;padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;border:none;box-shadow:0 2px 0 rgba(255,255,255,.14) inset,0 8px 32px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);transition:transform .25s var(--ease-out),box-shadow .25s var(--ease-out);position:relative;overflow:hidden}
-.menu-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,transparent 45%);pointer-events:none;border-radius:inherit}
-.menu-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 2px 0 rgba(255,255,255,.14) inset,0 20px 60px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.4)}
-.mc-char{font-size:56px;animation:bounce 1.2s ease-in-out infinite alternate}
-@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
-.mc-emoji{font-size:26px}.mc-title{font-size:24px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4);letter-spacing:-.01em}
-.mc-desc{font-size:14px;color:rgba(255,255,255,.82);font-weight:600}
-.mc-with{font-size:13px;color:rgba(255,255,255,.65);font-style:italic;font-weight:600}
-.footer-hint{color:rgba(255,215,0,.85);font-size:17px;font-weight:700;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+#home{justify-content:flex-start;padding:28px 16px max(56px,env(safe-area-inset-bottom,0px));position:relative;overflow:hidden}
+.home-inner{display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;max-width:960px;position:relative;z-index:1}
+.lumi-wrap{animation:lumiFloat 3s ease-in-out infinite}
+@keyframes lumiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.home-heading{font-family:'Fredoka',sans-serif;font-size:clamp(24px,6vw,50px);font-weight:700;color:var(--text);text-align:center;letter-spacing:-.01em;line-height:1.15}
+.home-heading span{color:var(--primary)}
+.home-sub{font-size:clamp(14px,3vw,18px);color:var(--text-soft);font-weight:600;text-align:center}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:820px}
+.topic-card{border-radius:24px;padding:22px 14px 18px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;border:none;position:relative;overflow:hidden;transition:transform .25s var(--ease-out),box-shadow .25s}
+.topic-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.22) 0%,transparent 50%);pointer-events:none}
+.topic-card:hover{transform:translateY(-6px) scale(1.03)}
+.tc-icon{font-size:48px;animation:tcBounce 2s ease-in-out infinite alternate}
+.tc-icon:nth-child(1){animation-delay:0s}
+@keyframes tcBounce{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+.tc-title{font-family:'Fredoka',sans-serif;font-size:clamp(15px,2.5vw,22px);font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.25)}
+.tc-desc{font-size:12px;color:rgba(255,255,255,0.88);font-weight:600}
+
+/* ── SPARKLES ── */
+.sparkle{position:fixed;pointer-events:none;z-index:0;border-radius:50%;animation:kc-twinkle 2.5s ease-in-out infinite}
+@keyframes kc-twinkle{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
 
 /* ── GAME HEADER ── */
-.game-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(6,6,18,.72);backdrop-filter:blur(24px) saturate(180%) brightness(1.08);-webkit-backdrop-filter:blur(24px) saturate(180%) brightness(1.08);border-bottom:1px solid rgba(255,255,255,.09);box-shadow:0 1px 0 rgba(255,255,255,.04),0 4px 24px rgba(0,0,0,.5);gap:10px;position:sticky;top:0;z-index:10}
-.back-btn{background:rgba(255,255,255,.1);color:#fff;font-size:15px;font-weight:800;padding:10px 16px;border-radius:22px;border:1.5px solid rgba(255,255,255,.18);flex-shrink:0}
-.back-btn:hover{background:rgba(255,255,255,.18)}
-.speak-btn{background:rgba(255,255,255,.1);color:#fff;font-size:18px;font-weight:800;padding:8px 12px;border-radius:20px;border:1.5px solid rgba(255,255,255,.18);flex-shrink:0;line-height:1}
-.speak-btn:hover{background:rgba(255,255,255,.2)}
-.g-title{font-size:clamp(16px,3vw,24px);font-weight:900;color:#fff;text-align:center;flex:1;letter-spacing:-.01em;text-shadow:0 2px 8px rgba(0,0,0,.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mode-btn{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:13px;font-weight:800;padding:10px 14px;border-radius:22px;flex-shrink:0;box-shadow:0 4px 16px rgba(255,140,0,.35),0 1px 0 rgba(255,255,255,.2) inset}
-.mode-btn:hover{transform:scale(1.06)!important;box-shadow:0 6px 22px rgba(255,140,0,.48),0 1px 0 rgba(255,255,255,.2) inset}
+.game-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(255,255,255,0.72);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:1.5px solid rgba(255,111,181,0.15);box-shadow:0 2px 16px rgba(255,111,181,0.12);gap:8px;position:sticky;top:0;z-index:10;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.back-btn{background:var(--primary);color:#fff;font-size:14px;font-weight:700;padding:9px 15px;border-radius:20px;flex-shrink:0;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.back-btn:hover{background:#ff4da0}
+.speak-btn{background:var(--accent3);color:var(--text);font-size:18px;font-weight:700;padding:8px 11px;border-radius:18px;flex-shrink:0;line-height:1;box-shadow:0 3px 10px rgba(255,216,110,0.4)}
+.g-title{font-family:'Fredoka',sans-serif;font-size:clamp(15px,3vw,22px);font-weight:600;color:var(--text);text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode-btn{background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:9px 13px;border-radius:20px;flex-shrink:0;box-shadow:0 4px 14px rgba(167,123,255,0.4)}
+.mode-btn:hover{background:#9062f5}
 
-/* ── LEARN CARDS ── */
-.learn-prompt{color:rgba(255,215,0,.88);font-size:17px;font-weight:700;animation:pulse 2s ease-in-out infinite;margin-top:20px;padding:0 16px;text-align:center;letter-spacing:.01em}
-.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;width:100%;max-width:860px;padding:0 18px}
-.learn-card{border-radius:26px;padding:28px 18px;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .22s var(--ease-out),box-shadow .22s;box-shadow:0 2px 0 rgba(255,255,255,.18) inset,var(--shadow-card);position:relative;overflow:hidden}
-.learn-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,transparent 40%);pointer-events:none;border-radius:inherit}
-.learn-card:hover{transform:translateY(-8px) scale(1.04);box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 4px 16px rgba(0,0,0,.3),0 16px 48px rgba(0,0,0,.45)}
-.learn-card.active{transform:translateY(-8px) scale(1.06);box-shadow:0 2px 0 rgba(255,255,255,.18) inset,0 4px 16px rgba(0,0,0,.3),0 16px 48px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.32)}
-.card-pre{opacity:0!important;transform:translateY(26px) scale(.91)!important;pointer-events:none!important;transition:opacity .46s var(--ease-out),transform .46s var(--spring)!important}
+/* ── LEARN AREA ── */
+.learn-section{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;padding:20px 0 8px}
+.learn-prompt{color:var(--text-soft);font-size:16px;font-weight:600;text-align:center;padding:0 16px}
+
+/* ── LEARN GRID ── */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;width:100%;max-width:860px;padding:0 16px}
+.learn-card{border-radius:var(--card-radius);padding:26px 16px;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .22s var(--ease-out),box-shadow .22s;position:relative;overflow:hidden}
+.learn-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.learn-card:hover{transform:translateY(-4px) scale(1.03)}
+.learn-card.active{transform:translateY(-4px) scale(1.05);outline:3px solid rgba(255,255,255,0.8)}
+.card-pre{opacity:0!important;transform:translateY(24px) scale(0.93)!important;pointer-events:none!important;transition:opacity .44s var(--ease-out),transform .44s var(--spring)!important}
 .card-pre.show{opacity:1!important;transform:translateY(0) scale(1)!important}
-.lc-icon{font-size:50px;animation:bounce 1.2s ease-in-out infinite alternate}
-.lc-name{font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.4);letter-spacing:-.01em}
-.lc-sub{font-size:19px}.lc-char{font-size:34px}
+.lc-icon{font-size:50px;animation:tcBounce 2s ease-in-out infinite alternate}
+.lc-name{font-family:'Fredoka',sans-serif;font-size:21px;font-weight:600;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.25)}
+.lc-sub{font-size:18px}
+.lc-num{font-family:'Fredoka',sans-serif;font-size:38px;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.2);line-height:1}
+.lc-letter{font-family:'Fredoka',sans-serif;font-size:44px;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.2);line-height:1}
 
-/* ── MODAL (bottom sheet on mobile, centered on desktop) ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.modal-overlay.open{display:flex}
-@media(min-width:600px){.modal-overlay{align-items:center;padding:20px}}
-.modal{border-radius:28px 28px 0 0;border:none;border-top:1px solid rgba(255,255,255,.11);padding:8px 24px 36px;max-width:520px;width:100%;text-align:center;animation:sheetUp .38s var(--ease-out);box-shadow:0 -8px 60px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05) inset}
-@media(min-width:600px){.modal{border-radius:28px;border:1.5px solid rgba(255,255,255,.12);padding:28px 24px;animation:popIn .35s var(--spring)}}
-.modal-handle{width:36px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;margin:0 auto 16px}
-@media(min-width:600px){.modal-handle{display:none}}
-@keyframes sheetUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes popIn{from{transform:scale(.5) rotate(-6deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-.mod-header{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
-.mod-big{font-size:48px}.mod-title{font-size:30px;font-weight:900;color:#222;letter-spacing:-.02em}
-.mod-char{font-size:40px}.mod-icons{font-size:26px;margin-bottom:8px}
-.mod-desc{font-size:17px;font-weight:700;color:#333;margin-bottom:6px}
-.mod-months{font-size:14px;color:#555;font-weight:600;margin-bottom:10px}
-.mod-facts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-.mod-fact{background:rgba(0,0,0,.06);border-radius:12px;padding:7px 14px;font-size:15px;font-weight:600;color:#333}
-.mod-quote{font-size:15px;font-style:italic;color:#555;margin-bottom:4px}
-.mod-who{font-size:13px;font-weight:700;color:#666;margin-bottom:14px}
-.mod-close{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:17px;font-weight:800;padding:12px 32px;border-radius:22px;border:none;box-shadow:0 4px 16px rgba(102,126,234,.4),0 1px 0 rgba(255,255,255,.15) inset}
-.mod-close:hover{transform:scale(1.04)!important}
-
-/* ── MONTHS / DAYS GRID ── */
-.mini-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;width:100%;max-width:980px;padding:0 16px}
-.mini-card{border-radius:18px;padding:18px 10px;border:none;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;box-shadow:0 2px 0 rgba(255,255,255,.15) inset,0 4px 16px rgba(0,0,0,.35);position:relative;overflow:hidden}
-.mini-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,transparent 40%);pointer-events:none;border-radius:inherit}
-.mini-card:hover{transform:translateY(-4px) scale(1.06)}
-.mini-card.active{transform:translateY(-5px) scale(1.07);box-shadow:0 2px 0 rgba(255,255,255,.15) inset,0 8px 28px rgba(0,0,0,.45),0 0 0 2.5px rgba(255,255,255,.35)}
-.mi-num{font-size:13px;font-weight:900;color:rgba(255,255,255,.75)}
-.mi-emoji{font-size:34px}.mi-name{font-size:13px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);text-align:center;letter-spacing:.01em}
-.mi-char{font-size:24px}
-.info-card{width:100%;max-width:500px;border-radius:22px;border:none;padding:22px 24px;text-align:center;animation:slideUp .36s var(--ease-out);margin:0 16px;box-shadow:0 2px 0 rgba(255,255,255,.12) inset,var(--shadow-elevated)}
-@keyframes slideUp{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.ic-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
-.ic-big{font-size:42px}.ic-name{font-size:24px;font-weight:900;color:#222;letter-spacing:-.01em}
-.ic-sub{font-size:13px;color:#555;font-weight:600}.ic-char{font-size:40px}
-.ic-season{font-size:16px;font-weight:700;color:#333;margin-bottom:7px}
-.ic-fact{font-size:17px;font-weight:800;color:#222;margin-bottom:6px}
-.ic-who{font-size:14px;color:#555;font-style:italic}
+/* ── MINI GRID (months/alphabet/numbers) ── */
+.mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:920px;padding:0 14px}
+.mini-card{border-radius:18px;padding:14px 8px;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;position:relative;overflow:hidden}
+.mini-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.mini-card:hover{transform:translateY(-3px) scale(1.05)}
+.mini-card.active{transform:translateY(-3px) scale(1.07);outline:2.5px solid rgba(255,255,255,0.85)}
+.mi-num{font-family:'Fredoka',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.8)}
+.mi-emoji{font-size:28px}
+.mi-big{font-family:'Fredoka',sans-serif;font-size:30px;font-weight:700;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25);line-height:1}
+.mi-name{font-family:'Fredoka',sans-serif;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);text-align:center}
 
 /* ── DAYS RAIL ── */
 .days-rail{display:flex;flex-wrap:wrap;gap:10px;width:100%;max-width:900px;padding:0 12px;justify-content:center}
-.day-card{min-width:86px;border-radius:18px;padding:14px 10px;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;box-shadow:0 2px 0 rgba(255,255,255,.15) inset,0 4px 16px rgba(0,0,0,.3);position:relative;overflow:hidden}
-.day-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.13) 0%,transparent 40%);pointer-events:none;border-radius:inherit}
-.day-card:hover{transform:translateY(-4px) scale(1.06)}
-.day-card.active{transform:translateY(-5px) scale(1.08);box-shadow:0 2px 0 rgba(255,255,255,.15) inset,0 8px 28px rgba(0,0,0,.4),0 0 0 2.5px rgba(255,255,255,.35)}
-.week-seq{width:100%;max-width:860px;background:rgba(255,255,255,.05);border-radius:18px;padding:14px 18px;border:1px solid rgba(255,255,255,.09);margin:0 16px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.ws-title{color:rgba(255,215,0,.82);font-size:13px;font-weight:800;margin-bottom:8px;text-align:center;letter-spacing:.06em;text-transform:uppercase}
-.ws-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px}
-.ws-item{display:flex;align-items:center;gap:2px;font-weight:800;font-size:13px}
-.ws-arrow{color:rgba(255,255,255,.22);font-size:11px;margin:0 2px}
+.day-card{min-width:84px;border-radius:18px;padding:14px 10px;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;position:relative;overflow:hidden}
+.day-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.day-card:hover{transform:translateY(-3px) scale(1.05)}
+.day-card.active{transform:translateY(-3px) scale(1.07);outline:2.5px solid rgba(255,255,255,0.85)}
+
+/* ── INFO CARD ── */
+.info-card{width:100%;max-width:520px;border-radius:22px;padding:22px 24px;text-align:center;animation:slideUp .36s var(--ease-out);margin:0 16px;background:#fff;box-shadow:var(--card-shadow)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ic-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
+.ic-big{font-size:44px}
+.ic-name{font-family:'Fredoka',sans-serif;font-size:26px;font-weight:700;color:var(--text)}
+.ic-sub{font-size:13px;color:var(--text-soft);font-weight:600}
+.ic-fact{font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px}
+.ic-extra{font-size:15px;color:var(--text-soft);font-weight:600;margin-bottom:4px}
+.ic-swatch{width:48px;height:48px;border-radius:12px;margin:0 auto 8px;border:2px solid rgba(0,0,0,0.08)}
+
+/* ── ALPHABET GRID ── */
+.alpha-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;width:100%;max-width:980px;padding:0 12px}
+.alpha-card{border-radius:16px;padding:10px 6px 8px;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:transform .2s var(--ease-out);position:relative;overflow:hidden}
+.alpha-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.alpha-card:hover{transform:translateY(-3px) scale(1.05)}
+.alpha-card.active{outline:2.5px solid rgba(255,255,255,0.9);transform:translateY(-3px) scale(1.07)}
+.ac-letter{font-family:'Fredoka',sans-serif;font-size:22px;font-weight:700;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25);line-height:1}
+.ac-emoji{font-size:20px}
+.ac-word{font-family:'Fredoka',sans-serif;font-size:9px;font-weight:600;color:rgba(255,255,255,0.9);text-align:center}
+
+/* ── SHAPES GRID ── */
+.shapes-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;max-width:860px;padding:0 14px}
+
+/* ── COLORS GRID ── */
+.colors-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;max-width:860px;padding:0 14px}
+.color-card{border-radius:var(--card-radius);padding:24px 12px;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .22s var(--ease-out),box-shadow .22s;position:relative;overflow:hidden}
+.color-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.20) 0%,transparent 45%);pointer-events:none}
+.color-card:hover{transform:translateY(-4px) scale(1.03)}
+.color-card.active{outline:3px solid rgba(255,255,255,0.9);transform:translateY(-4px) scale(1.05)}
 
 /* ── QUIZ ── */
-.quiz-prog-track{width:100%;max-width:600px;padding:12px 16px 0}
-.quiz-prog-bar{height:5px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
-.quiz-prog-fill{height:100%;background:linear-gradient(90deg,#FFD700,#FF6B9D,#A855F7);border-radius:99px;transition:width .5s var(--ease-out);width:0%}
-.score-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;padding:12px 20px 0}
-.score-badge{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:16px;font-weight:900;padding:8px 18px;border-radius:22px;box-shadow:0 4px 16px rgba(255,140,0,.35),0 1px 0 rgba(255,255,255,.2) inset;letter-spacing:.01em}
-.prog-badge{background:rgba(255,255,255,.09);color:rgba(255,255,255,.82);font-size:14px;font-weight:700;padding:8px 16px;border-radius:22px;border:1.5px solid rgba(255,255,255,.14);backdrop-filter:blur(8px)}
-.q-card{width:100%;max-width:600px;border-radius:28px;padding:28px 24px;text-align:center;border:none;border-top:1.5px solid rgba(255,255,255,.16);display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 16px;box-shadow:0 2px 0 rgba(255,255,255,.18) inset,var(--shadow-elevated)}
-.q-char{font-size:54px;animation:bounce 1s ease-in-out infinite alternate}
-.q-text{font-size:clamp(17px,3vw,22px);font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4);line-height:1.3;letter-spacing:-.01em}
+.quiz-section{display:none;width:100%;flex-direction:column;align-items:center;gap:16px;padding-top:10px}
+.quiz-prog-track{width:100%;max-width:600px;padding:10px 16px 0}
+.quiz-prog-bar{height:6px;background:rgba(61,31,79,0.12);border-radius:99px;overflow:hidden}
+.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent),var(--accent2));border-radius:99px;transition:width .5s var(--ease-out);width:0%}
+.score-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;padding:4px 20px 0}
+.score-badge{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;padding:8px 18px;border-radius:20px;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.prog-badge{background:rgba(61,31,79,0.08);color:var(--text-soft);font-size:14px;font-weight:600;padding:8px 16px;border-radius:20px}
+.q-card{width:100%;max-width:600px;border-radius:var(--card-radius);padding:28px 24px;text-align:center;border:none;display:flex;flex-direction:column;align-items:center;gap:10px;margin:0 16px;box-shadow:var(--card-shadow)}
+.q-char{font-size:56px;animation:tcBounce 1.2s ease-in-out infinite alternate}
+.q-text{font-family:'Fredoka',sans-serif;font-size:clamp(16px,3vw,22px);font-weight:600;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.2);line-height:1.3}
 .q-icon{font-size:38px}
-.q-hint{font-size:14px;color:rgba(255,255,255,.78);font-weight:600;font-style:italic;background:rgba(0,0,0,.2);border-radius:12px;padding:7px 14px;backdrop-filter:blur(4px)}
+.q-hint{font-size:14px;color:rgba(255,255,255,0.85);font-weight:600;background:rgba(0,0,0,0.12);border-radius:12px;padding:7px 14px}
 .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:600px;padding:0 16px}
-.opt-btn{background:rgba(255,255,255,.09);color:#fff;font-size:clamp(14px,2.5vw,18px);font-weight:800;padding:16px 10px;border-radius:20px;border:1.5px solid rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center;gap:5px;text-shadow:0 1px 4px rgba(0,0,0,.3);box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 4px 16px rgba(0,0,0,.25);transition:all .2s var(--ease-out);backdrop-filter:blur(4px)}
-.opt-btn:hover{background:rgba(255,255,255,.16);transform:translateY(-3px) scale(1.02)!important;box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 8px 24px rgba(0,0,0,.3)}
-.opt-btn.correct{background:linear-gradient(135deg,#2ECC71,#27AE60)!important;border-color:rgba(255,255,255,.2)!important;transform:scale(1.05)!important;box-shadow:0 2px 0 rgba(255,255,255,.2) inset,0 8px 28px rgba(46,204,113,.5)!important;animation:correctPop .4s var(--spring)}
-.opt-btn.wrong{background:linear-gradient(135deg,#E74C3C,#C0392B)!important;border-color:rgba(255,255,255,.1)!important;animation:shake .5s ease-in-out}
+.opt-btn{background:#fff;color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(14px,2.5vw,17px);font-weight:600;padding:16px 10px;border-radius:20px;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 6px 18px rgba(61,31,79,0.12),0 2px 0 rgba(255,255,255,0.9) inset;transition:all .2s var(--ease-out)}
+.opt-btn:hover{transform:translateY(-3px) scale(1.02)!important;box-shadow:0 10px 28px rgba(61,31,79,0.18)}
+.opt-btn.correct{background:linear-gradient(135deg,#3FD868,#25B34B)!important;color:#fff!important;transform:scale(1.05)!important;box-shadow:0 8px 24px rgba(63,216,104,0.45)!important;animation:correctPop .4s var(--spring)}
+.opt-btn.wrong{background:linear-gradient(135deg,#FF5C5C,#E03333)!important;color:#fff!important;animation:shake .5s ease-in-out}
 @keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1.05)}}
 @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-8px) rotate(-2deg)}40%{transform:translate(8px) rotate(2deg)}60%{transform:translate(-6px)}80%{transform:translate(6px)}}
-.opt-emoji{font-size:30px}.opt-label{font-size:clamp(13px,2vw,16px);text-align:center}
-.next-btn{background:linear-gradient(135deg,#FFD700,#FF8C00);color:#fff;font-size:18px;font-weight:900;padding:15px 40px;border-radius:26px;border:none;box-shadow:0 2px 0 rgba(255,255,255,.2) inset,0 8px 24px rgba(255,140,0,.45);animation:glowPulse 2s ease-in-out infinite;margin-top:6px;letter-spacing:.01em}
-.next-btn:hover{transform:translateY(-3px) scale(1.04)!important;box-shadow:0 2px 0 rgba(255,255,255,.2) inset,0 12px 32px rgba(255,140,0,.55)}
-@keyframes glowPulse{0%,100%{box-shadow:0 2px 0 rgba(255,255,255,.2) inset,0 8px 24px rgba(255,140,0,.45)}50%{box-shadow:0 2px 0 rgba(255,255,255,.2) inset,0 8px 38px rgba(255,140,0,.78)}}
+.opt-emoji{font-size:28px}
+.opt-label{font-size:clamp(12px,2vw,15px);text-align:center}
+.next-btn{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:18px;font-weight:600;padding:14px 40px;border-radius:26px;border:none;box-shadow:0 6px 22px rgba(255,111,181,0.45);animation:glowPink 2s ease-in-out infinite}
+@keyframes glowPink{0%,100%{box-shadow:0 6px 22px rgba(255,111,181,0.45)}50%{box-shadow:0 6px 36px rgba(255,111,181,0.75)}}
+.next-btn:hover{transform:translateY(-3px) scale(1.04)!important}
 
-/* ── CELEBRATION ── */
-#celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;align-items:center;justify-content:center;overflow:hidden}
-#celebration.show{display:flex}
-.balloon{position:absolute;bottom:-80px;font-size:36px;animation:balloonFly 3.5s ease-in forwards;pointer-events:none}
-@keyframes balloonFly{0%{opacity:1;transform:translateY(0) rotate(-5deg)}80%{opacity:1}100%{opacity:0;transform:translateY(-110vh) rotate(12deg)}}
-.cel-box{background:linear-gradient(145deg,#0e0b24,#131836);border:1.5px solid rgba(255,255,255,.14);border-radius:32px;padding:36px 52px;text-align:center;box-shadow:0 0 0 1px rgba(255,215,0,.2),0 24px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);animation:popIn .42s var(--spring) forwards;pointer-events:none}
-.cel-stars{font-size:30px;animation:spin 1s linear infinite}
-@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-.cel-icon{font-size:70px;animation:jump .5s ease-in-out infinite alternate}
-@keyframes jump{from{transform:translateY(0) scale(1)}to{transform:translateY(-16px) scale(1.1)}}
-.cel-title{font-size:50px;font-weight:900;color:#fff;text-shadow:0 4px 12px rgba(0,0,0,.3);letter-spacing:2px}
-.cel-msg{font-size:19px;font-weight:700;color:rgba(255,255,255,.88);margin-top:6px}
-.cel-chars{display:flex;gap:12px;justify-content:center;font-size:34px;margin-top:10px}
-.cel-chars span{animation:wiggle .4s ease-in-out infinite alternate}
-.cel-chars span:nth-child(2){animation-delay:.1s}.cel-chars span:nth-child(3){animation-delay:.2s}.cel-chars span:nth-child(4){animation-delay:.3s}
-@keyframes wiggle{from{transform:rotate(-15deg) scale(1)}to{transform:rotate(15deg) scale(1.2)}}
+/* ── CONFETTI / CELEBRATION ── */
+#celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}
+#celebration.show{display:block}
+.confetti-piece{position:absolute;top:-20px;font-size:24px;animation:confettiFall linear forwards;pointer-events:none}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0)}80%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
+.cel-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fff,#FFF0FA);border-radius:24px;padding:18px 32px;text-align:center;box-shadow:0 12px 40px rgba(255,111,181,0.35);animation:toastUp .4s var(--spring) both;pointer-events:none;z-index:1000}
+@keyframes toastUp{from{opacity:0;transform:translateX(-50%) translateY(30px) scale(.9)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+.cel-toast-icon{font-size:48px;display:block}
+.cel-toast-msg{font-family:'Fredoka',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-top:4px}
 
-/* ── FLOATERS ── */
-.floater{position:fixed;pointer-events:none;z-index:0;opacity:.45;animation:floatUp linear infinite;bottom:-60px}
-@keyframes floatUp{0%{opacity:.45;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
-
-/* ── MOBILE & TOUCH ── */
-*{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
-button{touch-action:manipulation}
-input,textarea{-webkit-user-select:text;user-select:text}
-.screen{padding-bottom:max(56px,env(safe-area-inset-bottom,0px))}
-.game-header{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-
+/* ── MOBILE ── */
 @media(max-width:599px){
-  .game-header{padding:10px 10px;gap:6px}
+  .game-header{padding:9px 10px;gap:5px}
   .back-btn{font-size:12px;padding:8px 10px}
   .speak-btn{font-size:14px;padding:7px 9px}
   .mode-btn{font-size:11px;padding:8px 9px}
-  .menu-card{padding:20px 12px}
-  .mc-char{font-size:42px}
-  .mc-title{font-size:20px}
-  .parade{font-size:26px;gap:6px}
-  .learn-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 10px}
+  .topic-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .learn-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 10px}
   .learn-card{padding:18px 10px}
-  .lc-icon{font-size:40px}
+  .lc-icon{font-size:38px}
   .lc-name{font-size:17px}
-  .mini-grid{grid-template-columns:repeat(4,1fr);gap:8px;padding:0 8px}
-  .mini-card{padding:12px 5px}
-  .mi-emoji{font-size:26px}
-  .mi-name{font-size:11px}
-  .mi-num{font-size:10px}
-  .mi-char{font-size:16px}
-  .days-rail{gap:8px;padding:0 8px}
-  .day-card{flex:1;min-width:72px;padding:11px 5px}
-  .week-seq{margin:0 8px}
-  .ws-item{font-size:11px}
+  .mini-grid{grid-template-columns:repeat(4,1fr);gap:7px;padding:0 8px}
+  .mini-card{padding:10px 4px}
+  .mi-emoji{font-size:22px}
+  .mi-name{font-size:10px}
+  .mi-big{font-size:22px}
+  .days-rail{gap:7px;padding:0 8px}
+  .day-card{min-width:70px;flex:1;padding:10px 5px}
   .info-card{margin:0 8px;padding:16px 12px}
-  .ic-big{font-size:34px}
   .ic-name{font-size:20px}
   .q-card{padding:18px 12px;margin:0 8px}
   .opts-grid{padding:0 8px;gap:8px}
-  .opt-btn{padding:12px 6px;font-size:13px}
-  .opt-emoji{font-size:24px}
-  .modal{padding:8px 14px 32px}
-  .mod-big{font-size:36px}
-  .mod-title{font-size:22px}
-  .mod-char{font-size:30px}
-  .mod-desc{font-size:15px}
-  .mod-close{font-size:15px;padding:10px 22px}
-  .cel-box{padding:20px 24px}
-  .cel-title{font-size:36px}
-  .cel-icon{font-size:54px}
+  .opt-btn{padding:12px 6px;font-size:12px}
+  .opt-emoji{font-size:22px}
+  .shapes-grid{grid-template-columns:repeat(3,1fr);gap:10px;padding:0 10px}
+  .colors-grid{grid-template-columns:repeat(3,1fr);gap:10px;padding:0 10px}
+  .alpha-grid{grid-template-columns:repeat(6,1fr);gap:6px;padding:0 8px}
+  .ac-letter{font-size:18px}
+  .ac-emoji{font-size:16px}
+  .ac-word{font-size:8px}
 }
-
 @media(max-width:399px){
+  .topic-grid{grid-template-columns:repeat(2,1fr)}
   .mini-grid{grid-template-columns:repeat(3,1fr)}
-  .back-btn{font-size:11px;padding:7px 8px}
   .mode-btn{display:none}
+  .alpha-grid{grid-template-columns:repeat(5,1fr)}
+  .shapes-grid{grid-template-columns:repeat(2,1fr)}
+  .colors-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:768px){
+  .mini-grid{grid-template-columns:repeat(6,1fr)}
+  .alpha-grid{grid-template-columns:repeat(7,1fr)}
 }
 </style>
 </head>
 <body>
 
-<!-- Floating background emojis -->
-<div id="floaters"></div>
+<!-- Floating sparkle dots -->
+<div id="sparkles"></div>
 
 <!-- Celebration overlay -->
 <div id="celebration">
-  <div id="cel-balloons"></div>
-  <div class="cel-box">
-    <div class="cel-stars">⭐⭐⭐</div>
-    <div class="cel-icon">🎉</div>
-    <div class="cel-title">AMAZING!</div>
-    <div class="cel-msg" id="cel-msg">You got it right!</div>
-    <div class="cel-chars"><span>👸</span><span>🤠</span><span>🐭</span><span>🚀</span></div>
-  </div>
+  <div id="confetti-container"></div>
 </div>
 
 <!-- HOME -->
 <div class="screen active" id="home">
-  <div style="position:relative;z-index:1;width:100%" class="home-content">
-    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:24px">
-      <div class="title-row">
-        <span class="star">⭐</span>
-        <h1 class="main-title">Disney Learning Adventure!</h1>
-        <span class="star">⭐</span>
-      </div>
-      <p class="subtitle">What do you want to learn today? 🎉</p>
-      <div class="parade">
-        <span title="Elsa">👸</span><span title="Woody">🤠</span><span title="Mickey">🐭</span>
-        <span title="Minnie">🐭</span><span title="Buzz">🚀</span><span title="Donald">🦆</span>
-        <span title="Goofy">🐶</span><span title="Pluto">🐕</span>
-      </div>
+  <div class="home-inner" style="padding-top:20px">
+
+    <!-- Lumi fairy mascot -->
+    <div class="lumi-wrap">
+      <svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" aria-label="Lumi the fairy">
+        <defs>
+          <radialGradient id="wg1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#FF6FB5" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="wg2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#A77BFF" stop-opacity="0.4"/>
+          </radialGradient>
+        </defs>
+        <!-- Wings (4 ellipses) -->
+        <ellipse cx="28" cy="68" rx="30" ry="18" fill="url(#wg1)" opacity="0.85" transform="rotate(-25,28,68)"/>
+        <ellipse cx="22" cy="90" rx="22" ry="13" fill="url(#wg2)" opacity="0.75" transform="rotate(-15,22,90)"/>
+        <ellipse cx="92" cy="68" rx="30" ry="18" fill="url(#wg1)" opacity="0.85" transform="rotate(25,92,68)"/>
+        <ellipse cx="98" cy="90" rx="22" ry="13" fill="url(#wg2)" opacity="0.75" transform="rotate(15,98,90)"/>
+        <!-- Body / dress (pink) -->
+        <ellipse cx="60" cy="105" rx="22" ry="26" fill="#FF6FB5"/>
+        <!-- Gold accent on dress -->
+        <ellipse cx="60" cy="108" rx="10" ry="5" fill="#FFD86E" opacity="0.8"/>
+        <!-- Skin neck -->
+        <rect x="54" y="82" width="12" height="14" rx="5" fill="#FDDCB5"/>
+        <!-- Head -->
+        <circle cx="60" cy="70" r="22" fill="#FDDCB5"/>
+        <!-- Purple hair -->
+        <ellipse cx="60" cy="53" rx="22" ry="10" fill="#A77BFF"/>
+        <ellipse cx="42" cy="62" rx="8" ry="14" fill="#A77BFF"/>
+        <ellipse cx="78" cy="62" rx="8" ry="14" fill="#A77BFF"/>
+        <!-- Eyes -->
+        <circle cx="52" cy="70" r="4" fill="#3D1F4F"/>
+        <circle cx="68" cy="70" r="4" fill="#3D1F4F"/>
+        <circle cx="53.5" cy="68.5" r="1.5" fill="#fff"/>
+        <circle cx="69.5" cy="68.5" r="1.5" fill="#fff"/>
+        <!-- Pink cheeks -->
+        <ellipse cx="46" cy="76" rx="6" ry="4" fill="#FF6FB5" opacity="0.5"/>
+        <ellipse cx="74" cy="76" rx="6" ry="4" fill="#FF6FB5" opacity="0.5"/>
+        <!-- Smile -->
+        <path d="M54,80 Q60,86 66,80" stroke="#E05090" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Wand arm -->
+        <line x1="82" y1="96" x2="100" y2="72" stroke="#FDDCB5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Star wand -->
+        <polygon points="100,62 103,70 112,70 105,76 108,84 100,78 92,84 95,76 88,70 97,70" fill="#FFD86E" stroke="#FF6FB5" stroke-width="1"/>
+      </svg>
     </div>
-    <div class="menu-grid" style="padding:0 16px;max-width:860px;width:100%">
-      <button class="menu-card" style="background:linear-gradient(135deg,#FF6B9D,#FF8E53)" onclick="go('seasons')">
-        <div class="mc-char">👸</div><div class="mc-emoji">🌸❄️☀️🍂</div>
-        <div class="mc-title">Seasons</div>
-        <div class="mc-desc">Spring, Summer, Fall & Winter!</div>
-        <div class="mc-with">with Elsa!</div>
+
+    <h1 class="home-heading">Hi, I'm Lumi! <span>✨</span><br>What shall we learn?</h1>
+    <p class="home-sub">Tap a topic to start your magical adventure!</p>
+
+    <!-- 7 topic cards in 3-col grid -->
+    <div class="topic-grid">
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF6FB5,#ff4da0);box-shadow:0 10px 26px rgba(255,111,181,0.4)" onclick="go('seasons')">
+        <div class="tc-icon">🌸</div>
+        <div class="tc-title">Seasons</div>
+        <div class="tc-desc">Spring, Summer, Fall, Winter</div>
       </button>
-      <button class="menu-card" style="background:linear-gradient(135deg,#4ECDC4,#44A8B3)" onclick="go('months')">
-        <div class="mc-char">🤠</div><div class="mc-emoji">📅</div>
-        <div class="mc-title">Months</div>
-        <div class="mc-desc">All 12 months of the year!</div>
-        <div class="mc-with">with Woody!</div>
+      <button class="topic-card" style="background:linear-gradient(135deg,#A77BFF,#7C4FFF);box-shadow:0 10px 26px rgba(167,123,255,0.4)" onclick="go('months')">
+        <div class="tc-icon">📅</div>
+        <div class="tc-title">Months</div>
+        <div class="tc-desc">All 12 months of the year</div>
       </button>
-      <button class="menu-card" style="background:linear-gradient(135deg,#A855F7,#7C3AED)" onclick="go('days')">
-        <div class="mc-char">🐭</div><div class="mc-emoji">📆</div>
-        <div class="mc-title">Days of the Week</div>
-        <div class="mc-desc">Monday through Sunday!</div>
-        <div class="mc-with">with Mickey!</div>
+      <button class="topic-card" style="background:linear-gradient(135deg,#6FE3C8,#3DBBAA);box-shadow:0 10px 26px rgba(111,227,200,0.4)" onclick="go('days')">
+        <div class="tc-icon">📆</div>
+        <div class="tc-title">Days</div>
+        <div class="tc-desc">Monday through Sunday</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFD86E,#FFC02B);box-shadow:0 10px 26px rgba(255,216,110,0.4)" onclick="go('numbers')">
+        <div class="tc-icon">🔢</div>
+        <div class="tc-title">Numbers</div>
+        <div class="tc-desc">Count from 1 to 20!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF9AC4,#FF6FB5);box-shadow:0 10px 26px rgba(255,154,196,0.4)" onclick="go('shapes')">
+        <div class="tc-icon">⭐</div>
+        <div class="tc-title">Shapes</div>
+        <div class="tc-desc">Circles, stars &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#7FB4FF,#4A8FFF);box-shadow:0 10px 26px rgba(127,180,255,0.4)" onclick="go('colors')">
+        <div class="tc-icon">🌈</div>
+        <div class="tc-title">Colors</div>
+        <div class="tc-desc">Red, blue, green &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFB39B,#FF8060);box-shadow:0 10px 26px rgba(255,179,155,0.4)" onclick="go('alphabet')">
+        <div class="tc-icon">🔤</div>
+        <div class="tc-title">Alphabet</div>
+        <div class="tc-desc">A is for Apple, B for Bee…</div>
       </button>
     </div>
-    <p class="footer-hint">🌟 Tap a picture to start playing! 🌟</p>
-    <button class="speak-btn" style="background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);font-size:22px;padding:12px 20px;border-radius:24px" onclick="speak('Hello! Welcome to Disney Learning Adventure! Tap Seasons, Months, or Days of the Week to start learning!')">🔊 Tap to hear!</button>
+
   </div>
 </div>
 
 <!-- SEASONS -->
 <div class="screen" id="seasons">
   <div class="game-header">
-    <button class="back-btn" onclick="go('home')">⬅ Home</button>
-    <span class="g-title" id="seasons-title">🌸❄️ Seasons!</span>
-    <button class="speak-btn" onclick="replaySpeak()" title="Hear again">🔊</button>
-    <button class="mode-btn" id="seasons-mode-btn" onclick="toggleMode('seasons')">Quiz Time! 🎯</button>
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="seasons-title">🌸 Seasons</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="seasons-mode-btn" onclick="toggleMode('seasons')">Quiz 🎯</button>
   </div>
-  <div id="seasons-learn">
-    <p class="learn-prompt">Tap a season to learn about it! 👆</p>
-    <div class="learn-grid" id="seasons-learn-cards"></div>
-    <div id="seasons-info" style="display:none;margin-top:14px;width:100%;justify-content:center"></div>
+  <div class="learn-section" id="seasons-learn">
+    <p class="learn-prompt">Listen, then tap a card to learn more! 🌸</p>
+    <div class="learn-grid" id="seasons-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="seasons-info" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
-  <div id="seasons-quiz" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;gap:18px">
+  <div class="quiz-section" id="seasons-quiz">
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
     <div class="score-row">
-      <span class="score-badge" id="seasons-score">⭐ Score: 0</span>
-      <span class="prog-badge" id="seasons-prog">Question 1 of 8</span>
+      <span class="score-badge" id="seasons-score">✨ Score: 0</span>
+      <span class="prog-badge" id="seasons-prog">Q 1 of 8</span>
     </div>
     <div class="q-card" id="seasons-qcard"></div>
     <div class="opts-grid" id="seasons-opts"></div>
-    <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next Question ➡</button>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal-overlay" id="modal">
-  <div class="modal" id="modal-inner">
-    <div class="modal-handle"></div>
-    <div class="mod-header"><span class="mod-big" id="m-emoji"></span><h3 class="mod-title" id="m-title"></h3><span class="mod-char" id="m-char"></span></div>
-    <div class="mod-icons" id="m-icons"></div>
-    <p class="mod-desc" id="m-desc"></p>
-    <p class="mod-months" id="m-months"></p>
-    <div class="mod-facts" id="m-facts"></div>
-    <p class="mod-quote" id="m-quote"></p>
-    <p class="mod-who" id="m-who"></p>
-    <button class="mod-close" onclick="closeModal()">Got it! 👍</button>
+    <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next ➡</button>
   </div>
 </div>
 
 <!-- MONTHS -->
 <div class="screen" id="months">
   <div class="game-header">
-    <button class="back-btn" onclick="go('home')">⬅ Home</button>
-    <span class="g-title" id="months-title">📅 Months of the Year!</span>
-    <button class="speak-btn" onclick="replaySpeak()" title="Hear again">🔊</button>
-    <button class="mode-btn" id="months-mode-btn" onclick="toggleMode('months')">Quiz Time! 🎯</button>
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">📅 Months of the Year</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="months-mode-btn" onclick="toggleMode('months')">Quiz 🎯</button>
   </div>
-  <div id="months-learn">
-    <p class="learn-prompt">Tap a month to learn about it! 👆</p>
+  <div class="learn-section" id="months-learn">
+    <p class="learn-prompt">Listen, then tap a month to learn! 📅</p>
     <div class="mini-grid" id="months-learn-cards"></div>
-    <div id="months-info" style="display:none;margin-top:14px"></div>
+    <div id="months-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
-  <div id="months-quiz" style="display:none;width:100%;flex-direction:column;align-items:center;gap:18px">
+  <div class="quiz-section" id="months-quiz">
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="months-prog-fill"></div></div></div>
     <div class="score-row">
-      <span class="score-badge" id="months-score">⭐ Score: 0</span>
-      <span class="prog-badge" id="months-prog">Question 1 of 10</span>
+      <span class="score-badge" id="months-score">✨ Score: 0</span>
+      <span class="prog-badge" id="months-prog">Q 1 of 10</span>
     </div>
     <div class="q-card" id="months-qcard"></div>
     <div class="opts-grid" id="months-opts"></div>
-    <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next Question ➡</button>
+    <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next ➡</button>
   </div>
 </div>
 
 <!-- DAYS -->
 <div class="screen" id="days">
   <div class="game-header">
-    <button class="back-btn" onclick="go('home')">⬅ Home</button>
-    <span class="g-title" id="days-title">📆 Days of the Week!</span>
-    <button class="speak-btn" onclick="replaySpeak()" title="Hear again">🔊</button>
-    <button class="mode-btn" id="days-mode-btn" onclick="toggleMode('days')">Quiz Time! 🎯</button>
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">📆 Days of the Week</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="days-mode-btn" onclick="toggleMode('days')">Quiz 🎯</button>
   </div>
-  <div id="days-learn">
-    <p class="learn-prompt">Tap a day to learn about it! 👆</p>
+  <div class="learn-section" id="days-learn">
+    <p class="learn-prompt">Listen, then tap a day! 📆</p>
     <div class="days-rail" id="days-learn-cards"></div>
-    <div id="days-info" style="display:none;margin-top:14px;width:100%;display:none;flex-direction:column;align-items:center"></div>
-    <div class="week-seq" style="margin-top:14px">
-      <p class="ws-title">The Week in Order:</p>
-      <div class="ws-row" id="week-row"></div>
-    </div>
+    <div id="days-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
-  <div id="days-quiz" style="display:none;width:100%;flex-direction:column;align-items:center;gap:18px">
+  <div class="quiz-section" id="days-quiz">
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="days-prog-fill"></div></div></div>
     <div class="score-row">
-      <span class="score-badge" id="days-score">⭐ Score: 0</span>
-      <span class="prog-badge" id="days-prog">Question 1 of 10</span>
+      <span class="score-badge" id="days-score">✨ Score: 0</span>
+      <span class="prog-badge" id="days-prog">Q 1 of 10</span>
     </div>
     <div class="q-card" id="days-qcard"></div>
     <div class="opts-grid" id="days-opts"></div>
-    <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next Question ➡</button>
+    <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next ➡</button>
+  </div>
+</div>
+
+<!-- NUMBERS -->
+<div class="screen" id="numbers">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🔢 Numbers 1–20</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="numbers-mode-btn" onclick="toggleMode('numbers')">Quiz 🎯</button>
+  </div>
+  <div class="learn-section" id="numbers-learn">
+    <p class="learn-prompt">Listen and count along! 🔢</p>
+    <div class="mini-grid" id="numbers-learn-cards"></div>
+    <div id="numbers-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="numbers-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="numbers-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="numbers-score">✨ Score: 0</span>
+      <span class="prog-badge" id="numbers-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="numbers-qcard"></div>
+    <div class="opts-grid" id="numbers-opts"></div>
+    <button class="next-btn" id="numbers-next" style="display:none" onclick="nextQ('numbers')">Next ➡</button>
+  </div>
+</div>
+
+<!-- SHAPES -->
+<div class="screen" id="shapes">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">⭐ Shapes</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="shapes-mode-btn" onclick="toggleMode('shapes')">Quiz 🎯</button>
+  </div>
+  <div class="learn-section" id="shapes-learn">
+    <p class="learn-prompt">Listen, then tap a shape! ⭐</p>
+    <div class="shapes-grid" id="shapes-learn-cards"></div>
+    <div id="shapes-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="shapes-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="shapes-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="shapes-score">✨ Score: 0</span>
+      <span class="prog-badge" id="shapes-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="shapes-qcard"></div>
+    <div class="opts-grid" id="shapes-opts"></div>
+    <button class="next-btn" id="shapes-next" style="display:none" onclick="nextQ('shapes')">Next ➡</button>
+  </div>
+</div>
+
+<!-- COLORS -->
+<div class="screen" id="colors">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🌈 Colors</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="colors-mode-btn" onclick="toggleMode('colors')">Quiz 🎯</button>
+  </div>
+  <div class="learn-section" id="colors-learn">
+    <p class="learn-prompt">Listen, then tap a color! 🌈</p>
+    <div class="colors-grid" id="colors-learn-cards"></div>
+    <div id="colors-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="colors-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="colors-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="colors-score">✨ Score: 0</span>
+      <span class="prog-badge" id="colors-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="colors-qcard"></div>
+    <div class="opts-grid" id="colors-opts"></div>
+    <button class="next-btn" id="colors-next" style="display:none" onclick="nextQ('colors')">Next ➡</button>
+  </div>
+</div>
+
+<!-- ALPHABET -->
+<div class="screen" id="alphabet">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🔤 Alphabet A–Z</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+    <button class="mode-btn" id="alphabet-mode-btn" onclick="toggleMode('alphabet')">Quiz 🎯</button>
+  </div>
+  <div class="learn-section" id="alphabet-learn">
+    <p class="learn-prompt">Listen, then tap a letter! 🔤</p>
+    <div class="alpha-grid" id="alphabet-learn-cards"></div>
+    <div id="alphabet-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="alphabet-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="alphabet-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="alphabet-score">✨ Score: 0</span>
+      <span class="prog-badge" id="alphabet-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="alphabet-qcard"></div>
+    <div class="opts-grid" id="alphabet-opts"></div>
+    <button class="next-btn" id="alphabet-next" style="display:none" onclick="nextQ('alphabet')">Next ➡</button>
   </div>
 </div>
 
 <script>
-// Unlock audio on first touch — required for iOS Safari
+// ─── iOS AUDIO UNLOCK ────────────────────────────────────────────
 (function(){
   let done=false;
   function unlock(){
@@ -388,7 +509,9 @@ input,textarea{-webkit-user-select:text;user-select:text}
   document.addEventListener('click',unlock,{once:true});
 })();
 
-// ─── SPEECH ─────────────────────────────────────────────────────
+// ─── SPEECH ENGINE ───────────────────────────────────────────────
+const _BASE_CPS=14,_NARRATION_RATE=0.82;
+let _revealTimers=[],_narrationId=0,_clipResolvers=[];
 let _lastText='',_sfxAudio=null,_ttsMode='auto',_bestVoice=null;
 
 (function initVoices(){
@@ -433,7 +556,6 @@ function speak(t){
     if(!clean)return;
     cancelSpeech();
     if(_ttsMode!=='fallback'){
-      // Amazon Polly "Joanna" via StreamElements free API — clear, natural voice
       const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
       audio.playbackRate=1.0;_sfxAudio=audio;
       audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
@@ -442,26 +564,20 @@ function speak(t){
     }else{_speakFallback(clean);}
   }catch(e){try{_speakFallback(t.replace(/[^\x00-\x7E]/g,' ').trim());}catch(e2){}}
 }
-function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
-
-// ─── REVEAL SEQUENCE ─────────────────────────────────────────────
-const _BASE_CPS=14,_NARRATION_RATE=0.82;
-let _revealTimers=[],_narrationId=0,_clipResolvers=[];
+function replaySpeak(){speak(_lastText||'Hello! Welcome to Fairy Meadow Learning! Tap a topic to start.');}
 
 function _clearRevealTimers(){
   _revealTimers.forEach(clearTimeout);_revealTimers=[];
   _narrationId++;
-  const rs=[..._clipResolvers];_clipResolvers=[];rs.forEach(f=>f()); // abort pending clips
+  const rs=[..._clipResolvers];_clipResolvers=[];rs.forEach(f=>f());
 }
 
-// Play one audio clip; resolves when clip ends (or is aborted).
 function _playClip(clean){
   return new Promise(resolve=>{
     if(!clean){resolve();return;}
     let settled=false;
     const fin=()=>{if(!settled){settled=true;_clipResolvers=_clipResolvers.filter(x=>x!==fin);resolve();}};
     _clipResolvers.push(fin);
-    // safety timeout so the sequence always advances even if audio events don't fire
     _revealTimers.push(setTimeout(fin,Math.max(700,(clean.length/(_BASE_CPS*_NARRATION_RATE))*1000+800)));
     if(_ttsMode!=='fallback'){
       const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
@@ -486,8 +602,6 @@ function _clipFallback(clean,fin){
   }
 }
 
-// Plays intro, then for each item: shows card + speaks name together, then plays outro.
-// Perfect sync: card appears the moment its name audio starts.
 async function speakNarration(intro,items,outro){
   const myId=++_narrationId;
   cancelSpeech();
@@ -499,7 +613,7 @@ async function speakNarration(intro,items,outro){
     if(intro&&alive())await _playClip(strip(intro));
     for(const{id,name}of items){
       if(!alive())return;
-      document.getElementById(id)?.classList.add('show'); // card appears as name starts
+      document.getElementById(id)?.classList.add('show');
       await _playClip(strip(name));
     }
     if(outro&&alive())await _playClip(strip(outro));
@@ -507,171 +621,145 @@ async function speakNarration(intro,items,outro){
   }catch(e){if(alive())enableClicks();}
 }
 
-// ─── DATA ───────────────────────────────────────────────────────
+// ─── DATA ────────────────────────────────────────────────────────
+const TOPIC_COLORS=['#FF6FB5','#A77BFF','#6FE3C8','#FFD86E','#FF9AC4','#7FB4FF','#FFB39B'];
+
 const SEASONS=[
-  {name:'Spring',emoji:'🌸',icons:'🌸🌺🌷🌼🦋🐝',color:'linear-gradient(135deg,#FFB7C5,#FF69B4)',bg:'#fff0f5',border:'#FF69B4',char:'👸',charName:'Elsa',desc:'Flowers bloom and birds sing!',months:'March, April, May',facts:['Flowers bloom in spring! 🌸','Baby animals are born! 🐣','It gets warmer! ☀️'],quote:'The flowers are so beautiful!'},
-  {name:'Summer',emoji:'☀️',icons:'☀️🌊🏖️🍦🌻🦀',color:'linear-gradient(135deg,#FFD700,#FF8C00)',bg:'#fffde7',border:'#FF8C00',char:'🤠',charName:'Woody',desc:'It gets hot and sunny!',months:'June, July, August',facts:['It is very hot and sunny! ☀️','We go swimming! 🏊','School is out! 🎉'],quote:"Yeehaw! Let's go to the beach!"},
-  {name:'Fall',emoji:'🍂',icons:'🍂🍁🎃🌰🦃🍎',color:'linear-gradient(135deg,#FF6B35,#D2691E)',bg:'#fff3e0',border:'#D2691E',char:'🚀',charName:'Buzz',desc:'Leaves change colors!',months:'September, October, November',facts:['Leaves turn orange and red! 🍂','Halloween and Thanksgiving! 🎃','It gets cooler! 🧣'],quote:'To infinity and beyond... the pumpkin patch!'},
-  {name:'Winter',emoji:'❄️',icons:'❄️⛄🎿🧊🦌🎁',color:'linear-gradient(135deg,#87CEEB,#4169E1)',bg:'#e3f2fd',border:'#4169E1',char:'👸',charName:'Elsa',desc:'It gets cold and snowy!',months:'December, January, February',facts:['It is cold and snowy! ❄️','We wear coats and scarves! 🧣','Christmas and New Year! 🎄'],quote:'The cold never bothered me anyway! ❄️'},
+  {name:'Spring',emoji:'🌸',sub:'🌺🌷🌼🦋',color:'#FF9AC4',fact:'Flowers bloom and birds sing! Trees grow new green leaves.',months:'March, April, May'},
+  {name:'Summer',emoji:'☀️',sub:'🌊🏖️🍦🌻',color:'#FFD86E',fact:'It is hot and sunny! Great for swimming and playing outside.',months:'June, July, August'},
+  {name:'Fall',emoji:'🍂',sub:'🍁🎃🌰🍎',color:'#FFB39B',fact:'Leaves turn orange and red! Pumpkins and cozy sweaters.',months:'September, October, November'},
+  {name:'Winter',emoji:'❄️',sub:'⛄🎿🦌🎁',color:'#7FB4FF',fact:'It is cold and snowy! Time for hot cocoa and cozy blankets.',months:'December, January, February'},
 ];
 
 const MONTHS=[
-  {name:'January',  num:1,  emoji:'⛄',season:'Winter', color:'#87CEEB',char:'👸',charName:'Elsa',   fact:'New Year starts! 🎉'},
-  {name:'February', num:2,  emoji:'💝',season:'Winter', color:'#FF69B4',char:'👸',charName:'Anna',   fact:"Valentine's Day! 💕"},
-  {name:'March',    num:3,  emoji:'🌸',season:'Spring', color:'#98FB98',char:'🦋',charName:'Tinker', fact:'Spring begins! 🌷'},
-  {name:'April',    num:4,  emoji:'🌧️',season:'Spring', color:'#7BC8F6',char:'🐭',charName:'Mickey', fact:'April showers! 🌈'},
-  {name:'May',      num:5,  emoji:'🌺',season:'Spring', color:'#DDA0DD',char:'🌸',charName:'Belle',  fact:'Flowers everywhere! 🌻'},
-  {name:'June',     num:6,  emoji:'☀️',season:'Summer', color:'#FFD700',char:'🤠',charName:'Woody',  fact:'Summer starts! 🏖️'},
-  {name:'July',     num:7,  emoji:'🎆',season:'Summer', color:'#FF4500',char:'🚀',charName:'Buzz',   fact:'Fireworks! 🎇'},
-  {name:'August',   num:8,  emoji:'🌻',season:'Summer', color:'#FFA500',char:'🦆',charName:'Donald', fact:'Hottest month! 🌡️'},
-  {name:'September',num:9,  emoji:'🍎',season:'Fall',   color:'#CD853F',char:'🐕',charName:'Pluto',  fact:'Back to school! 🎒'},
-  {name:'October',  num:10, emoji:'🎃',season:'Fall',   color:'#FF6B35',char:'🐶',charName:'Goofy',  fact:'Halloween! 👻'},
-  {name:'November', num:11, emoji:'🦃',season:'Fall',   color:'#A0522D',char:'🤠',charName:'Woody',  fact:'Thanksgiving! 🍽️'},
-  {name:'December', num:12, emoji:'🎄',season:'Winter', color:'#2E8B57',char:'👸',charName:'Elsa',   fact:'Christmas! 🎁'},
+  {name:'January',  num:1,  emoji:'⛄',season:'Winter',color:'#7FB4FF',fact:'New Year starts! Happy New Year!'},
+  {name:'February', num:2,  emoji:'💝',season:'Winter',color:'#FF9AC4',fact:"Valentine's Day is in February!"},
+  {name:'March',    num:3,  emoji:'🌸',season:'Spring',color:'#A77BFF',fact:'Spring begins in March!'},
+  {name:'April',    num:4,  emoji:'🌧️',season:'Spring',color:'#6FE3C8',fact:'April showers bring May flowers!'},
+  {name:'May',      num:5,  emoji:'🌺',season:'Spring',color:'#FF6FB5',fact:'Flowers bloom everywhere in May!'},
+  {name:'June',     num:6,  emoji:'☀️',season:'Summer',color:'#FFD86E',fact:'Summer starts in June!'},
+  {name:'July',     num:7,  emoji:'🎆',season:'Summer',color:'#FF9AC4',fact:'Fireworks light up July skies!'},
+  {name:'August',   num:8,  emoji:'🌻',season:'Summer',color:'#FFB39B',fact:'August is one of the hottest months!'},
+  {name:'September',num:9,  emoji:'🍎',season:'Fall',  color:'#A77BFF',fact:'Back to school in September!'},
+  {name:'October',  num:10, emoji:'🎃',season:'Fall',  color:'#FF6FB5',fact:'Halloween is on October 31st!'},
+  {name:'November', num:11, emoji:'🦃',season:'Fall',  color:'#6FE3C8',fact:'Thanksgiving is in November!'},
+  {name:'December', num:12, emoji:'🎄',season:'Winter',color:'#7FB4FF',fact:'Christmas and winter holidays!'},
 ];
 
 const DAYS=[
-  {name:'Monday',   short:'Mon',num:1,emoji:'🌙',color:'#9B59B6',char:'🐭',charName:'Mickey', activity:'Go to school! 🎒',      fact:'Start of the school week! 📚'},
-  {name:'Tuesday',  short:'Tue',num:2,emoji:'🔥',color:'#E74C3C',char:'🐭',charName:'Minnie', activity:'Play outside! 🌳',      fact:'Taco Tuesday! 🌮'},
-  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#3498DB',char:'🦆',charName:'Donald', activity:'Do arts and crafts! 🎨',   fact:"Halfway through the week!"},
-  {name:'Thursday', short:'Thu',num:4,emoji:'⚡',color:'#F39C12',char:'🐶',charName:'Goofy',  activity:'Read books! 📖',        fact:'Almost Friday! 🎉'},
-  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#27AE60',char:'🤠',charName:'Woody',  activity:'Have game night! 🎲',        fact:'TGIF — weekend is here!'},
-  {name:'Saturday', short:'Sat',num:6,emoji:'🌟',color:'#FF6B9D',char:'🚀',charName:'Buzz',   activity:'Go to the park! 🛝',   fact:'Weekend fun day! 🎡'},
-  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FF8C00',char:'👸',charName:'Elsa',   activity:'Have family time! 👨‍👩‍👧',      fact:'Relax and rest day! 😴'},
+  {name:'Monday',   short:'Mon',num:1,emoji:'🌙',color:'#A77BFF',activity:'Start of the school week!',fact:'Monday is the first day of the school week.'},
+  {name:'Tuesday',  short:'Tue',num:2,emoji:'🔥',color:'#FF6FB5',activity:'Taco Tuesday!',fact:'Tuesday comes right after Monday.'},
+  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#6FE3C8',activity:'Hump day! Halfway there!',fact:'Wednesday is the middle of the week.'},
+  {name:'Thursday', short:'Thu',num:4,emoji:'⚡',color:'#FFD86E',activity:'Almost Friday!',fact:'Thursday means the weekend is close!'},
+  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#7FB4FF',activity:'TGIF! Weekend starts!',fact:'Friday is the last school day of the week.'},
+  {name:'Saturday', short:'Sat',num:6,emoji:'🌟',color:'#FF9AC4',activity:'Weekend fun day!',fact:'Saturday is the first day of the weekend.'},
+  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FFB39B',activity:'Rest and family day!',fact:'Sunday is the last day of the week.'},
 ];
 
-const ORD=['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th'];
+const NUMBERS=[
+  {name:'One',   numeral:1,  emoji:'1️⃣',color:'#FF6FB5',fact:'One is all by itself!'},
+  {name:'Two',   numeral:2,  emoji:'2️⃣',color:'#A77BFF',fact:'Two makes a pair, like your eyes!'},
+  {name:'Three', numeral:3,  emoji:'3️⃣',color:'#6FE3C8',fact:'Three sides make a triangle!'},
+  {name:'Four',  numeral:4,  emoji:'4️⃣',color:'#FFD86E',fact:'Four legs on a dog or a chair!'},
+  {name:'Five',  numeral:5,  emoji:'5️⃣',color:'#FF9AC4',fact:'Five fingers on one hand!'},
+  {name:'Six',   numeral:6,  emoji:'6️⃣',color:'#7FB4FF',fact:'Six legs on every insect!'},
+  {name:'Seven', numeral:7,  emoji:'7️⃣',color:'#FFB39B',fact:'Seven days in a week!'},
+  {name:'Eight', numeral:8,  emoji:'8️⃣',color:'#FF6FB5',fact:'Eight legs on an octopus!'},
+  {name:'Nine',  numeral:9,  emoji:'9️⃣',color:'#A77BFF',fact:'Nine planets… well, eight now!'},
+  {name:'Ten',   numeral:10, emoji:'🔟',color:'#6FE3C8',fact:'Ten fingers and ten toes!'},
+  {name:'Eleven',    numeral:11,emoji:'1️⃣1️⃣',color:'#FFD86E',fact:'Eleven is one more than ten!'},
+  {name:'Twelve',    numeral:12,emoji:'🕛',   color:'#FF9AC4',fact:'Twelve months in a year!'},
+  {name:'Thirteen',  numeral:13,emoji:'🎲',   color:'#7FB4FF',fact:'Thirteen is a teen number!'},
+  {name:'Fourteen',  numeral:14,emoji:'🌸',   color:'#FFB39B',fact:'Fourteen days in two weeks!'},
+  {name:'Fifteen',   numeral:15,emoji:'⭐',   color:'#FF6FB5',fact:'Fifteen is three groups of five!'},
+  {name:'Sixteen',   numeral:16,emoji:'🎂',   color:'#A77BFF',fact:'Sweet sixteen!'},
+  {name:'Seventeen', numeral:17,emoji:'🌙',   color:'#6FE3C8',fact:'Seventeen is a prime number!'},
+  {name:'Eighteen',  numeral:18,emoji:'🎈',   color:'#FFD86E',fact:'Almost twenty!'},
+  {name:'Nineteen',  numeral:19,emoji:'🦋',   color:'#FF9AC4',fact:'One away from twenty!'},
+  {name:'Twenty',    numeral:20,emoji:'🎉',   color:'#7FB4FF',fact:'Twenty — we made it!'},
+];
 
-// ─── STATE ──────────────────────────────────────────────────────
-const state={
-  seasons:{mode:'learn',score:0,qi:0,questions:[],selected:null},
-  months: {mode:'learn',score:0,qi:0,questions:[],selected:null,active:null},
-  days:   {mode:'learn',score:0,qi:0,questions:[],selected:null,active:null},
-};
+const SHAPES=[
+  {name:'Circle',   emoji:'⭕',color:'#FF6FB5',fact:'A circle is perfectly round — like the sun!'},
+  {name:'Square',   emoji:'🟦',color:'#A77BFF',fact:'A square has 4 equal sides and 4 corners!'},
+  {name:'Triangle', emoji:'🔺',color:'#6FE3C8',fact:'A triangle has 3 sides and 3 pointy corners!'},
+  {name:'Rectangle',emoji:'📄',color:'#FFD86E',fact:'A rectangle has 2 long sides and 2 short sides!'},
+  {name:'Star',     emoji:'⭐',color:'#FF9AC4',fact:'A star has 5 pointy points all around!'},
+  {name:'Heart',    emoji:'❤️',color:'#FF6FB5',fact:'A heart is the shape we use for love!'},
+  {name:'Diamond',  emoji:'🔷',color:'#7FB4FF',fact:'A diamond is like a square standing on its tip!'},
+  {name:'Oval',     emoji:'🥚',color:'#FFB39B',fact:'An oval is a stretched circle, like an egg!'},
+  {name:'Pentagon', emoji:'🏠',color:'#A77BFF',fact:'A pentagon has 5 sides — like home plate!'},
+  {name:'Hexagon',  emoji:'🐝',color:'#6FE3C8',fact:'A hexagon has 6 sides — like a honeycomb!'},
+];
 
-// ─── HELPERS ────────────────────────────────────────────────────
+const COLORS=[
+  {name:'Red',    emoji:'🍎',hex:'#FF4B4B',fact:'Red is the color of apples and fire trucks!'},
+  {name:'Orange', emoji:'🍊',hex:'#FF8A2B',fact:'Orange is bright and juicy like an orange!'},
+  {name:'Yellow', emoji:'🌟',hex:'#FFD700',fact:'Yellow is the color of sunshine!'},
+  {name:'Green',  emoji:'🌿',hex:'#3FCF74',fact:'Green like grass and leaves on trees!'},
+  {name:'Blue',   emoji:'💙',hex:'#3F88FF',fact:'Blue is the color of the sky and ocean!'},
+  {name:'Purple', emoji:'🍇',hex:'#A14BFF',fact:'Purple like grapes and royal crowns!'},
+  {name:'Pink',   emoji:'🌸',hex:'#FF7AC4',fact:'Pink like flowers and bubble gum!'},
+  {name:'Brown',  emoji:'🐻',hex:'#8B5A2B',fact:'Brown like bears and chocolate!'},
+  {name:'White',  emoji:'⬜',hex:'#C8C8C8',fact:'White is the color of clouds and snow!'},
+  {name:'Black',  emoji:'🖤',hex:'#444444',fact:'Black is dark like the night sky!'},
+];
+
+const ALPHABET=[
+  {name:'A',word:'Apple',   emoji:'🍎',color:'#FF6FB5'},
+  {name:'B',word:'Bee',     emoji:'🐝',color:'#FFD86E'},
+  {name:'C',word:'Cat',     emoji:'🐱',color:'#A77BFF'},
+  {name:'D',word:'Dog',     emoji:'🐶',color:'#6FE3C8'},
+  {name:'E',word:'Elephant',emoji:'🐘',color:'#FF9AC4'},
+  {name:'F',word:'Fox',     emoji:'🦊',color:'#FFB39B'},
+  {name:'G',word:'Giraffe', emoji:'🦒',color:'#FFD86E'},
+  {name:'H',word:'House',   emoji:'🏠',color:'#7FB4FF'},
+  {name:'I',word:'Ice cream',emoji:'🍦',color:'#FF6FB5'},
+  {name:'J',word:'Juggle',  emoji:'🤹',color:'#A77BFF'},
+  {name:'K',word:'Kite',    emoji:'🪁',color:'#6FE3C8'},
+  {name:'L',word:'Lion',    emoji:'🦁',color:'#FFD86E'},
+  {name:'M',word:'Moon',    emoji:'🌙',color:'#FF9AC4'},
+  {name:'N',word:'Nest',    emoji:'🪺',color:'#FFB39B'},
+  {name:'O',word:'Octopus', emoji:'🐙',color:'#7FB4FF'},
+  {name:'P',word:'Penguin', emoji:'🐧',color:'#FF6FB5'},
+  {name:'Q',word:'Queen',   emoji:'👸',color:'#A77BFF'},
+  {name:'R',word:'Rainbow', emoji:'🌈',color:'#6FE3C8'},
+  {name:'S',word:'Sun',     emoji:'☀️',color:'#FFD86E'},
+  {name:'T',word:'Tree',    emoji:'🌳',color:'#FF9AC4'},
+  {name:'U',word:'Umbrella',emoji:'☂️',color:'#FFB39B'},
+  {name:'V',word:'Violin',  emoji:'🎻',color:'#7FB4FF'},
+  {name:'W',word:'Whale',   emoji:'🐋',color:'#FF6FB5'},
+  {name:'X',word:'X marks spot',emoji:'❌',color:'#A77BFF'},
+  {name:'Y',word:'Yo-yo',   emoji:'🪀',color:'#6FE3C8'},
+  {name:'Z',word:'Zebra',   emoji:'🦓',color:'#FFD86E'},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────
+const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet'];
+const state={};
+TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null};});
+
+// ─── HELPERS ─────────────────────────────────────────────────────
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function pick(arr,exclude,n){return shuffle(arr.filter(x=>x!==exclude)).slice(0,n).map(x=>x.name)}
+function pickOpts(arr,correct,n,keyFn){
+  keyFn=keyFn||(x=>x.name);
+  const others=shuffle(arr.filter(x=>keyFn(x)!==keyFn(correct))).slice(0,n).map(keyFn);
+  return shuffle([keyFn(correct),...others]);
+}
 
 function go(id){
   _clearRevealTimers();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const next=document.getElementById(id);
-  next.classList.add('active');
+  document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
-  if(id==='seasons')initSeasons();
-  if(id==='months')initMonths();
-  if(id==='days')initDays();
-  if(id==='home')cancelSpeech();
-}
-
-// ─── CELEBRATION ────────────────────────────────────────────────
-function celebrate(msg){
-  const cel=document.getElementById('celebration');
-  document.getElementById('cel-msg').textContent=msg;
-  const bc=document.getElementById('cel-balloons');
-  bc.innerHTML='';
-  const b=['🎈','🎉','🎊','⭐','🌟','💫','✨','🎀','🦋','🌈'];
-  for(let i=0;i<18;i++){
-    const d=document.createElement('div');
-    d.className='balloon';
-    d.textContent=b[i%b.length];
-    d.style.left=Math.random()*90+5+'%';
-    d.style.animationDelay=Math.random()*1.5+'s';
-    d.style.fontSize=(26+Math.random()*24)+'px';
-    bc.appendChild(d);
-  }
-  cel.classList.add('show');
-  speak(`Amazing! ${msg.replace(/["""🌟]/g,'').trim()}! Well done!`);
-  setTimeout(()=>cel.classList.remove('show'),3500);
-}
-
-// ─── MODAL ──────────────────────────────────────────────────────
-function openModal(s){
-  document.getElementById('m-emoji').textContent=s.emoji;
-  document.getElementById('m-title').textContent=s.name;
-  document.getElementById('m-char').textContent=s.char;
-  document.getElementById('m-icons').textContent=s.icons;
-  document.getElementById('m-desc').textContent=s.desc;
-  document.getElementById('m-months').textContent='📅 '+s.months;
-  document.getElementById('m-facts').innerHTML=s.facts.map(f=>`<div class="mod-fact">${f}</div>`).join('');
-  document.getElementById('m-quote').textContent='"'+s.quote+'"';
-  document.getElementById('m-who').textContent='— '+s.charName;
-  const mi=document.getElementById('modal-inner');
-  mi.style.background=s.bg;
-  mi.style.borderColor=s.border;
-  document.getElementById('modal').classList.add('open');
-  speak(`${s.name}! ${s.desc}. ${s.facts.join('. ')}. ${s.charName} says: ${s.quote}.`);
-}
-function closeModal(){cancelSpeech();document.getElementById('modal').classList.remove('open')}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
-
-// ─── FLOATING BG EMOJIS ─────────────────────────────────────────
-(function(){
-  const em=['⭐','🌟','✨','🎈','🎉','🌈','💫','🦋','🌺','🎀'];
-  const c=document.getElementById('floaters');
-  for(let i=0;i<12;i++){
-    const d=document.createElement('div');
-    d.className='floater';
-    d.textContent=em[i%em.length];
-    d.style.left=Math.random()*90+5+'%';
-    d.style.animationDelay=Math.random()*5+'s';
-    d.style.animationDuration=(5+Math.random()*5)+'s';
-    d.style.fontSize=(18+Math.random()*22)+'px';
-    c.appendChild(d);
-  }
-})();
-
-// ─── SEASONS ────────────────────────────────────────────────────
-function initSeasons(){
-  const s=state.seasons;
-  state.seasons.mode='learn';
-  state.seasons.active=null;
-  document.getElementById('seasons-info').style.display='none';
-  const lc=document.getElementById('seasons-learn-cards');
-  lc.innerHTML='';
-  SEASONS.forEach(sea=>{
-    const b=document.createElement('button');
-    b.className='learn-card card-pre';
-    b.id='sc-'+sea.name;
-    b.style.background=sea.color;
-    b.style.borderColor=sea.border;
-    b.innerHTML=`<div class="lc-icon">${sea.emoji}</div><div class="lc-name">${sea.name}</div><div class="lc-sub">${sea.icons}</div><div class="lc-char">${sea.char}</div>`;
-    b.onclick=()=>{
-      const prev=state.seasons.active;
-      if(prev)document.getElementById('sc-'+prev)?.classList.remove('active');
-      if(prev===sea.name){state.seasons.active=null;document.getElementById('seasons-info').style.display='none';return;}
-      state.seasons.active=sea.name;
-      b.classList.add('active');
-      showSeasonInfo(sea);
-    };
-    lc.appendChild(b);
-  });
-  if(!s.questions.length) buildSeasonsQ();
-  renderMode('seasons');
-  speakNarration('Every year has four seasons.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Each season feels different outside. Tap a card to learn about it!');
-}
-
-function showSeasonInfo(s){
-  const d=document.getElementById('seasons-info');
-  d.style.display='flex';
-  d.innerHTML=`<div class="info-card" style="background:${s.bg};border-color:${s.border}">
-    <div class="ic-row"><span class="ic-big">${s.emoji}</span><div><div class="ic-name">${s.name}</div><div class="ic-sub">${s.months}</div></div><span class="ic-char">${s.char}</span></div>
-    <div class="ic-season">${s.icons}</div>
-    <div class="ic-fact">✨ ${s.desc}</div>
-    <div class="ic-who">${s.charName} says: "${s.quote}"</div>
-  </div>`;
-  speak(`${s.name}. The months in ${s.name} are ${s.months}. ${s.name} is when ${s.desc.charAt(0).toLowerCase()+s.desc.slice(1)} ${s.charName} says: ${s.quote}`);
-}
-
-function buildSeasonsQ(){
-  const qs=[];
-  SEASONS.forEach(s=>{
-    qs.push({prompt:`Which season has ${s.emoji}?`,answer:s.name,hint:s.desc,icon:s.emoji,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
-    qs.push({prompt:`Which season does ${s.charName} love?`,answer:s.name,hint:s.quote,icon:s.char,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
-    qs.push({prompt:`Months: ${s.months} — which season?`,answer:s.name,hint:s.desc,icon:s.emoji,char:s.char,color:s.color,options:shuffle([s.name,...pick(SEASONS,s,3)])});
-  });
-  state.seasons.questions=shuffle(qs).slice(0,8);
+  if(id==='seasons') initSeasons();
+  else if(id==='months') initMonths();
+  else if(id==='days') initDays();
+  else if(id==='numbers') initNumbers();
+  else if(id==='shapes') initShapes();
+  else if(id==='colors') initColors();
+  else if(id==='alphabet') initAlphabet();
+  else cancelSpeech();
 }
 
 function toggleMode(game){
@@ -679,17 +767,10 @@ function toggleMode(game){
   const s=state[game];
   s.mode=s.mode==='learn'?'quiz':'learn';
   if(s.mode==='learn'){
-    const pfx=game==='seasons'?'sc-':game==='months'?'mc-':'dc-';
-    (game==='seasons'?SEASONS:game==='months'?MONTHS:DAYS).forEach(item=>{
-      const el=document.getElementById(pfx+item.name);
-      if(el)el.classList.remove('card-pre','show');
-    });
+    // re-init the topic
+    go(game);return;
   }
-  if(s.mode==='quiz'&&!s.questions.length){
-    if(game==='seasons')buildSeasonsQ();
-    if(game==='months')buildMonthsQ();
-    if(game==='days')buildDaysQ();
-  }
+  if(!s.questions.length) buildQ(game);
   renderMode(game);
 }
 
@@ -699,15 +780,118 @@ function renderMode(game){
   const learn=document.getElementById(game+'-learn');
   const quiz=document.getElementById(game+'-quiz');
   if(s.mode==='learn'){
-    btn.textContent='Quiz Time! 🎯';
-    learn.style.display='';
+    btn.textContent='Quiz 🎯';
+    learn.style.display='flex';
     quiz.style.display='none';
-  } else {
-    btn.textContent='Learn Mode 📚';
+  }else{
+    btn.textContent='Learn 📚';
     learn.style.display='none';
     quiz.style.display='flex';
-    speak('Quiz time! Let us see what you know.');
-    setTimeout(()=>renderQ(game),1800);
+    s.score=0;s.qi=0;
+    if(!s.questions.length) buildQ(game);
+    speak('Quiz time! Let\'s see what you know.');
+    setTimeout(()=>renderQ(game),1600);
+  }
+}
+
+// ─── CELEBRATION ─────────────────────────────────────────────────
+function celebrate(msg){
+  const cel=document.getElementById('confetti-container');
+  cel.innerHTML='';
+  const pieces=['🌸','⭐','✨','💫','🎀','🌈','🎉','🎊','🦋','💖','🌺','🍀'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    d.className='confetti-piece';
+    d.textContent=pieces[i%pieces.length];
+    d.style.left=Math.random()*95+2+'%';
+    d.style.animationDelay=Math.random()*0.8+'s';
+    d.style.animationDuration=(2+Math.random()*1.5)+'s';
+    d.style.fontSize=(20+Math.random()*18)+'px';
+    cel.appendChild(d);
+  }
+  document.getElementById('celebration').classList.add('show');
+  // Show toast
+  const existing=document.querySelector('.cel-toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.className='cel-toast';
+  toast.innerHTML=`<span class="cel-toast-icon">🌟</span><div class="cel-toast-msg">${msg}</div>`;
+  document.body.appendChild(toast);
+  speak('Amazing! Well done! ' + msg.replace(/[^\x00-\x7E]/g,''));
+  setTimeout(()=>{
+    document.getElementById('celebration').classList.remove('show');
+    toast.style.opacity='0';toast.style.transition='opacity .3s';
+    setTimeout(()=>toast.remove(),350);
+  },3000);
+}
+
+// ─── INFO PANEL ──────────────────────────────────────────────────
+function showInfo(game,item,html,speakText){
+  const d=document.getElementById(game+'-info');
+  const prev=state[game].active;
+  if(prev===item.name){
+    state[game].active=null;
+    d.style.display='none';
+    return;
+  }
+  state[game].active=item.name;
+  // deactivate old active card
+  const prevCard=document.querySelector(`#${game}-learn-cards .active`);
+  if(prevCard)prevCard.classList.remove('active');
+  d.style.display='flex';
+  d.style.flexDirection='column';
+  d.style.alignItems='center';
+  d.innerHTML=html;
+  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  speak(speakText);
+}
+
+// ─── QUIZ ENGINE ─────────────────────────────────────────────────
+function buildQ(game){
+  let qs=[];
+  if(game==='seasons'){
+    SEASONS.forEach(s=>{
+      qs.push({prompt:`Which season has ${s.emoji}?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SEASONS,s,3)});
+      qs.push({prompt:`Months: ${s.months} — which season?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SEASONS,s,3)});
+    });
+    state.seasons.questions=shuffle(qs).slice(0,8);
+  }else if(game==='months'){
+    MONTHS.forEach((m,i)=>{
+      qs.push({prompt:`Which is month number ${m.num}?`,answer:m.name,hint:m.fact,icon:m.emoji,color:m.color,options:pickOpts(MONTHS,m,3)});
+      qs.push({prompt:`${m.emoji} ${m.fact.split('!')[0]}. Which month?`,answer:m.name,hint:'Month #'+m.num,icon:m.emoji,color:m.color,options:pickOpts(MONTHS,m,3)});
+    });
+    state.months.questions=shuffle(qs).slice(0,10);
+  }else if(game==='days'){
+    const ord=['1st','2nd','3rd','4th','5th','6th','7th'];
+    DAYS.forEach((d,i)=>{
+      qs.push({prompt:`Which is the ${ord[i]} day?`,answer:d.name,hint:d.fact,icon:d.emoji,color:d.color,options:pickOpts(DAYS,d,3)});
+      qs.push({prompt:`${d.emoji} ${d.activity} What day is this?`,answer:d.name,hint:d.fact,icon:d.emoji,color:d.color,options:pickOpts(DAYS,d,3)});
+    });
+    state.days.questions=shuffle(qs).slice(0,10);
+  }else if(game==='numbers'){
+    NUMBERS.forEach(n=>{
+      qs.push({prompt:`What number is ${n.numeral}?`,answer:n.name,hint:n.fact,icon:n.emoji,color:n.color,options:pickOpts(NUMBERS,n,3)});
+      qs.push({prompt:`${n.fact} What number is this?`,answer:n.name,hint:'Numeral: '+n.numeral,icon:n.emoji,color:n.color,options:pickOpts(NUMBERS,n,3)});
+    });
+    state.numbers.questions=shuffle(qs).slice(0,10);
+  }else if(game==='shapes'){
+    SHAPES.forEach(s=>{
+      qs.push({prompt:`${s.emoji} What shape is this?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SHAPES,s,3)});
+      qs.push({prompt:`${s.fact.split('!')[0]}. What shape?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SHAPES,s,3)});
+    });
+    state.shapes.questions=shuffle(qs).slice(0,10);
+  }else if(game==='colors'){
+    COLORS.forEach(c=>{
+      qs.push({prompt:`${c.emoji} What color is this?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.hex,options:pickOpts(COLORS,c,3)});
+      qs.push({prompt:`${c.fact.split('!')[0]}. What color?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.hex,options:pickOpts(COLORS,c,3)});
+    });
+    state.colors.questions=shuffle(qs).slice(0,10);
+  }else if(game==='alphabet'){
+    ALPHABET.forEach(a=>{
+      qs.push({prompt:`${a.emoji} ${a.word}. What letter starts this word?`,answer:a.name,hint:`${a.name} is for ${a.word}`,icon:a.emoji,color:a.color,options:pickOpts(ALPHABET,a,3)});
+      qs.push({prompt:`What does the letter ${a.name} stand for?`,answer:a.word,hint:`Letter ${a.name}`,icon:a.emoji,color:a.color,options:shuffle([a.word,...shuffle(ALPHABET.filter(x=>x.name!==a.name)).slice(0,3).map(x=>x.word)])});
+    });
+    state.alphabet.questions=shuffle(qs).slice(0,10);
   }
 }
 
@@ -716,39 +900,36 @@ function renderQ(game){
   const q=s.questions[s.qi];
   if(!q)return;
   s.selected=null;
-
-  // Season uses inline data; months/days look up from arrays
-  let seasonData=null;
-  if(game==='seasons') seasonData=SEASONS.find(x=>x.name===q.answer);
-
-  document.getElementById(game+'-score').textContent='⭐ Score: '+s.score;
-  document.getElementById(game+'-prog').textContent='Question '+(s.qi+1)+' of '+s.questions.length;
+  document.getElementById(game+'-score').textContent='✨ Score: '+s.score;
+  document.getElementById(game+'-prog').textContent='Q '+(s.qi+1)+' of '+s.questions.length;
   const fill=document.getElementById(game+'-prog-fill');
   if(fill)fill.style.width=Math.round((s.qi/s.questions.length)*100)+'%';
-
   const qc=document.getElementById(game+'-qcard');
-  const cardBg=game==='seasons'?seasonData.color:game==='months'?`linear-gradient(135deg,${q.color},${q.color}aa)`:(`linear-gradient(135deg,${q.color},${q.color}99)`);
-  qc.style.background=cardBg;
-  qc.innerHTML=`<div class="q-char">${q.char}</div><div class="q-text">${q.prompt}</div><div class="q-icon">${q.icon}</div><div class="q-hint">${q.hint}</div>`;
-
+  const bg=`linear-gradient(135deg,${q.color},${q.color}bb)`;
+  qc.style.background=bg;
+  qc.innerHTML=`<div class="q-char">${q.icon}</div><div class="q-text">${q.prompt}</div><div class="q-hint">${q.hint}</div>`;
   const og=document.getElementById(game+'-opts');
   og.innerHTML='';
   q.options.forEach(opt=>{
-    let optData;
-    if(game==='seasons')optData=SEASONS.find(x=>x.name===opt);
-    else if(game==='months')optData=MONTHS.find(x=>x.name===opt);
-    else optData=DAYS.find(x=>x.name===opt);
-
+    let optItem;
+    if(game==='seasons') optItem=SEASONS.find(x=>x.name===opt);
+    else if(game==='months') optItem=MONTHS.find(x=>x.name===opt);
+    else if(game==='days') optItem=DAYS.find(x=>x.name===opt);
+    else if(game==='numbers') optItem=NUMBERS.find(x=>x.name===opt);
+    else if(game==='shapes') optItem=SHAPES.find(x=>x.name===opt);
+    else if(game==='colors') optItem=COLORS.find(x=>x.name===opt);
+    else if(game==='alphabet'){
+      // alphabet quiz can have letter answers or word answers
+      optItem=ALPHABET.find(x=>x.name===opt||x.word===opt);
+    }
+    const emoji=optItem?(optItem.emoji||'❓'):'❓';
     const b=document.createElement('button');
     b.className='opt-btn';
     b.dataset.opt=opt;
-    b.style.setProperty('--opt-color',optData?optData.color||optData.border:'#fff');
-    const emoji=optData?optData.emoji:'❓';
     b.innerHTML=`<span class="opt-emoji">${emoji}</span><span class="opt-label">${opt}</span>`;
     b.onclick=()=>answerQ(game,opt);
     og.appendChild(b);
   });
-
   document.getElementById(game+'-next').style.display='none';
   speak(q.prompt);
 }
@@ -759,147 +940,217 @@ function answerQ(game,opt){
   s.selected=opt;
   const q=s.questions[s.qi];
   const correct=opt===q.answer;
-
   document.querySelectorAll('#'+game+'-opts .opt-btn').forEach(b=>{
     if(b.dataset.opt===q.answer) b.classList.add('correct');
     else if(b.dataset.opt===opt) b.classList.add('wrong');
   });
-
   if(correct){
     s.score++;
-    celebrate(`${opt} is correct! You are a SUPERSTAR!`);
-  } else {
-    speak(`Oops! That is not right. The answer is ${q.answer}. Try the next one!`);
+    celebrate(q.answer+' is correct!');
+  }else{
+    speak('Oops! The answer is '+q.answer+'. You can do it!');
   }
-
   const nb=document.getElementById(game+'-next');
   nb.style.display='';
-  nb.textContent=s.qi+1<s.questions.length?'Next Question ➡':'Play Again! 🔄';
+  nb.textContent=s.qi+1<s.questions.length?'Next ➡':'Play Again! 🔄';
 }
 
 function nextQ(game){
   const s=state[game];
   s.qi++;
   if(s.qi>=s.questions.length){
-    s.qi=0;
-    if(game==='seasons')buildSeasonsQ();
-    if(game==='months')buildMonthsQ();
-    if(game==='days')buildDaysQ();
+    s.qi=0;s.questions=[];buildQ(game);
   }
   renderQ(game);
 }
 
-// ─── MONTHS ─────────────────────────────────────────────────────
-function initMonths(){
-  state.months.mode='learn';
-  const lc=document.getElementById('months-learn-cards');
-  lc.innerHTML='';
-  MONTHS.forEach(m=>{
+// ─── SEASONS ─────────────────────────────────────────────────────
+function initSeasons(){
+  const s=state.seasons;s.mode='learn';s.active=null;
+  document.getElementById('seasons-info').style.display='none';
+  const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
+  SEASONS.forEach(sea=>{
     const b=document.createElement('button');
-    b.className='mini-card card-pre';
-    b.id='mc-'+m.name;
-    b.style.background=`linear-gradient(135deg,${m.color},${m.color}cc)`;
-    b.style.borderColor=m.color;
-    b.innerHTML=`<div class="mi-num">${m.num}</div><div class="mi-emoji">${m.emoji}</div><div class="mi-name">${m.name}</div><div class="mi-char">${m.char}</div>`;
+    b.className='learn-card card-pre';b.id='sc-'+sea.name;
+    b.style.background=`linear-gradient(135deg,${sea.color},${sea.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${sea.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${sea.emoji}</div><div class="lc-name">${sea.name}</div><div class="lc-sub">${sea.sub}</div>`;
     b.onclick=()=>{
-      const prev=state.months.active;
-      if(prev)document.getElementById('mc-'+prev)?.classList.remove('active');
-      if(prev===m.name){state.months.active=null;document.getElementById('months-info').style.display='none';return;}
-      state.months.active=m.name;
-      b.classList.add('active');
-      showMonthInfo(m);
+      b.classList.toggle('active');
+      showInfo('seasons',sea,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${sea.emoji}</span><div><div class="ic-name">${sea.name}</div><div class="ic-sub">${sea.months}</div></div></div><div class="ic-fact">${sea.fact}</div></div>`,
+        `${sea.name}. ${sea.fact} The months in ${sea.name} are ${sea.months}.`
+      );
     };
     lc.appendChild(b);
   });
-  if(!state.months.questions.length) buildMonthsQ();
-  renderMode('months');
-  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap a month to learn about it!');
+  renderMode('seasons');
+  speakNarration('There are four seasons in a year.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Tap a season card to learn more!');
 }
 
-function showMonthInfo(m){
-  const d=document.getElementById('months-info');
-  d.style.display='flex';
-  d.style.justifyContent='center';
-  d.innerHTML=`<div class="info-card" style="background:${m.color}33;border-color:${m.color}">
-    <div class="ic-row"><span class="ic-big">${m.emoji}</span><div><div class="ic-name">${m.name}</div><div class="ic-sub">Month #${m.num}</div></div><span class="ic-char">${m.char}</span></div>
-    <div class="ic-season">🍃 Season: ${m.season}</div>
-    <div class="ic-fact">✨ ${m.fact}</div>
-    <div class="ic-who">${m.charName} says hi! 👋</div>
-  </div>`;
-  speak(`${m.name}. ${m.name} is month number ${m.num}. It is in ${m.season}. ${m.fact} ${m.charName} says hi!`);
-}
-
-function buildMonthsQ(){
-  const qs=[];
-  MONTHS.forEach((m,i)=>{
-    qs.push({prompt:`Which month is ${ORD[i]} in the year?`,answer:m.name,hint:m.fact,icon:m.emoji,char:m.char,color:m.color,options:shuffle([m.name,...pick(MONTHS,m,3)])});
-    qs.push({prompt:`${m.emoji} Which month has: ${m.fact.split('!')[0]}?`,answer:m.name,hint:`Month #${m.num}`,icon:m.emoji,char:m.char,color:m.color,options:shuffle([m.name,...pick(MONTHS,m,3)])});
+// ─── MONTHS ──────────────────────────────────────────────────────
+function initMonths(){
+  const s=state.months;s.mode='learn';s.active=null;
+  document.getElementById('months-info').style.display='none';
+  const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
+  MONTHS.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='mc-'+m.name;
+    b.style.background=`linear-gradient(135deg,${m.color},${m.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${m.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-num">${m.num}</div><div class="mi-emoji">${m.emoji}</div><div class="mi-name">${m.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('months',m,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${m.emoji}</span><div><div class="ic-name">${m.name}</div><div class="ic-sub">Month #${m.num} · ${m.season}</div></div></div><div class="ic-fact">${m.fact}</div></div>`,
+        `${m.name}. Month number ${m.num}. ${m.fact}`
+      );
+    };
+    lc.appendChild(b);
   });
-  state.months.questions=shuffle(qs).slice(0,10);
+  renderMode('months');
+  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month to learn about it!');
 }
 
 // ─── DAYS ────────────────────────────────────────────────────────
 function initDays(){
-  state.days.mode='learn';
-  const lc=document.getElementById('days-learn-cards');
-  lc.innerHTML='';
+  const s=state.days;s.mode='learn';s.active=null;
+  document.getElementById('days-info').style.display='none';
+  const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
-    b.className='day-card card-pre';
-    b.id='dc-'+d.name;
-    b.style.background=`linear-gradient(135deg,${d.color},${d.color}bb)`;
-    b.style.borderColor=d.color;
-    b.innerHTML=`<div class="mi-num">${d.num}</div><div class="mi-emoji">${d.emoji}</div><div class="mi-name">${d.short}</div><div class="mi-char">${d.char}</div>`;
+    b.className='day-card card-pre';b.id='dc-'+d.name;
+    b.style.background=`linear-gradient(135deg,${d.color},${d.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${d.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-num">${d.num}</div><div class="mi-emoji">${d.emoji}</div><div class="mi-name">${d.short}</div>`;
     b.onclick=()=>{
-      const prev=state.days.active;
-      if(prev)document.getElementById('dc-'+prev)?.classList.remove('active');
-      if(prev===d.name){state.days.active=null;const di=document.getElementById('days-info');di.style.display='none';return;}
-      state.days.active=d.name;
-      b.classList.add('active');
-      showDayInfo(d);
+      b.classList.toggle('active');
+      showInfo('days',d,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${d.emoji}</span><div><div class="ic-name">${d.name}</div><div class="ic-sub">Day ${d.num} of the week</div></div></div><div class="ic-fact">${d.activity}</div><div class="ic-extra">${d.fact}</div></div>`,
+        `${d.name}. Day ${d.num}. ${d.fact} ${d.activity}`
+      );
     };
     lc.appendChild(b);
   });
-
-  // Week sequence row
-  const wr=document.getElementById('week-row');
-  wr.innerHTML='';
-  DAYS.forEach((d,i)=>{
-    const sp=document.createElement('div');
-    sp.className='ws-item';
-    sp.style.color=d.color;
-    sp.innerHTML=`<span style="font-size:16px">${d.emoji}</span><span class="ws-name">${d.short}</span>`;
-    wr.appendChild(sp);
-    if(i<6){const arr=document.createElement('span');arr.className='ws-arrow';arr.textContent='→';wr.appendChild(arr);}
-  });
-
-  if(!state.days.questions.length) buildDaysQ();
   renderMode('days');
-  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to learn about it!');
+  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to find out more!');
 }
 
-function showDayInfo(d){
-  const di=document.getElementById('days-info');
-  di.style.display='flex';
-  di.style.justifyContent='center';
-  di.innerHTML=`<div class="info-card" style="background:${d.color}33;border-color:${d.color}">
-    <div class="ic-row"><span class="ic-big">${d.emoji}</span><div><div class="ic-name" style="color:${d.color}">${d.name}</div><div class="ic-sub">Day ${d.num} of the week</div></div><span class="ic-char">${d.char}</span></div>
-    <div class="ic-season">🎯 ${d.activity}</div>
-    <div class="ic-fact">💡 ${d.fact}</div>
-    <div class="ic-who">${d.charName} says: "Have a great ${d.name}!" 😄</div>
-  </div>`;
-  speak(`${d.name}. ${d.name} is day ${d.num} of the week. On ${d.name} we ${d.activity.split('!')[0].toLowerCase()}! ${d.charName} says: Have a great ${d.name}!`);
-}
-
-function buildDaysQ(){
-  const qs=[];
-  const ord=['1st','2nd','3rd','4th','5th','6th','7th'];
-  DAYS.forEach((d,i)=>{
-    qs.push({prompt:`Which day is the ${ord[i]} day of the week?`,answer:d.name,hint:d.activity,icon:d.emoji,char:d.char,color:d.color,options:shuffle([d.name,...pick(DAYS,d,3)])});
-    qs.push({prompt:`${d.emoji} ${d.activity} What day is this?`,answer:d.name,hint:d.fact,icon:d.emoji,char:d.char,color:d.color,options:shuffle([d.name,...pick(DAYS,d,3)])});
+// ─── NUMBERS ─────────────────────────────────────────────────────
+function initNumbers(){
+  const s=state.numbers;s.mode='learn';s.active=null;
+  document.getElementById('numbers-info').style.display='none';
+  const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
+  NUMBERS.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='nm-'+n.name;
+    b.style.background=`linear-gradient(135deg,${n.color},${n.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${n.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-big">${n.numeral}</div><div class="mi-name">${n.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('numbers',n,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${n.emoji}</span><div><div class="ic-name">${n.name}</div><div class="ic-sub">Numeral: ${n.numeral}</div></div></div><div class="ic-fact">${n.fact}</div></div>`,
+        `${n.name}. ${n.numeral}. ${n.fact}`
+      );
+    };
+    lc.appendChild(b);
   });
-  state.days.questions=shuffle(qs).slice(0,10);
+  renderMode('numbers');
+  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Tap a number to learn about it!');
 }
+
+// ─── SHAPES ──────────────────────────────────────────────────────
+function initShapes(){
+  const s=state.shapes;s.mode='learn';s.active=null;
+  document.getElementById('shapes-info').style.display='none';
+  const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
+  SHAPES.forEach(sh=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='sh-'+sh.name;
+    b.style.background=`linear-gradient(135deg,${sh.color},${sh.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${sh.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${sh.emoji}</div><div class="lc-name">${sh.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('shapes',sh,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${sh.emoji}</span><div><div class="ic-name">${sh.name}</div></div></div><div class="ic-fact">${sh.fact}</div></div>`,
+        `${sh.name}. ${sh.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('shapes');
+  speakNarration("Let's learn about shapes!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap a shape to find out more!');
+}
+
+// ─── COLORS ──────────────────────────────────────────────────────
+function initColors(){
+  const s=state.colors;s.mode='learn';s.active=null;
+  document.getElementById('colors-info').style.display='none';
+  const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
+  COLORS.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='color-card card-pre';b.id='cl-'+c.name;
+    const isDark=c.name==='Black'||c.name==='Brown'||c.name==='Blue'||c.name==='Green'||c.name==='Purple';
+    const textColor=isDark?'#fff':'var(--text)';
+    b.style.background=c.hex;
+    b.style.boxShadow=`0 12px 30px ${c.hex}66,0 2px 0 rgba(255,255,255,0.7) inset`;
+    b.innerHTML=`<div style="font-size:36px">${c.emoji}</div><div style="font-family:'Fredoka',sans-serif;font-size:17px;font-weight:700;color:${textColor};text-shadow:0 1px 3px rgba(0,0,0,0.2)">${c.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('colors',c,
+        `<div class="info-card"><div class="ic-row"><div class="ic-swatch" style="background:${c.hex}"></div><div><div class="ic-name">${c.name}</div><div class="ic-sub">${c.emoji}</div></div></div><div class="ic-fact">${c.fact}</div></div>`,
+        `${c.name}. ${c.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('colors');
+  speakNarration("Let's explore colors!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap a color to learn about it!');
+}
+
+// ─── ALPHABET ────────────────────────────────────────────────────
+function initAlphabet(){
+  const s=state.alphabet;s.mode='learn';s.active=null;
+  document.getElementById('alphabet-info').style.display='none';
+  const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
+  ALPHABET.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='alpha-card card-pre';b.id='al-'+a.name;
+    b.style.background=`linear-gradient(135deg,${a.color},${a.color}cc)`;
+    b.style.boxShadow=`0 6px 16px ${a.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="ac-letter">${a.name}</div><div class="ac-emoji">${a.emoji}</div><div class="ac-word">${a.word}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('alphabet',a,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${a.emoji}</span><div><div class="ic-name">${a.name} is for ${a.word}</div></div></div><div class="ic-fact">${a.name} — ${a.word} ${a.emoji}</div></div>`,
+        `${a.name} is for ${a.word}. ${a.word}.`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('alphabet');
+  speakNarration("Let's learn the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word!');
+}
+
+// ─── SPARKLES ────────────────────────────────────────────────────
+(function(){
+  const colors=['#FF6FB5','#A77BFF','#6FE3C8','#FFD86E','#FF9AC4','#7FB4FF'];
+  const c=document.getElementById('sparkles');
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');
+    d.className='sparkle';
+    d.style.width=(6+Math.random()*8)+'px';
+    d.style.height=d.style.width;
+    d.style.background=colors[i%colors.length];
+    d.style.left=Math.random()*95+'%';
+    d.style.top=Math.random()*95+'%';
+    d.style.animationDelay=(Math.random()*3)+'s';
+    d.style.animationDuration=(2+Math.random()*2)+'s';
+    c.appendChild(d);
+  }
+})();
 </script>
 </body>
 </html>
