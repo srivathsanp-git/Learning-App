@@ -58,6 +58,8 @@ button:active{transform:scale(.94)!important}
 .learn-card{border-radius:24px;padding:26px 18px;border:4px solid;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .learn-card:hover{transform:translateY(-6px) scale(1.04)}
 .learn-card.active{transform:translateY(-6px) scale(1.08);box-shadow:0 12px 28px rgba(0,0,0,.5)}
+.card-pre{opacity:0!important;transform:translateY(20px)!important;pointer-events:none!important;transition:opacity .5s ease,transform .5s ease!important}
+.card-pre.show{opacity:1!important;transform:translateY(0)!important}
 .lc-icon{font-size:50px;animation:bounce 1.2s ease-in-out infinite alternate}
 .lc-name{font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.4)}
 .lc-sub{font-size:19px}.lc-char{font-size:34px}
@@ -80,13 +82,13 @@ button:active{transform:scale(.94)!important}
 .mod-close:hover{transform:scale(1.05)}
 
 /* ── MONTHS / DAYS GRID ── */
-.mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;width:100%;max-width:860px;padding:0 16px}
-.mini-card{border-radius:16px;padding:14px 8px;border:3px solid;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mini-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;width:100%;max-width:980px;padding:0 16px}
+.mini-card{border-radius:16px;padding:18px 10px;border:3px solid;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(0,0,0,.3)}
 .mini-card:hover{transform:translateY(-4px) scale(1.06)}
 .mini-card.active{transform:translateY(-6px) scale(1.08);box-shadow:0 12px 28px rgba(0,0,0,.5)}
-.mi-num{font-size:11px;font-weight:900;color:rgba(255,255,255,.8)}
-.mi-emoji{font-size:26px}.mi-name{font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);text-align:center}
-.mi-char{font-size:20px}
+.mi-num{font-size:14px;font-weight:900;color:rgba(255,255,255,.8)}
+.mi-emoji{font-size:34px}.mi-name{font-size:14px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);text-align:center}
+.mi-char{font-size:24px}
 .info-card{width:100%;max-width:500px;border-radius:20px;border:4px solid;padding:22px 24px;text-align:center;animation:slideUp .3s ease-out;margin:0 16px}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .ic-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px}
@@ -355,6 +357,25 @@ function speak(t){
 }
 function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
+// ─── REVEAL SEQUENCE ─────────────────────────────────────────────
+const _CPS=12; // chars per second estimate for TTS timing
+let _revealTimers=[];
+function _clearRevealTimers(){_revealTimers.forEach(clearTimeout);_revealTimers=[];}
+function scheduleReveal(narration,items){
+  // BASE offset accounts for TTS network/startup latency
+  const BASE=1000;
+  let lastDelay=BASE;
+  items.forEach(({id,name})=>{
+    const pos=narration.indexOf(name);
+    const delay=pos>=0?BASE+Math.round((pos/_CPS)*1000):lastDelay+700;
+    lastDelay=delay;
+    _revealTimers.push(setTimeout(()=>{const el=document.getElementById(id);if(el)el.classList.add('show');},delay));
+  });
+  // Enable clicks 1.6s after last card finishes animating in
+  _revealTimers.push(setTimeout(()=>{
+    items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
+  },lastDelay+1600));
+}
 
 // ─── DATA ───────────────────────────────────────────────────────
 const SEASONS=[
@@ -403,6 +424,7 @@ function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function pick(arr,exclude,n){return shuffle(arr.filter(x=>x!==exclude)).slice(0,n).map(x=>x.name)}
 
 function go(id){
+  _clearRevealTimers();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
@@ -472,13 +494,14 @@ document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='
 // ─── SEASONS ────────────────────────────────────────────────────
 function initSeasons(){
   const s=state.seasons;
+  state.seasons.mode='learn';
   state.seasons.active=null;
   document.getElementById('seasons-info').style.display='none';
   const lc=document.getElementById('seasons-learn-cards');
   lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
-    b.className='learn-card';
+    b.className='learn-card card-pre';
     b.id='sc-'+sea.name;
     b.style.background=sea.color;
     b.style.borderColor=sea.border;
@@ -495,6 +518,7 @@ function initSeasons(){
   });
   if(!s.questions.length) buildSeasonsQ();
   renderMode('seasons');
+  scheduleReveal('Every year has four seasons. Spring, Summer, Fall, and Winter each feel different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
 }
 
 function showSeasonInfo(s){
@@ -520,8 +544,16 @@ function buildSeasonsQ(){
 }
 
 function toggleMode(game){
+  _clearRevealTimers();
   const s=state[game];
   s.mode=s.mode==='learn'?'quiz':'learn';
+  if(s.mode==='learn'){
+    const pfx=game==='seasons'?'sc-':game==='months'?'mc-':'dc-';
+    (game==='seasons'?SEASONS:game==='months'?MONTHS:DAYS).forEach(item=>{
+      const el=document.getElementById(pfx+item.name);
+      if(el)el.classList.remove('card-pre','show');
+    });
+  }
   if(s.mode==='quiz'&&!s.questions.length){
     if(game==='seasons')buildSeasonsQ();
     if(game==='months')buildMonthsQ();
@@ -626,11 +658,12 @@ function nextQ(game){
 
 // ─── MONTHS ─────────────────────────────────────────────────────
 function initMonths(){
+  state.months.mode='learn';
   const lc=document.getElementById('months-learn-cards');
   lc.innerHTML='';
   MONTHS.forEach(m=>{
     const b=document.createElement('button');
-    b.className='mini-card';
+    b.className='mini-card card-pre';
     b.id='mc-'+m.name;
     b.style.background=`linear-gradient(135deg,${m.color},${m.color}cc)`;
     b.style.borderColor=m.color;
@@ -647,6 +680,7 @@ function initMonths(){
   });
   if(!state.months.questions.length) buildMonthsQ();
   renderMode('months');
+  scheduleReveal('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})));
 }
 
 function showMonthInfo(m){
@@ -673,11 +707,12 @@ function buildMonthsQ(){
 
 // ─── DAYS ────────────────────────────────────────────────────────
 function initDays(){
+  state.days.mode='learn';
   const lc=document.getElementById('days-learn-cards');
   lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
-    b.className='day-card';
+    b.className='day-card card-pre';
     b.id='dc-'+d.name;
     b.style.background=`linear-gradient(135deg,${d.color},${d.color}bb)`;
     b.style.borderColor=d.color;
@@ -707,6 +742,7 @@ function initDays(){
 
   if(!state.days.questions.length) buildDaysQ();
   renderMode('days');
+  scheduleReveal('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})));
 }
 
 function showDayInfo(d){
