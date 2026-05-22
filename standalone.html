@@ -358,23 +358,51 @@ function speak(t){
 function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
 // ─── REVEAL SEQUENCE ─────────────────────────────────────────────
-const _CPS=14; // chars per second — matches ~140 WPM Amazon Polly Joanna
+const _BASE_CPS=14, _NARRATION_RATE=0.82;
 let _revealTimers=[];
 function _clearRevealTimers(){_revealTimers.forEach(clearTimeout);_revealTimers=[];}
-function scheduleReveal(narration,items){
-  // BASE offset accounts for TTS network/startup latency (~300-400ms)
-  const BASE=400;
-  let lastDelay=BASE;
+
+function speakNarration(text,items){
+  _clearRevealTimers();_lastText=text;
+  const clean=text.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim();
+  if(!clean)return;
+  cancelSpeech();
+  // each item gets a trigger = its char-offset / base CPS (position in audio file at 1.0x)
+  const triggers=items.map(({id,name})=>({id,t:text.indexOf(name)/_BASE_CPS,done:false}));
+  const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
+  if(_ttsMode!=='fallback'){
+    const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
+    audio.playbackRate=_NARRATION_RATE;
+    _sfxAudio=audio;
+    const self=audio;
+    // timeupdate fires as audio plays — reveal each card exactly when its name is reached
+    audio.addEventListener('timeupdate',()=>{
+      if(_sfxAudio!==self)return;
+      triggers.forEach(tr=>{if(!tr.done&&audio.currentTime>=tr.t){tr.done=true;document.getElementById(tr.id)?.classList.add('show');}});
+    });
+    audio.addEventListener('ended',()=>{if(_sfxAudio===self)enableClicks();});
+    audio.addEventListener('error',()=>{if(_sfxAudio===self)enableClicks();});
+    audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
+      _sfxAudio=null;_ttsMode='fallback';_fallbackNarration(clean,text,items,enableClicks);
+    });
+  }else{_fallbackNarration(clean,text,items,enableClicks);}
+}
+
+function _fallbackNarration(clean,text,items,enableClicks){
+  if(_bestVoice&&window.speechSynthesis){
+    speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(clean);
+    u.voice=_bestVoice;u.rate=_NARRATION_RATE;u.pitch=1.1;u.volume=1;speechSynthesis.speak(u);
+  }else if(window.responsiveVoice){
+    responsiveVoice.cancel();responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:_NARRATION_RATE,volume:1});
+  }
+  const BASE=400,effCPS=_BASE_CPS*_NARRATION_RATE;
+  let last=BASE;
   items.forEach(({id,name})=>{
-    const pos=narration.indexOf(name);
-    const delay=pos>=0?BASE+Math.round((pos/_CPS)*1000):lastDelay+700;
-    lastDelay=delay;
-    _revealTimers.push(setTimeout(()=>{const el=document.getElementById(id);if(el)el.classList.add('show');},delay));
+    const pos=text.indexOf(name);
+    const d=pos>=0?BASE+Math.round((pos/effCPS)*1000):last+700;
+    last=d;_revealTimers.push(setTimeout(()=>document.getElementById(id)?.classList.add('show'),d));
   });
-  // Enable clicks 1.6s after last card finishes animating in
-  _revealTimers.push(setTimeout(()=>{
-    items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
-  },lastDelay+1600));
+  _revealTimers.push(setTimeout(enableClicks,last+1600));
 }
 
 // ─── DATA ───────────────────────────────────────────────────────
@@ -428,9 +456,9 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='seasons'){initSeasons();speak('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!');}
-  if(id==='months') {initMonths(); speak('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.');}
-  if(id==='days')   {initDays();   speak('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.');}
+  if(id==='seasons')initSeasons();
+  if(id==='months')initMonths();
+  if(id==='days')initDays();
   if(id==='home'){cancelSpeech();}
 }
 
@@ -518,7 +546,7 @@ function initSeasons(){
   });
   if(!s.questions.length) buildSeasonsQ();
   renderMode('seasons');
-  scheduleReveal('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
+  speakNarration('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
 }
 
 function showSeasonInfo(s){
@@ -544,7 +572,7 @@ function buildSeasonsQ(){
 }
 
 function toggleMode(game){
-  _clearRevealTimers();
+  _clearRevealTimers();cancelSpeech();
   const s=state[game];
   s.mode=s.mode==='learn'?'quiz':'learn';
   if(s.mode==='learn'){
@@ -680,7 +708,7 @@ function initMonths(){
   });
   if(!state.months.questions.length) buildMonthsQ();
   renderMode('months');
-  scheduleReveal('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})));
+  speakNarration('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})));
 }
 
 function showMonthInfo(m){
@@ -742,7 +770,7 @@ function initDays(){
 
   if(!state.days.questions.length) buildDaysQ();
   renderMode('days');
-  scheduleReveal('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})));
+  speakNarration('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})));
 }
 
 function showDayInfo(d){
