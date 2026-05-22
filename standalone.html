@@ -327,11 +327,11 @@ function _speakFallback(clean){
   if(_bestVoice&&window.speechSynthesis){
     speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(clean);
-    u.voice=_bestVoice;u.rate=0.88;u.pitch=1.15;u.volume=1;
+    u.voice=_bestVoice;u.rate=1.0;u.pitch=1.1;u.volume=1;
     speechSynthesis.speak(u);
   }else if(window.responsiveVoice){
     responsiveVoice.cancel();
-    responsiveVoice.speak(clean,'UK English Female',{pitch:1.1,rate:0.88,volume:1});
+    responsiveVoice.speak(clean,'UK English Female',{pitch:1.1,rate:1.0,volume:1});
   }
 }
 
@@ -344,7 +344,7 @@ function speak(t){
     if(_ttsMode!=='fallback'){
       // Amazon Polly "Joanna" via StreamElements free API — clear, natural voice
       const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
-      audio.playbackRate=0.9;_sfxAudio=audio;
+      audio.playbackRate=1.0;_sfxAudio=audio;
       audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
         _sfxAudio=null;_ttsMode='fallback';_speakFallback(clean);
       });
