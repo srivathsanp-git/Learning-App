@@ -358,12 +358,12 @@ function speak(t){
 function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
 // ─── REVEAL SEQUENCE ─────────────────────────────────────────────
-const _CPS=12; // chars per second estimate for TTS timing
+const _CPS=14; // chars per second — matches ~140 WPM Amazon Polly Joanna
 let _revealTimers=[];
 function _clearRevealTimers(){_revealTimers.forEach(clearTimeout);_revealTimers=[];}
 function scheduleReveal(narration,items){
-  // BASE offset accounts for TTS network/startup latency
-  const BASE=1000;
+  // BASE offset accounts for TTS network/startup latency (~300-400ms)
+  const BASE=400;
   let lastDelay=BASE;
   items.forEach(({id,name})=>{
     const pos=narration.indexOf(name);
@@ -428,7 +428,7 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='seasons'){initSeasons();speak('Every year has four seasons. Spring, Summer, Fall, and Winter each feel different outside. Tap a card to learn about your favorite season!');}
+  if(id==='seasons'){initSeasons();speak('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!');}
   if(id==='months') {initMonths(); speak('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.');}
   if(id==='days')   {initDays();   speak('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.');}
   if(id==='home'){cancelSpeech();}
@@ -518,7 +518,7 @@ function initSeasons(){
   });
   if(!s.questions.length) buildSeasonsQ();
   renderMode('seasons');
-  scheduleReveal('Every year has four seasons. Spring, Summer, Fall, and Winter each feel different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
+  scheduleReveal('Every year has four seasons. Spring, Summer, Fall, and Winter. Each season feels different outside. Tap a card to learn about your favorite season!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})));
 }
 
 function showSeasonInfo(s){
