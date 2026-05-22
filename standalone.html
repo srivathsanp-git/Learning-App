@@ -203,7 +203,7 @@ button:active{transform:scale(.94)!important}
       </button>
     </div>
     <p class="footer-hint">🌟 Tap a picture to start playing! 🌟</p>
-    <button class="speak-btn" style="background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);font-size:22px;padding:12px 20px;border-radius:24px" onclick="speak('Heeello! Welcome... to Disney... Learning Adventure! Yay yay yay! Tap Seasons! Tap Months! Or tap Days of the Week! Let us go, let us go, let us go!')">🔊 Tap to hear!</button>
+    <button class="speak-btn" style="background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);font-size:22px;padding:12px 20px;border-radius:24px" onclick="speak('Hello! Welcome to Disney Learning Adventure! Tap Seasons, Months, or Days of the Week to start learning!')">🔊 Tap to hear!</button>
   </div>
 </div>
 
@@ -306,7 +306,7 @@ function speak(t){
     if(!clean)return;
     if(window.responsiveVoice){
       responsiveVoice.cancel();
-      responsiveVoice.speak(clean,'US English Female',{pitch:1.4,rate:0.45,volume:1});
+      responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:1.0,volume:1});
     }else if(window.speechSynthesis){
       window.speechSynthesis.cancel();
       const u=new SpeechSynthesisUtterance(clean);
@@ -368,9 +368,9 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='seasons'){initSeasons();speak('Yay yay yay! Let us learn about Seasons! Spring! Summer! Fall! and Winter! Tap a card, tap a card, let us go!');}
-  if(id==='months') {initMonths(); speak('Woo hoo! Twelve whole months in a year! Twelve! Can you name them all? Tap a month to learn!');}
-  if(id==='days')   {initDays();   speak('Hip hip hooray! Seven days make a whole week! Monday, Tuesday, Wednesday too! Tap a day, tap a day, what will you do?');}
+  if(id==='seasons'){initSeasons();speak('Let us learn about Seasons! Tap a season card to find out more.');}
+  if(id==='months') {initMonths(); speak('Let us learn about the Months of the Year! Tap a month to learn about it.');}
+  if(id==='days')   {initDays();   speak('Let us learn about the Days of the Week! Tap a day to find out more.');}
   if(id==='home'){try{window.responsiveVoice&&responsiveVoice.cancel();window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}}
 }
 
@@ -391,7 +391,7 @@ function celebrate(msg){
     bc.appendChild(d);
   }
   cel.classList.add('show');
-  speak(`Woo hoo woo hoo woo hoo! ${msg.replace(/["""🌟]/g,'').trim()}! You are a SUPER... DUPER... STAR! Amazing! Amazing! Amazing!`);
+  speak(`Amazing! ${msg.replace(/["""🌟]/g,'').trim()}! Well done!`);
   setTimeout(()=>cel.classList.remove('show'),3500);
 }
 
@@ -410,7 +410,7 @@ function openModal(s){
   mi.style.background=s.bg;
   mi.style.borderColor=s.border;
   document.getElementById('modal').classList.add('open');
-  speak(`Oh wow! It is ${s.name}! ${s.name}! ${s.desc}! Did you know... ${s.facts[0]}! And... ${s.facts[1]}! Plus... ${s.facts[2]}! ${s.charName} says... ${s.quote}! Yippee!`);
+  speak(`${s.name}! ${s.desc}. ${s.facts.join('. ')}. ${s.charName} says: ${s.quote}.`);
 }
 function closeModal(){try{window.responsiveVoice&&responsiveVoice.cancel();window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){}document.getElementById('modal').classList.remove('open')}
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
@@ -485,8 +485,8 @@ function renderMode(game){
     btn.textContent='Learn Mode 📚';
     learn.style.display='none';
     quiz.style.display='flex';
-    speak('Ooh ooh ooh! Quiz time! Quiz time! Ready? Set? Go go go! Let us see what you know!');
-    setTimeout(()=>renderQ(game),2400);
+    speak('Quiz time! Let us see what you know.');
+    setTimeout(()=>renderQ(game),1800);
   }
 }
 
@@ -527,8 +527,7 @@ function renderQ(game){
   });
 
   document.getElementById(game+'-next').style.display='none';
-  const _pre=['Hmm hmm hmm!','Ooh I wonder!','Here we go!','Think think think!','Ooh ooh ooh!','Can you guess?','Let me think!'];
-  speak(_pre[Math.floor(Math.random()*_pre.length)]+' '+q.prompt);
+  speak(q.prompt);
 }
 
 function answerQ(game,opt){
@@ -547,7 +546,7 @@ function answerQ(game,opt){
     s.score++;
     celebrate(`${opt} is correct! You are a SUPERSTAR!`);
   } else {
-    speak(`Oopsie daisy! Not quite! But that is okay! The answer is ${q.answer}! You can do it! Try the next one, you smarty pants!`);
+    speak(`Oops! That is not right. The answer is ${q.answer}. Try the next one!`);
   }
 
   const nb=document.getElementById(game+'-next');
@@ -602,7 +601,7 @@ function showMonthInfo(m){
     <div class="ic-fact">✨ ${m.fact}</div>
     <div class="ic-who">${m.charName} says hi! 👋</div>
   </div>`;
-  speak(`${m.name}! ${m.name}! Month number ${m.num}! It is ${m.season} time! ${m.fact}! Yay! And ${m.charName} says hello hello hello!`);
+  speak(`${m.name}. Month number ${m.num}. It is in ${m.season}. ${m.fact}. ${m.charName} says hi!`);
 }
 
 function buildMonthsQ(){
@@ -662,7 +661,7 @@ function showDayInfo(d){
     <div class="ic-fact">💡 ${d.fact}</div>
     <div class="ic-who">${d.charName} says: "Have a great ${d.name}!" 😄</div>
   </div>`;
-  speak(`${d.name}! ${d.name}! Day number ${d.num}! ${d.activity}! ${d.fact}! And ${d.charName} says... Have a great ${d.name}! Woo!`);
+  speak(`${d.name}. Day number ${d.num} of the week. ${d.activity}. ${d.fact}. ${d.charName} says: Have a great ${d.name}!`);
 }
 
 function buildDaysQ(){
