@@ -404,7 +404,7 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='seasons'){initSeasons();speak('There are four seasons in a year. Spring, Summer, Fall, and Winter. Tap one card at a time to learn about each season.');}
+  if(id==='seasons'){initSeasons();speak('Every year has four seasons. Spring, Summer, Fall, and Winter each feel different outside. Tap a card to learn about your favorite season!');}
   if(id==='months') {initMonths(); speak('There are twelve months in a year. January, February, March, April, May, June, July, August, September, October, November, and December. Tap one month at a time to learn about it.');}
   if(id==='days')   {initDays();   speak('There are seven days in a week. Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, and Sunday. Tap one day at a time to learn about it.');}
   if(id==='home'){cancelSpeech();}
