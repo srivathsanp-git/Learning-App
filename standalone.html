@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#1a1a2e"/>
 <title>Disney Learning Adventure! 🌟</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
@@ -150,6 +153,76 @@ button:active{transform:scale(.94)!important}
 /* ── FLOATERS (home bg) ── */
 .floater{position:fixed;pointer-events:none;z-index:0;opacity:.6;animation:floatUp linear infinite;bottom:-60px}
 @keyframes floatUp{0%{opacity:.6;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
+
+/* ── MOBILE & TOUCH ── */
+*{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+button{touch-action:manipulation}
+/* inputs/text need selection back */
+input,textarea{-webkit-user-select:text;user-select:text}
+
+/* Safe area for iPhone notch / home indicator */
+.screen{padding-bottom:max(48px,env(safe-area-inset-bottom,0px))}
+.game-header{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* Truncate long section titles gracefully */
+.g-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+@media(max-width:599px){
+  /* Header: compact so all 4 buttons fit on narrow phones */
+  .game-header{padding:10px 10px;gap:6px}
+  .back-btn{font-size:12px;padding:8px 10px}
+  .speak-btn{font-size:14px;padding:7px 9px}
+  .mode-btn{font-size:11px;padding:8px 9px}
+  /* Home */
+  .menu-card{padding:20px 12px}
+  .mc-char{font-size:42px}
+  .mc-title{font-size:20px}
+  .parade{font-size:26px;gap:6px}
+  /* Seasons learn grid: 2 cols on phone */
+  .learn-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 10px}
+  .learn-card{padding:18px 10px}
+  .lc-icon{font-size:40px}
+  .lc-name{font-size:17px}
+  /* Months grid: 4 cols so cards are readable */
+  .mini-grid{grid-template-columns:repeat(4,1fr);gap:8px;padding:0 8px}
+  .mini-card{padding:12px 5px}
+  .mi-emoji{font-size:26px}
+  .mi-name{font-size:11px}
+  .mi-num{font-size:10px}
+  .mi-char{font-size:16px}
+  /* Days */
+  .days-rail{gap:8px;padding:0 8px}
+  .day-card{flex:1;min-width:72px;padding:11px 5px}
+  .week-seq{margin:0 8px}
+  .ws-item{font-size:11px}
+  /* Info card */
+  .info-card{margin:0 8px;padding:16px 12px}
+  .ic-big{font-size:34px}
+  .ic-name{font-size:20px}
+  /* Quiz */
+  .q-card{padding:18px 12px;margin:0 8px}
+  .opts-grid{padding:0 8px;gap:8px}
+  .opt-btn{padding:12px 6px;font-size:13px}
+  .opt-emoji{font-size:24px}
+  /* Modal */
+  .modal{padding:18px 14px}
+  .mod-big{font-size:36px}
+  .mod-title{font-size:22px}
+  .mod-char{font-size:30px}
+  .mod-desc{font-size:15px}
+  .mod-close{font-size:15px;padding:10px 22px}
+  /* Celebration */
+  .cel-box{padding:20px 24px}
+  .cel-title{font-size:36px}
+  .cel-icon{font-size:54px}
+}
+
+@media(max-width:399px){
+  /* Very small iPhones (SE 1st gen etc) */
+  .mini-grid{grid-template-columns:repeat(3,1fr)}
+  .back-btn{font-size:11px;padding:7px 8px}
+  .mode-btn{display:none}  /* hide quiz btn on tiny screen; accessible via learn anyway */
+}
 </style>
 </head>
 <body>
@@ -301,6 +374,17 @@ button:active{transform:scale(.94)!important}
 </div>
 
 <script>
+// Unlock audio on first touch — required for iOS Safari
+(function(){
+  let done=false;
+  function unlock(){
+    if(done)return;done=true;
+    const a=new Audio();a.play().catch(()=>{});
+  }
+  document.addEventListener('touchstart',unlock,{once:true,passive:true});
+  document.addEventListener('click',unlock,{once:true});
+})();
+
 // ─── SPEECH ─────────────────────────────────────────────────────
 let _lastText='',_sfxAudio=null,_ttsMode='auto',_bestVoice=null;
 
