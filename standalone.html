@@ -57,6 +57,7 @@ button:active{transform:scale(.94)!important}
 .learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;width:100%;max-width:860px;padding:0 18px}
 .learn-card{border-radius:24px;padding:26px 18px;border:4px solid;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .learn-card:hover{transform:translateY(-6px) scale(1.04)}
+.learn-card.active{transform:translateY(-6px) scale(1.08);box-shadow:0 12px 28px rgba(0,0,0,.5)}
 .lc-icon{font-size:50px;animation:bounce 1.2s ease-in-out infinite alternate}
 .lc-name{font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.4)}
 .lc-sub{font-size:19px}.lc-char{font-size:34px}
@@ -218,6 +219,7 @@ button:active{transform:scale(.94)!important}
   <div id="seasons-learn">
     <p class="learn-prompt">Tap a season to learn about it! 👆</p>
     <div class="learn-grid" id="seasons-learn-cards"></div>
+    <div id="seasons-info" style="display:none;margin-top:14px;width:100%;justify-content:center"></div>
   </div>
   <div id="seasons-quiz" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;gap:18px">
     <div class="score-row">
@@ -470,21 +472,41 @@ document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='
 // ─── SEASONS ────────────────────────────────────────────────────
 function initSeasons(){
   const s=state.seasons;
-  // Build learn cards
+  state.seasons.active=null;
+  document.getElementById('seasons-info').style.display='none';
   const lc=document.getElementById('seasons-learn-cards');
   lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
     b.className='learn-card';
+    b.id='sc-'+sea.name;
     b.style.background=sea.color;
     b.style.borderColor=sea.border;
     b.innerHTML=`<div class="lc-icon">${sea.emoji}</div><div class="lc-name">${sea.name}</div><div class="lc-sub">${sea.icons}</div><div class="lc-char">${sea.char}</div>`;
-    b.onclick=()=>openModal(sea);
+    b.onclick=()=>{
+      const prev=state.seasons.active;
+      if(prev)document.getElementById('sc-'+prev)?.classList.remove('active');
+      if(prev===sea.name){state.seasons.active=null;document.getElementById('seasons-info').style.display='none';return;}
+      state.seasons.active=sea.name;
+      b.classList.add('active');
+      showSeasonInfo(sea);
+    };
     lc.appendChild(b);
   });
-  // Build quiz questions if needed
   if(!s.questions.length) buildSeasonsQ();
   renderMode('seasons');
+}
+
+function showSeasonInfo(s){
+  const d=document.getElementById('seasons-info');
+  d.style.display='flex';
+  d.innerHTML=`<div class="info-card" style="background:${s.bg};border-color:${s.border}">
+    <div class="ic-row"><span class="ic-big">${s.emoji}</span><div><div class="ic-name">${s.name}</div><div class="ic-sub">${s.months}</div></div><span class="ic-char">${s.char}</span></div>
+    <div class="ic-season">${s.icons}</div>
+    <div class="ic-fact">✨ ${s.desc}</div>
+    <div class="ic-who">${s.charName} says: "${s.quote}"</div>
+  </div>`;
+  speak(`${s.name}. ${s.desc}. ${s.charName} says: ${s.quote}`);
 }
 
 function buildSeasonsQ(){
