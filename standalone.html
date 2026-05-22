@@ -331,7 +331,7 @@ function _speakFallback(clean){
     speechSynthesis.speak(u);
   }else if(window.responsiveVoice){
     responsiveVoice.cancel();
-    responsiveVoice.speak(clean,'UK English Female',{pitch:1.1,rate:1.0,volume:1});
+    responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:1.0,volume:1});
   }
 }
 
