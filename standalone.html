@@ -358,24 +358,36 @@ function speak(t){
 function replaySpeak(){speak(_lastText||'Hello! Welcome to Disney Learning Adventure! Tap a picture to start learning.');}
 
 // ─── REVEAL SEQUENCE ─────────────────────────────────────────────
-const _BASE_CPS=14, _NARRATION_RATE=0.82;
+const _BASE_CPS=14,  // Polly Joanna speech rate (chars/sec, no pauses)
+      _PERIOD_PAUSE=0.45,  // seconds Polly pauses after a period
+      _COMMA_PAUSE=0.18,   // seconds Polly pauses after a comma
+      _NARRATION_RATE=0.82;
 let _revealTimers=[];
 function _clearRevealTimers(){_revealTimers.forEach(clearTimeout);_revealTimers=[];}
+
+// Returns the position (seconds) inside the Polly audio file where `name` is spoken.
+// Accounts for natural pauses at periods and commas before that word.
+function _calcTrigger(text,name){
+  const pos=text.indexOf(name);
+  if(pos<0)return 9999;
+  const pre=text.slice(0,pos);
+  const periods=(pre.match(/\./g)||[]).length;
+  const commas=(pre.match(/,/g)||[]).length;
+  return pos/_BASE_CPS + periods*_PERIOD_PAUSE + commas*_COMMA_PAUSE;
+}
 
 function speakNarration(text,items){
   _clearRevealTimers();_lastText=text;
   const clean=text.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim();
   if(!clean)return;
   cancelSpeech();
-  // each item gets a trigger = its char-offset / base CPS (position in audio file at 1.0x)
-  const triggers=items.map(({id,name})=>({id,t:text.indexOf(name)/_BASE_CPS,done:false}));
+  const triggers=items.map(({id,name})=>({id,t:_calcTrigger(text,name),done:false}));
   const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
   if(_ttsMode!=='fallback'){
     const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
     audio.playbackRate=_NARRATION_RATE;
     _sfxAudio=audio;
     const self=audio;
-    // timeupdate fires as audio plays — reveal each card exactly when its name is reached
     audio.addEventListener('timeupdate',()=>{
       if(_sfxAudio!==self)return;
       triggers.forEach(tr=>{if(!tr.done&&audio.currentTime>=tr.t){tr.done=true;document.getElementById(tr.id)?.classList.add('show');}});
@@ -395,11 +407,10 @@ function _fallbackNarration(clean,text,items,enableClicks){
   }else if(window.responsiveVoice){
     responsiveVoice.cancel();responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:_NARRATION_RATE,volume:1});
   }
-  const BASE=400,effCPS=_BASE_CPS*_NARRATION_RATE;
-  let last=BASE;
+  const BASE=400;let last=BASE;
   items.forEach(({id,name})=>{
-    const pos=text.indexOf(name);
-    const d=pos>=0?BASE+Math.round((pos/effCPS)*1000):last+700;
+    const t=_calcTrigger(text,name);
+    const d=t<9999?BASE+Math.round((t/_NARRATION_RATE)*1000):last+700;
     last=d;_revealTimers.push(setTimeout(()=>document.getElementById(id)?.classList.add('show'),d));
   });
   _revealTimers.push(setTimeout(enableClicks,last+1600));
