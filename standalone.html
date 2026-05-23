@@ -235,6 +235,38 @@ input,textarea{-webkit-user-select:text;user-select:text}
   .alpha-grid{grid-template-columns:repeat(7,1fr)}
   .learn-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 }
+
+/* ── SIDE-PANEL: info pane on the right, cards always visible ── */
+@media(min-width:700px){
+  .learn-section.has-info{
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    gap:12px 20px;
+    padding:16px 20px 12px;
+  }
+  .learn-section.has-info .learn-prompt{flex:0 0 100%;padding:0}
+  .learn-section.has-info .learn-grid,
+  .learn-section.has-info .mini-grid,
+  .learn-section.has-info .days-rail,
+  .learn-section.has-info .shapes-grid,
+  .learn-section.has-info .colors-grid,
+  .learn-section.has-info .alpha-grid{flex:1 1 0;min-width:0;max-width:none;padding:0}
+  .learn-section.has-info [id$="-info"]{
+    flex:0 0 300px!important;
+    width:300px!important;
+    align-self:flex-start;
+    padding:0!important;
+    position:sticky;
+    top:74px;
+  }
+}
+@media(min-width:1100px){
+  .learn-section.has-info [id$="-info"]{
+    flex:0 0 360px!important;
+    width:360px!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -357,7 +389,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   <div class="learn-section" id="seasons-learn">
     <p class="learn-prompt">Listen, then tap a card to learn more! 🌸</p>
     <div class="learn-grid" id="seasons-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
-    <div id="seasons-info" style="display:none;width:100%;display:none;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <div id="seasons-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="seasons-quiz">
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
@@ -852,21 +884,23 @@ function celebrate(msg){
 // ─── INFO PANEL ──────────────────────────────────────────────────
 function showInfo(game,item,html,speakText){
   const d=document.getElementById(game+'-info');
+  const section=document.getElementById(game+'-learn');
   const prev=state[game].active;
   if(prev===item.name){
     state[game].active=null;
     d.style.display='none';
+    if(section)section.classList.remove('has-info');
     return;
   }
   state[game].active=item.name;
-  // deactivate old active card
   const prevCard=document.querySelector(`#${game}-learn-cards .active`);
   if(prevCard)prevCard.classList.remove('active');
   d.style.display='flex';
   d.style.flexDirection='column';
   d.style.alignItems='center';
   d.innerHTML=html;
-  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(section)section.classList.add('has-info');
+  if(window.innerWidth<700)d.scrollIntoView({behavior:'smooth',block:'nearest'});
   speak(speakText);
 }
 
@@ -995,6 +1029,7 @@ function nextQ(game){
 function initSeasons(){
   const s=state.seasons;s.mode='learn';s.active=null;
   document.getElementById('seasons-info').style.display='none';
+  document.getElementById('seasons-learn').classList.remove('has-info');
   const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
@@ -1019,6 +1054,7 @@ function initSeasons(){
 function initMonths(){
   const s=state.months;s.mode='learn';s.active=null;
   document.getElementById('months-info').style.display='none';
+  document.getElementById('months-learn').classList.remove('has-info');
   const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
   MONTHS.forEach(m=>{
     const b=document.createElement('button');
@@ -1043,6 +1079,7 @@ function initMonths(){
 function initDays(){
   const s=state.days;s.mode='learn';s.active=null;
   document.getElementById('days-info').style.display='none';
+  document.getElementById('days-learn').classList.remove('has-info');
   const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
@@ -1067,6 +1104,7 @@ function initDays(){
 function initNumbers(){
   const s=state.numbers;s.mode='learn';s.active=null;
   document.getElementById('numbers-info').style.display='none';
+  document.getElementById('numbers-learn').classList.remove('has-info');
   const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
   NUMBERS.forEach(n=>{
     const b=document.createElement('button');
@@ -1102,6 +1140,7 @@ function shapeIcon(sh,size,fill){
 function initShapes(){
   const s=state.shapes;s.mode='learn';s.active=null;
   document.getElementById('shapes-info').style.display='none';
+  document.getElementById('shapes-learn').classList.remove('has-info');
   const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
   SHAPES.forEach(sh=>{
     const b=document.createElement('button');
@@ -1126,6 +1165,7 @@ function initShapes(){
 function initColors(){
   const s=state.colors;s.mode='learn';s.active=null;
   document.getElementById('colors-info').style.display='none';
+  document.getElementById('colors-learn').classList.remove('has-info');
   const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
   COLORS.forEach(c=>{
     const b=document.createElement('button');
@@ -1152,6 +1192,7 @@ function initColors(){
 function initAlphabet(){
   const s=state.alphabet;s.mode='learn';s.active=null;
   document.getElementById('alphabet-info').style.display='none';
+  document.getElementById('alphabet-learn').classList.remove('has-info');
   const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
   ALPHABET.forEach(a=>{
     const b=document.createElement('button');
