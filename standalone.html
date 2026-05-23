@@ -432,6 +432,21 @@ input,textarea{-webkit-user-select:text;user-select:text}
 
   </div><!-- end #home-learn -->
 
+  <!-- All-topics quiz -->
+  <div class="quiz-section" id="home-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="home-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="home-score">✨ Score: 0</span>
+      <span class="prog-badge" id="home-prog">Q 1 of 15</span>
+    </div>
+    <div class="q-card" id="home-qcard"></div>
+    <div class="opts-grid" id="home-opts"></div>
+    <button class="next-btn" id="home-next" style="display:none" onclick="nextQ('home')">Next ➡</button>
+  </div>
+
+  <!-- All-topics match -->
+  <div class="match-section" id="home-match"></div>
+
 </div>
 
 <!-- SEASONS -->
@@ -886,7 +901,7 @@ const ALPHABET=[
 const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet'];
 const state={};
 TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false};});
-state.home={mode:'learn'};
+state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{}};
 
 // ─── HELPERS ─────────────────────────────────────────────────────
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
@@ -913,7 +928,7 @@ function go(id){
 }
 
 function setHomeMode(mode){
-  cancelSpeech();
+  cancelSpeech();_clearRevealTimers();
   state.home.mode=mode;
   const tabGrad='linear-gradient(135deg,#FF6FB5,#A77BFF)';
   document.querySelectorAll('#home-tabs .mode-tab').forEach(btn=>{
@@ -922,20 +937,30 @@ function setHomeMode(mode){
     btn.style.background=active?tabGrad:'';
     btn.style.boxShadow=active?'0 6px 22px rgba(255,111,181,0.45)':'';
   });
-  const subtitles={
-    learn:'Tap a topic to start your magical adventure!',
-    quiz:'Pick a topic to start a quiz!',
-    match:'Pick a topic to play Match!'
-  };
-  const sub=document.querySelector('#home .home-sub');
-  if(sub)sub.textContent=subtitles[mode]||subtitles.learn;
+  const learnEl=document.getElementById('home-learn');
+  const quizEl=document.getElementById('home-quiz');
+  const matchEl=document.getElementById('home-match');
+  if(learnEl)learnEl.style.display=mode==='learn'?'':'none';
+  if(quizEl)quizEl.style.display=mode==='quiz'?'flex':'none';
+  if(matchEl)matchEl.style.display=mode==='match'?'flex':'none';
+  if(mode==='quiz'){
+    document.getElementById('home').classList.add('quiz-active');
+    const s=state.home;
+    s.score=0;s.qi=0;s.attempts=0;s.locked=false;s.questions=[];
+    buildQ('home');
+    speak('All topics quiz! How many can you get?');
+    setTimeout(()=>renderQ('home'),1600);
+  }else{
+    document.getElementById('home').classList.remove('quiz-active');
+  }
+  if(mode==='match'){
+    buildMatch('home');
+    renderMatch('home');
+    speak('Drag each name to its matching picture!');
+  }
 }
 
-function onHomeTopic(game){
-  const mode=state.home.mode;
-  if(mode==='learn'){go(game);}
-  else{go(game);setMode(game,mode);}
-}
+function onHomeTopic(game){go(game);}
 
 function setMode(game,mode){
   _clearRevealTimers();cancelSpeech();
@@ -1079,6 +1104,11 @@ function buildQ(game){
       qs.push({prompt:`What does the letter ${a.name} stand for?`,answer:a.word,hint:`Letter ${a.name}`,icon:a.emoji,color:a.color,options:shuffle([a.word,...shuffle(ALPHABET.filter(x=>x.name!==a.name)).slice(0,3).map(x=>x.word)])});
     });
     state.alphabet.questions=shuffle(qs).slice(0,10);
+  }else if(game==='home'){
+    // Aggregate from every topic, shuffle, take 15
+    let all=[];
+    TOPICS.forEach(g=>{const prev=state[g].questions;buildQ(g);all.push(...state[g].questions);state[g].questions=prev;});
+    state.home.questions=shuffle(all).slice(0,15);
   }
 }
 
@@ -1169,6 +1199,15 @@ function buildMatch(game){
   else if(game==='shapes') pool=shuffle([...SHAPES]).slice(0,6).map(x=>({name:x.name,icon:shapeIcon(x,44),color:x.color}));
   else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
   else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='home'){
+    SEASONS.forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
+    shuffle([...MONTHS]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
+    shuffle([...DAYS]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
+    shuffle([...NUMBERS]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.numeral,color:x.color}));
+    shuffle([...SHAPES]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:shapeIcon(x,44),color:x.color}));
+    shuffle([...COLORS]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.hex}));
+    shuffle([...ALPHABET]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
+  }
   const items=shuffle(pool).slice(0,4);
   s.matchItems=items;
   s.matchLabels=shuffle(items.map(x=>x.name));
