@@ -1105,10 +1105,9 @@ function buildQ(game){
     });
     state.alphabet.questions=shuffle(qs).slice(0,10);
   }else if(game==='home'){
-    // Aggregate from every topic, shuffle, take 15
     let all=[];
     TOPICS.forEach(g=>{const prev=state[g].questions;buildQ(g);all.push(...state[g].questions);state[g].questions=prev;});
-    state.home.questions=shuffle(all).slice(0,15);
+    state.home.questions=shuffle(all);
   }
 }
 
@@ -1200,13 +1199,18 @@ function buildMatch(game){
   else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
   else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='home'){
-    SEASONS.forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
-    shuffle([...MONTHS]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
-    shuffle([...DAYS]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
-    shuffle([...NUMBERS]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.numeral,color:x.color}));
-    shuffle([...SHAPES]).slice(0,3).forEach(x=>pool.push({name:x.name,icon:shapeIcon(x,44),color:x.color}));
-    shuffle([...COLORS]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.hex}));
-    shuffle([...ALPHABET]).slice(0,4).forEach(x=>pool.push({name:x.name,icon:x.emoji,color:x.color}));
+    // Aggregate exactly what each topic's match game would show
+    TOPICS.forEach(g=>{
+      const prev={matchItems:state[g].matchItems,matchLabels:state[g].matchLabels,matchDone:state[g].matchDone,matchSelected:state[g].matchSelected};
+      buildMatch(g);
+      pool.push(...state[g].matchItems);
+      state[g].matchItems=prev.matchItems;state[g].matchLabels=prev.matchLabels;state[g].matchDone=prev.matchDone;state[g].matchSelected=prev.matchSelected;
+    });
+    s.matchItems=pool;
+    s.matchLabels=shuffle(pool.map(x=>x.name));
+    s.matchSelected=null;
+    s.matchDone={};
+    return;
   }
   const items=shuffle(pool).slice(0,4);
   s.matchItems=items;
