@@ -268,7 +268,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     min-height:160px;
     justify-content:center;
   }
-  .learn-section [id$="-info"]:not(.filled)::before{
+  .learn-section [id$="-info"].ready:not(.filled)::before{
     content:'👆 Tap a card to see details!';
     font-family:'Fredoka',sans-serif;
     font-size:clamp(14px,2vw,17px);
@@ -675,13 +675,14 @@ function _clipFallback(clean,fin){
   }
 }
 
-async function speakNarration(intro,items,outro){
+async function speakNarration(intro,items,outro,onDone){
   const myId=++_narrationId;
   cancelSpeech();
   _lastText=[intro,...items.map(x=>x.name),outro].filter(Boolean).join('. ');
   const strip=t=>t?t.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim():'';
   const alive=()=>_narrationId===myId;
   const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
+  const finish=()=>{enableClicks();if(onDone)onDone();}
   try{
     if(intro&&alive())await _playClip(strip(intro));
     for(const{id,name}of items){
@@ -690,8 +691,8 @@ async function speakNarration(intro,items,outro){
       await _playClip(strip(name));
     }
     if(outro&&alive())await _playClip(strip(outro));
-    if(alive())enableClicks();
-  }catch(e){if(alive())enableClicks();}
+    if(alive())finish();
+  }catch(e){if(alive())finish();}
 }
 
 // ─── DATA ────────────────────────────────────────────────────────
@@ -904,7 +905,7 @@ function showInfo(game,item,html,speakText){
   const prev=state[game].active;
   if(prev===item.name){
     state[game].active=null;
-    d.classList.remove('filled');
+    d.classList.remove('filled','ready');
     d.innerHTML='';
     d.style.display='none';
     return;
@@ -1046,7 +1047,7 @@ function nextQ(game){
 function initSeasons(){
   const s=state.seasons;s.mode='learn';s.active=null;
   document.getElementById('seasons-info').style.display='none';
-  document.getElementById('seasons-info').classList.remove('filled');
+  document.getElementById('seasons-info').classList.remove('filled','ready');
   document.getElementById('seasons-info').innerHTML='';
   const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
   SEASONS.forEach(sea=>{
@@ -1065,14 +1066,14 @@ function initSeasons(){
     lc.appendChild(b);
   });
   renderMode('seasons');
-  speakNarration('There are four seasons in a year.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Tap a season card to learn more!');
+  speakNarration('There are four seasons in a year.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Tap a season card to learn more!',()=>document.getElementById('seasons-info').classList.add('ready'));
 }
 
 // ─── MONTHS ──────────────────────────────────────────────────────
 function initMonths(){
   const s=state.months;s.mode='learn';s.active=null;
   document.getElementById('months-info').style.display='none';
-  document.getElementById('months-info').classList.remove('filled');
+  document.getElementById('months-info').classList.remove('filled','ready');
   document.getElementById('months-info').innerHTML='';
   const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
   MONTHS.forEach(m=>{
@@ -1091,14 +1092,14 @@ function initMonths(){
     lc.appendChild(b);
   });
   renderMode('months');
-  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month to learn about it!');
+  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month to learn about it!',()=>document.getElementById('months-info').classList.add('ready'));
 }
 
 // ─── DAYS ────────────────────────────────────────────────────────
 function initDays(){
   const s=state.days;s.mode='learn';s.active=null;
   document.getElementById('days-info').style.display='none';
-  document.getElementById('days-info').classList.remove('filled');
+  document.getElementById('days-info').classList.remove('filled','ready');
   document.getElementById('days-info').innerHTML='';
   const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
@@ -1117,14 +1118,14 @@ function initDays(){
     lc.appendChild(b);
   });
   renderMode('days');
-  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to find out more!');
+  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to find out more!',()=>document.getElementById('days-info').classList.add('ready'));
 }
 
 // ─── NUMBERS ─────────────────────────────────────────────────────
 function initNumbers(){
   const s=state.numbers;s.mode='learn';s.active=null;
   document.getElementById('numbers-info').style.display='none';
-  document.getElementById('numbers-info').classList.remove('filled');
+  document.getElementById('numbers-info').classList.remove('filled','ready');
   document.getElementById('numbers-info').innerHTML='';
   const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
   NUMBERS.forEach(n=>{
@@ -1143,7 +1144,7 @@ function initNumbers(){
     lc.appendChild(b);
   });
   renderMode('numbers');
-  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Tap a number to learn about it!');
+  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Tap a number to learn about it!',()=>document.getElementById('numbers-info').classList.add('ready'));
 }
 
 // ─── SHAPES ──────────────────────────────────────────────────────
@@ -1161,7 +1162,7 @@ function shapeIcon(sh,size,fill){
 function initShapes(){
   const s=state.shapes;s.mode='learn';s.active=null;
   document.getElementById('shapes-info').style.display='none';
-  document.getElementById('shapes-info').classList.remove('filled');
+  document.getElementById('shapes-info').classList.remove('filled','ready');
   document.getElementById('shapes-info').innerHTML='';
   const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
   SHAPES.forEach(sh=>{
@@ -1180,14 +1181,14 @@ function initShapes(){
     lc.appendChild(b);
   });
   renderMode('shapes');
-  speakNarration("Let's learn about shapes!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap a shape to find out more!');
+  speakNarration("Let's learn about shapes!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap a shape to find out more!',()=>document.getElementById('shapes-info').classList.add('ready'));
 }
 
 // ─── COLORS ──────────────────────────────────────────────────────
 function initColors(){
   const s=state.colors;s.mode='learn';s.active=null;
   document.getElementById('colors-info').style.display='none';
-  document.getElementById('colors-info').classList.remove('filled');
+  document.getElementById('colors-info').classList.remove('filled','ready');
   document.getElementById('colors-info').innerHTML='';
   const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
   COLORS.forEach(c=>{
@@ -1208,14 +1209,14 @@ function initColors(){
     lc.appendChild(b);
   });
   renderMode('colors');
-  speakNarration("Let's explore colors!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap a color to learn about it!');
+  speakNarration("Let's explore colors!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap a color to learn about it!',()=>document.getElementById('colors-info').classList.add('ready'));
 }
 
 // ─── ALPHABET ────────────────────────────────────────────────────
 function initAlphabet(){
   const s=state.alphabet;s.mode='learn';s.active=null;
   document.getElementById('alphabet-info').style.display='none';
-  document.getElementById('alphabet-info').classList.remove('filled');
+  document.getElementById('alphabet-info').classList.remove('filled','ready');
   document.getElementById('alphabet-info').innerHTML='';
   const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
   ALPHABET.forEach(a=>{
@@ -1234,7 +1235,7 @@ function initAlphabet(){
     lc.appendChild(b);
   });
   renderMode('alphabet');
-  speakNarration("Let's learn the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word!');
+  speakNarration("Let's learn the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word!',()=>document.getElementById('alphabet-info').classList.add('ready'));
 }
 
 // ─── SPARKLES ────────────────────────────────────────────────────
