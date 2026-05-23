@@ -901,7 +901,7 @@ const ALPHABET=[
 const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet'];
 const state={};
 TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false};});
-state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{}};
+state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{},matchPool:[],matchRound:0,matchScore:0};
 
 // ─── HELPERS ─────────────────────────────────────────────────────
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
@@ -954,6 +954,8 @@ function setHomeMode(mode){
     document.getElementById('home').classList.remove('quiz-active');
   }
   if(mode==='match'){
+    const s=state.home;
+    s.matchRound=0;s.matchScore=0;
     buildMatch('home');
     renderMatch('home');
     speak('Drag each name to its matching picture!');
@@ -1199,20 +1201,27 @@ function buildMatch(game){
   else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
   else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='home'){
-    // Aggregate exactly what each topic's match game would show
     TOPICS.forEach(g=>{
       const prev={matchItems:state[g].matchItems,matchLabels:state[g].matchLabels,matchDone:state[g].matchDone,matchSelected:state[g].matchSelected};
       buildMatch(g);
       pool.push(...state[g].matchItems);
       state[g].matchItems=prev.matchItems;state[g].matchLabels=prev.matchLabels;state[g].matchDone=prev.matchDone;state[g].matchSelected=prev.matchSelected;
     });
-    s.matchItems=pool;
-    s.matchLabels=shuffle(pool.map(x=>x.name));
-    s.matchSelected=null;
-    s.matchDone={};
+    s.matchPool=pool;s.matchRound=0;s.matchScore=0;
+    _loadMatchRound('home');
     return;
   }
   const items=shuffle(pool).slice(0,4);
+  s.matchItems=items;
+  s.matchLabels=shuffle(items.map(x=>x.name));
+  s.matchSelected=null;
+  s.matchDone={};
+}
+
+function _loadMatchRound(game){
+  const s=state[game];
+  const start=s.matchRound*4;
+  const items=(s.matchPool||[]).slice(start,start+4);
   s.matchItems=items;
   s.matchLabels=shuffle(items.map(x=>x.name));
   s.matchSelected=null;
@@ -1227,8 +1236,16 @@ function renderMatch(game){
   const el=document.getElementById(game+'-match');
   if(!s.matchItems||!el)return;
   const allDone=s.matchItems.every(x=>s.matchDone[x.name]);
+  // Build round-progress header for home (mirrors quiz layout)
+  let progressHTML='';
+  if(game==='home'&&s.matchPool&&s.matchPool.length){
+    const totalRounds=Math.ceil(s.matchPool.length/4);
+    const pct=Math.round((s.matchRound/totalRounds)*100);
+    progressHTML=`<div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div></div><div class="score-row"><span class="score-badge">✨ Matched: ${s.matchScore}</span><span class="prog-badge">Round ${s.matchRound+1} of ${totalRounds}</span></div>`;
+  }
   if(allDone){
-    el.innerHTML='<div class="match-all-done">🎉 Amazing! You matched them all! 🎉</div>';
+    const msg=game==='home'&&s.matchPool?'🎉 Round complete! Get ready for the next round…':'🎉 Amazing! You matched them all! 🎉';
+    el.innerHTML=progressHTML+'<div class="match-all-done">'+msg+'</div>';
     return;
   }
   const itemsHTML=s.matchItems.map(item=>{
@@ -1241,7 +1258,7 @@ function renderMatch(game){
     const safeName=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return `<div class="match-label" draggable="true" ondragstart="matchDragStart(event,'${game}','${safeName}')" ondragend="matchDragEnd(event,'${game}')" ontouchstart="matchTouchStart(event,'${game}','${safeName}')" ontouchmove="matchTouchMove(event,'${game}')" ontouchend="matchTouchEnd(event,'${game}','${safeName}')">${name}</div>`;
   }).join('');
-  el.innerHTML='<div class="match-prompt">Drag the name to the matching picture!</div><div class="match-items-grid">'+itemsHTML+'</div><div class="match-labels">'+labelsHTML+'</div>';
+  el.innerHTML=progressHTML+'<div class="match-prompt">Drag the name to the matching picture!</div><div class="match-items-grid">'+itemsHTML+'</div><div class="match-labels">'+labelsHTML+'</div>';
 }
 
 function matchDragStart(e,game,name){
@@ -1330,7 +1347,19 @@ function _resolveMatch(game,dragged,target){
     s.matchDone[target]=true;
     speak(target+'! Great match!');
     renderMatch(game);
-    if(s.matchItems.every(x=>s.matchDone[x.name]))setTimeout(()=>celebrate('You matched them all!'),400);
+    if(s.matchItems.every(x=>s.matchDone[x.name])){
+      if(game==='home'&&s.matchPool&&s.matchPool.length){
+        s.matchScore=(s.matchScore||0)+s.matchItems.length;
+        const totalRounds=Math.ceil(s.matchPool.length/4);
+        if((s.matchRound+1)<totalRounds){
+          setTimeout(()=>{s.matchRound++;_loadMatchRound(game);renderMatch(game);speak('Next round! Match the pictures!');},1800);
+        }else{
+          setTimeout(()=>celebrate('Amazing! You matched everything!'),400);
+        }
+      }else{
+        setTimeout(()=>celebrate('You matched them all!'),400);
+      }
+    }
   }else{
     speak('Try again!');
     const el=document.getElementById('mitem-'+game+'-'+target.replace(/[^a-zA-Z0-9]/g,'_'));
