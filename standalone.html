@@ -1028,7 +1028,7 @@ function celebrate(msg){
   toast.className='cel-toast';
   toast.innerHTML=`<span class="cel-toast-icon">🌟</span><div class="cel-toast-msg">${msg}</div>`;
   document.body.appendChild(toast);
-  speak('Amazing! Well done! ' + msg.replace(/[^\x00-\x7E]/g,''));
+  speak('Well done! ' + msg.replace(/[^\x00-\x7E]/g,''));
   setTimeout(()=>{
     document.getElementById('celebration').classList.remove('show');
     toast.style.opacity='0';toast.style.transition='opacity .3s';
