@@ -236,36 +236,53 @@ input,textarea{-webkit-user-select:text;user-select:text}
   .learn-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 }
 
-/* ── SIDE-PANEL: info pane on the right, cards always visible ── */
+/* ── PERMANENT TWO-COLUMN: cards left, info panel right (tablet+) ── */
 @media(min-width:700px){
-  .learn-section.has-info{
+  .learn-section{
     flex-direction:row;
     flex-wrap:wrap;
     align-items:flex-start;
     gap:12px 20px;
     padding:16px 20px 12px;
   }
-  .learn-section.has-info .learn-prompt{flex:0 0 100%;padding:0}
-  .learn-section.has-info .learn-grid,
-  .learn-section.has-info .mini-grid,
-  .learn-section.has-info .days-rail,
-  .learn-section.has-info .shapes-grid,
-  .learn-section.has-info .colors-grid,
-  .learn-section.has-info .alpha-grid{flex:1 1 0;min-width:0;max-width:none;padding:0}
-  .learn-section.has-info [id$="-info"]{
-    flex:0 0 300px!important;
+  .learn-section .learn-prompt{flex:0 0 100%;padding:0}
+  .learn-section .learn-grid,
+  .learn-section .mini-grid,
+  .learn-section .days-rail,
+  .learn-section .shapes-grid,
+  .learn-section .colors-grid,
+  .learn-section .alpha-grid{
+    flex:1 1 0;min-width:0;
+    width:auto!important;max-width:none!important;padding:0!important;
+  }
+  .learn-section [id$="-info"]{
+    flex:0 0 300px;
     width:300px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
     align-self:flex-start;
     padding:0!important;
     position:sticky;
     top:74px;
+    min-height:160px;
+    justify-content:center;
+  }
+  .learn-section [id$="-info"]:not(.filled)::before{
+    content:'👆 Tap a card to see details!';
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(14px,2vw,17px);
+    color:var(--text-soft);
+    text-align:center;
+    padding:24px 18px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.6);
+    border:2px dashed rgba(255,111,181,0.35);
+    line-height:1.5;
   }
 }
 @media(min-width:1100px){
-  .learn-section.has-info [id$="-info"]{
-    flex:0 0 360px!important;
-    width:360px!important;
-  }
+  .learn-section [id$="-info"]{flex:0 0 360px;width:360px!important}
 }
 </style>
 </head>
@@ -884,22 +901,22 @@ function celebrate(msg){
 // ─── INFO PANEL ──────────────────────────────────────────────────
 function showInfo(game,item,html,speakText){
   const d=document.getElementById(game+'-info');
-  const section=document.getElementById(game+'-learn');
   const prev=state[game].active;
   if(prev===item.name){
     state[game].active=null;
+    d.classList.remove('filled');
+    d.innerHTML='';
     d.style.display='none';
-    if(section)section.classList.remove('has-info');
     return;
   }
   state[game].active=item.name;
   const prevCard=document.querySelector(`#${game}-learn-cards .active`);
   if(prevCard)prevCard.classList.remove('active');
+  d.innerHTML=html;
+  d.classList.add('filled');
   d.style.display='flex';
   d.style.flexDirection='column';
   d.style.alignItems='center';
-  d.innerHTML=html;
-  if(section)section.classList.add('has-info');
   if(window.innerWidth<700)d.scrollIntoView({behavior:'smooth',block:'nearest'});
   speak(speakText);
 }
@@ -1029,7 +1046,8 @@ function nextQ(game){
 function initSeasons(){
   const s=state.seasons;s.mode='learn';s.active=null;
   document.getElementById('seasons-info').style.display='none';
-  document.getElementById('seasons-learn').classList.remove('has-info');
+  document.getElementById('seasons-info').classList.remove('filled');
+  document.getElementById('seasons-info').innerHTML='';
   const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
@@ -1054,7 +1072,8 @@ function initSeasons(){
 function initMonths(){
   const s=state.months;s.mode='learn';s.active=null;
   document.getElementById('months-info').style.display='none';
-  document.getElementById('months-learn').classList.remove('has-info');
+  document.getElementById('months-info').classList.remove('filled');
+  document.getElementById('months-info').innerHTML='';
   const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
   MONTHS.forEach(m=>{
     const b=document.createElement('button');
@@ -1079,7 +1098,8 @@ function initMonths(){
 function initDays(){
   const s=state.days;s.mode='learn';s.active=null;
   document.getElementById('days-info').style.display='none';
-  document.getElementById('days-learn').classList.remove('has-info');
+  document.getElementById('days-info').classList.remove('filled');
+  document.getElementById('days-info').innerHTML='';
   const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
@@ -1104,7 +1124,8 @@ function initDays(){
 function initNumbers(){
   const s=state.numbers;s.mode='learn';s.active=null;
   document.getElementById('numbers-info').style.display='none';
-  document.getElementById('numbers-learn').classList.remove('has-info');
+  document.getElementById('numbers-info').classList.remove('filled');
+  document.getElementById('numbers-info').innerHTML='';
   const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
   NUMBERS.forEach(n=>{
     const b=document.createElement('button');
@@ -1140,7 +1161,8 @@ function shapeIcon(sh,size,fill){
 function initShapes(){
   const s=state.shapes;s.mode='learn';s.active=null;
   document.getElementById('shapes-info').style.display='none';
-  document.getElementById('shapes-learn').classList.remove('has-info');
+  document.getElementById('shapes-info').classList.remove('filled');
+  document.getElementById('shapes-info').innerHTML='';
   const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
   SHAPES.forEach(sh=>{
     const b=document.createElement('button');
@@ -1165,7 +1187,8 @@ function initShapes(){
 function initColors(){
   const s=state.colors;s.mode='learn';s.active=null;
   document.getElementById('colors-info').style.display='none';
-  document.getElementById('colors-learn').classList.remove('has-info');
+  document.getElementById('colors-info').classList.remove('filled');
+  document.getElementById('colors-info').innerHTML='';
   const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
   COLORS.forEach(c=>{
     const b=document.createElement('button');
@@ -1192,7 +1215,8 @@ function initColors(){
 function initAlphabet(){
   const s=state.alphabet;s.mode='learn';s.active=null;
   document.getElementById('alphabet-info').style.display='none';
-  document.getElementById('alphabet-learn').classList.remove('has-info');
+  document.getElementById('alphabet-info').classList.remove('filled');
+  document.getElementById('alphabet-info').innerHTML='';
   const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
   ALPHABET.forEach(a=>{
     const b=document.createElement('button');
