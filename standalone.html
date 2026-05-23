@@ -166,29 +166,29 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .color-card.active{outline:3px solid rgba(255,255,255,0.9);transform:translateY(-4px) scale(1.05)}
 
 /* ── QUIZ ── */
-.quiz-section{display:none;width:100%;flex-direction:column;align-items:center;gap:18px;padding-top:14px}
-.quiz-prog-track{width:100%;max-width:640px;padding:10px 20px 0}
-.quiz-prog-bar{height:7px;background:rgba(61,31,79,0.12);border-radius:99px;overflow:hidden}
+.screen.quiz-active{height:100dvh;max-height:100dvh;overflow:hidden;min-height:unset;padding-bottom:0}
+.screen.quiz-active .quiz-section{flex:1;min-height:0;overflow-y:auto;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))}
+.quiz-section{display:none;width:100%;flex-direction:column;align-items:center;gap:10px;padding-top:8px}
+.quiz-prog-track{width:100%;max-width:640px;padding:4px 20px 0}
+.quiz-prog-bar{height:6px;background:rgba(61,31,79,0.12);border-radius:99px;overflow:hidden}
 .quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent),var(--accent2));border-radius:99px;transition:width .5s var(--ease-out);width:0%}
-.score-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;padding:4px 20px 0}
-.score-badge{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(17px,2.5vw,22px);font-weight:600;padding:11px 24px;border-radius:22px;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
-.prog-badge{background:rgba(61,31,79,0.08);color:var(--text-soft);font-size:clamp(15px,2vw,18px);font-weight:600;padding:11px 20px;border-radius:22px}
-.q-card{width:100%;max-width:640px;border-radius:var(--card-radius);padding:34px 28px;text-align:center;border:none;display:flex;flex-direction:column;align-items:center;gap:12px;margin:0 16px;box-shadow:var(--card-shadow)}
-.q-char{font-size:clamp(68px,11vw,100px);animation:tcBounce 1.2s ease-in-out infinite alternate;line-height:1}
-.q-text{font-family:'Fredoka',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.2);line-height:1.3}
-.q-hint{font-size:clamp(15px,2.2vw,19px);color:rgba(255,255,255,0.88);font-weight:600;background:rgba(0,0,0,0.12);border-radius:14px;padding:10px 18px}
-.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:640px;padding:0 16px}
-.opt-btn{background:#fff;color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(17px,2.8vw,24px);font-weight:600;padding:22px 12px;border-radius:22px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(61,31,79,0.12),0 2px 0 rgba(255,255,255,0.9) inset;transition:all .2s var(--ease-out)}
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;padding:0 20px}
+.score-badge{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:600;padding:8px 18px;border-radius:18px;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.prog-badge{background:rgba(61,31,79,0.08);color:var(--text-soft);font-size:clamp(13px,1.8vw,16px);font-weight:600;padding:8px 16px;border-radius:18px}
+.q-card{width:100%;max-width:640px;border-radius:var(--card-radius);padding:18px 20px;text-align:center;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 16px;box-shadow:var(--card-shadow)}
+.q-char{font-size:clamp(46px,8vw,72px);animation:tcBounce 1.2s ease-in-out infinite alternate;line-height:1}
+.q-text{font-family:'Fredoka',sans-serif;font-size:clamp(18px,2.8vw,24px);font-weight:600;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.2);line-height:1.2}
+.q-hint{font-size:clamp(12px,1.8vw,16px);color:rgba(255,255,255,0.88);font-weight:600;background:rgba(0,0,0,0.12);border-radius:12px;padding:6px 14px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:640px;padding:0 16px}
+.opt-btn{background:#fff;color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(15px,2.4vw,20px);font-weight:600;padding:14px 10px;border-radius:18px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 18px rgba(61,31,79,0.12),0 2px 0 rgba(255,255,255,0.9) inset;transition:all .2s var(--ease-out)}
 .opt-btn:hover{transform:translateY(-3px) scale(1.02)!important;box-shadow:0 10px 28px rgba(61,31,79,0.18)}
 .opt-btn.correct{background:linear-gradient(135deg,#3FD868,#25B34B)!important;color:#fff!important;transform:scale(1.05)!important;box-shadow:0 8px 24px rgba(63,216,104,0.45)!important;animation:correctPop .4s var(--spring)}
 .opt-btn.wrong{background:linear-gradient(135deg,#FF5C5C,#E03333)!important;color:#fff!important;animation:shake .5s ease-in-out}
 @keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1.05)}}
 @keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-8px) rotate(-2deg)}40%{transform:translate(8px) rotate(2deg)}60%{transform:translate(-6px)}80%{transform:translate(6px)}}
-.opt-emoji{font-size:clamp(36px,6vw,50px)}
-.opt-label{font-size:clamp(16px,2.5vw,22px);text-align:center}
-.next-btn{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(19px,2.8vw,26px);font-weight:600;padding:18px 52px;border-radius:30px;border:none;box-shadow:0 6px 22px rgba(255,111,181,0.45);animation:glowPink 2s ease-in-out infinite}
-@keyframes glowPink{0%,100%{box-shadow:0 6px 22px rgba(255,111,181,0.45)}50%{box-shadow:0 6px 36px rgba(255,111,181,0.75)}}
-.next-btn:hover{transform:translateY(-3px) scale(1.04)!important}
+.opt-emoji{font-size:clamp(28px,4.5vw,40px)}
+.opt-label{font-size:clamp(14px,2vw,19px);text-align:center}
+.next-btn{display:none!important}
 
 /* ── CONFETTI / CELEBRATION ── */
 #celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}
@@ -436,7 +436,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="seasons-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="seasons-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('seasons')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('seasons')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="seasons-score">✨ Score: 0</span>
@@ -461,7 +461,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="months-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="months-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('months')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('months')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="months-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="months-score">✨ Score: 0</span>
@@ -486,7 +486,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="days-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="days-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('days')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('days')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="days-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="days-score">✨ Score: 0</span>
@@ -511,7 +511,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="numbers-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="numbers-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('numbers')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('numbers')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="numbers-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="numbers-score">✨ Score: 0</span>
@@ -536,7 +536,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="shapes-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="shapes-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('shapes')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('shapes')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="shapes-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="shapes-score">✨ Score: 0</span>
@@ -561,7 +561,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="colors-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="colors-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('colors')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('colors')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="colors-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="colors-score">✨ Score: 0</span>
@@ -586,7 +586,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div id="alphabet-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="alphabet-quiz">
-    <button class="back-to-cards-btn" onclick="toggleMode('alphabet')">← Back to Cards</button>
+    <button class="back-to-cards-btn" onclick="backToCards('alphabet')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="alphabet-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="alphabet-score">✨ Score: 0</span>
@@ -839,7 +839,7 @@ const ALPHABET=[
 // ─── STATE ───────────────────────────────────────────────────────
 const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet'];
 const state={};
-TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null};});
+TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false};});
 
 // ─── HELPERS ─────────────────────────────────────────────────────
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
@@ -867,14 +867,24 @@ function go(id){
 
 function toggleMode(game){
   _clearRevealTimers();cancelSpeech();
-  const s=state[game];
-  s.mode=s.mode==='learn'?'quiz':'learn';
-  if(s.mode==='learn'){
-    // re-init the topic
-    go(game);return;
-  }
-  if(!s.questions.length) buildQ(game);
+  state[game].mode='quiz';
+  if(!state[game].questions.length) buildQ(game);
   renderMode(game);
+}
+
+function backToCards(game){
+  cancelSpeech();_clearRevealTimers();
+  state[game].mode='learn';
+  document.getElementById(game).classList.remove('quiz-active');
+  const learn=document.getElementById(game+'-learn');
+  const quiz=document.getElementById(game+'-quiz');
+  learn.style.display='flex';
+  quiz.style.display='none';
+  const info=document.getElementById(game+'-info');
+  if(info){info.classList.add('ready');if(state[game].active)info.classList.add('filled');}
+  const qb=document.getElementById('global-quiz-btn');
+  qb.onclick=()=>toggleMode(game);
+  qb.classList.add('ready');
 }
 
 function renderMode(game){
@@ -887,7 +897,9 @@ function renderMode(game){
   }else{
     learn.style.display='none';
     quiz.style.display='flex';
-    s.score=0;s.qi=0;
+    document.getElementById(game).classList.add('quiz-active');
+    document.getElementById('global-quiz-btn').classList.remove('ready');
+    s.score=0;s.qi=0;s.attempts=0;s.locked=false;
     if(!s.questions.length) buildQ(game);
     speak('Quiz time! Let\'s see what you know.');
     setTimeout(()=>renderQ(game),1600);
@@ -922,7 +934,7 @@ function celebrate(msg){
     document.getElementById('celebration').classList.remove('show');
     toast.style.opacity='0';toast.style.transition='opacity .3s';
     setTimeout(()=>toast.remove(),350);
-  },3000);
+  },2200);
 }
 
 // ─── INFO PANEL ──────────────────────────────────────────────────
@@ -1002,7 +1014,7 @@ function renderQ(game){
   const s=state[game];
   const q=s.questions[s.qi];
   if(!q)return;
-  s.selected=null;
+  s.selected=null;s.attempts=0;s.locked=false;
   document.getElementById(game+'-score').textContent='✨ Score: '+s.score;
   document.getElementById(game+'-prog').textContent='Q '+(s.qi+1)+' of '+s.questions.length;
   const fill=document.getElementById(game+'-prog-fill');
@@ -1041,23 +1053,30 @@ function renderQ(game){
 
 function answerQ(game,opt){
   const s=state[game];
-  if(s.selected)return;
-  s.selected=opt;
+  if(s.locked)return;
   const q=s.questions[s.qi];
   const correct=opt===q.answer;
-  document.querySelectorAll('#'+game+'-opts .opt-btn').forEach(b=>{
-    if(b.dataset.opt===q.answer) b.classList.add('correct');
-    else if(b.dataset.opt===opt) b.classList.add('wrong');
-  });
+  const btn=document.querySelector('#'+game+'-opts [data-opt="'+opt+'"]');
   if(correct){
-    s.score++;
+    s.locked=true;s.score++;
+    if(btn)btn.classList.add('correct');
     celebrate(q.answer+' is correct!');
+    setTimeout(()=>nextQ(game),2600);
   }else{
-    speak('Oops! The answer is '+q.answer+'. You can do it!');
+    s.attempts++;
+    if(btn)btn.classList.add('wrong');
+    if(s.attempts<2){
+      speak('Try again!');
+      setTimeout(()=>{if(btn)btn.classList.remove('wrong');},900);
+    }else{
+      s.locked=true;
+      document.querySelectorAll('#'+game+'-opts .opt-btn').forEach(b=>{
+        if(b.dataset.opt===q.answer)b.classList.add('correct');
+      });
+      speak('The answer is '+q.answer+'. Let\'s try the next one!');
+      setTimeout(()=>nextQ(game),3200);
+    }
   }
-  const nb=document.getElementById(game+'-next');
-  nb.style.display='';
-  nb.textContent=s.qi+1<s.questions.length?'Next ➡':'Play Again! 🔄';
 }
 
 function nextQ(game){
