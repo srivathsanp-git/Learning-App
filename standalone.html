@@ -67,8 +67,32 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .back-btn:hover{background:#ff4da0}
 .speak-btn{background:var(--accent3);color:var(--text);font-size:clamp(18px,3vw,24px);font-weight:700;padding:9px 13px;border-radius:18px;flex-shrink:0;line-height:1;box-shadow:0 3px 10px rgba(255,216,110,0.4)}
 .g-title{font-family:'Fredoka',sans-serif;font-size:clamp(18px,3.5vw,28px);font-weight:600;color:var(--text);text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mode-btn{background:var(--accent);color:#fff;font-size:clamp(12px,1.8vw,15px);font-weight:700;padding:11px 16px;border-radius:22px;flex-shrink:0;box-shadow:0 4px 14px rgba(167,123,255,0.4)}
-.mode-btn:hover{background:#9062f5}
+.mode-btn{display:none}
+/* Big Quiz button — appears after narration, spans below cards & info */
+.big-quiz-btn{
+  display:none;flex:0 0 100%;max-width:400px;margin:8px auto 4px;
+  background:linear-gradient(135deg,#A77BFF,#7C4FFF);
+  color:#fff;font-family:'Fredoka',sans-serif;
+  font-size:clamp(20px,3vw,28px);font-weight:700;
+  padding:20px 44px;border-radius:34px;border:none;
+  box-shadow:0 8px 30px rgba(124,79,255,0.5);
+  align-items:center;justify-content:center;gap:10px;
+  animation:glowQuiz 2.4s ease-in-out infinite;
+}
+.big-quiz-btn.ready{display:flex}
+@keyframes glowQuiz{
+  0%,100%{box-shadow:0 8px 30px rgba(124,79,255,0.5)}
+  50%{box-shadow:0 12px 44px rgba(124,79,255,0.85),0 0 70px rgba(167,123,255,0.3)}
+}
+/* Back-to-cards button inside quiz section */
+.back-to-cards-btn{
+  background:rgba(255,255,255,0.82);color:var(--text);
+  font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,18px);
+  font-weight:700;padding:11px 22px;border-radius:20px;border:none;
+  box-shadow:0 3px 10px rgba(61,31,79,0.1);
+  align-self:flex-start;margin:0 0 4px 16px;
+}
+.back-to-cards-btn:hover{background:#fff}
 
 /* ── LEARN AREA ── */
 .learn-section{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;padding:24px 0 12px}
@@ -401,14 +425,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title" id="seasons-title">🌸 Seasons</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="seasons-mode-btn" onclick="toggleMode('seasons')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="seasons-learn">
-    <p class="learn-prompt">Listen, then tap a card to learn more! 🌸</p>
+    <p class="learn-prompt">Listen and watch the cards appear! 🌸</p>
     <div class="learn-grid" id="seasons-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
     <div id="seasons-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="seasons-mode-btn" onclick="toggleMode('seasons')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="seasons-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('seasons')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="seasons-score">✨ Score: 0</span>
@@ -426,14 +451,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">📅 Months of the Year</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="months-mode-btn" onclick="toggleMode('months')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="months-learn">
-    <p class="learn-prompt">Listen, then tap a month to learn! 📅</p>
+    <p class="learn-prompt">Listen and watch the cards appear! 📅</p>
     <div class="mini-grid" id="months-learn-cards"></div>
     <div id="months-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="months-mode-btn" onclick="toggleMode('months')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="months-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('months')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="months-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="months-score">✨ Score: 0</span>
@@ -451,14 +477,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">📆 Days of the Week</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="days-mode-btn" onclick="toggleMode('days')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="days-learn">
-    <p class="learn-prompt">Listen, then tap a day! 📆</p>
+    <p class="learn-prompt">Listen and watch the cards appear! 📆</p>
     <div class="days-rail" id="days-learn-cards"></div>
     <div id="days-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="days-mode-btn" onclick="toggleMode('days')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="days-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('days')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="days-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="days-score">✨ Score: 0</span>
@@ -476,14 +503,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">🔢 Numbers 1–20</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="numbers-mode-btn" onclick="toggleMode('numbers')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="numbers-learn">
     <p class="learn-prompt">Listen and count along! 🔢</p>
     <div class="mini-grid" id="numbers-learn-cards"></div>
     <div id="numbers-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="numbers-mode-btn" onclick="toggleMode('numbers')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="numbers-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('numbers')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="numbers-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="numbers-score">✨ Score: 0</span>
@@ -501,14 +529,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">⭐ Shapes</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="shapes-mode-btn" onclick="toggleMode('shapes')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="shapes-learn">
-    <p class="learn-prompt">Listen, then tap a shape! ⭐</p>
+    <p class="learn-prompt">Listen and watch the shapes appear! ⭐</p>
     <div class="shapes-grid" id="shapes-learn-cards"></div>
     <div id="shapes-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="shapes-mode-btn" onclick="toggleMode('shapes')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="shapes-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('shapes')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="shapes-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="shapes-score">✨ Score: 0</span>
@@ -526,14 +555,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">🌈 Colors</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="colors-mode-btn" onclick="toggleMode('colors')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="colors-learn">
-    <p class="learn-prompt">Listen, then tap a color! 🌈</p>
+    <p class="learn-prompt">Listen and watch the colors appear! 🌈</p>
     <div class="colors-grid" id="colors-learn-cards"></div>
     <div id="colors-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="colors-mode-btn" onclick="toggleMode('colors')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="colors-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('colors')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="colors-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="colors-score">✨ Score: 0</span>
@@ -551,14 +581,15 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="back-btn" onclick="go('home')">← Home</button>
     <span class="g-title">🔤 Alphabet A–Z</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
-    <button class="mode-btn" id="alphabet-mode-btn" onclick="toggleMode('alphabet')">Quiz 🎯</button>
   </div>
   <div class="learn-section" id="alphabet-learn">
-    <p class="learn-prompt">Listen, then tap a letter! 🔤</p>
+    <p class="learn-prompt">Listen and watch the letters appear! 🔤</p>
     <div class="alpha-grid" id="alphabet-learn-cards"></div>
     <div id="alphabet-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+    <button class="big-quiz-btn" id="alphabet-mode-btn" onclick="toggleMode('alphabet')">🎯 Quiz Time!</button>
   </div>
   <div class="quiz-section" id="alphabet-quiz">
+    <button class="back-to-cards-btn" onclick="toggleMode('alphabet')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="alphabet-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="alphabet-score">✨ Score: 0</span>
@@ -850,15 +881,12 @@ function toggleMode(game){
 
 function renderMode(game){
   const s=state[game];
-  const btn=document.getElementById(game+'-mode-btn');
   const learn=document.getElementById(game+'-learn');
   const quiz=document.getElementById(game+'-quiz');
   if(s.mode==='learn'){
-    btn.textContent='Quiz 🎯';
     learn.style.display='flex';
     quiz.style.display='none';
   }else{
-    btn.textContent='Learn 📚';
     learn.style.display='none';
     quiz.style.display='flex';
     s.score=0;s.qi=0;
@@ -1049,6 +1077,7 @@ function initSeasons(){
   document.getElementById('seasons-info').style.display='none';
   document.getElementById('seasons-info').classList.remove('filled','ready');
   document.getElementById('seasons-info').innerHTML='';
+  document.getElementById('seasons-mode-btn').classList.remove('ready');
   const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
@@ -1066,7 +1095,7 @@ function initSeasons(){
     lc.appendChild(b);
   });
   renderMode('seasons');
-  speakNarration('There are four seasons in a year.',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Tap a season card to learn more!',()=>document.getElementById('seasons-info').classList.add('ready'));
+  speakNarration('Let\'s explore the four seasons!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Now tap a card to learn more, or press the big Quiz button to play a game!',()=>{document.getElementById('seasons-info').classList.add('ready');document.getElementById('seasons-mode-btn').classList.add('ready');});
 }
 
 // ─── MONTHS ──────────────────────────────────────────────────────
@@ -1075,6 +1104,7 @@ function initMonths(){
   document.getElementById('months-info').style.display='none';
   document.getElementById('months-info').classList.remove('filled','ready');
   document.getElementById('months-info').innerHTML='';
+  document.getElementById('months-mode-btn').classList.remove('ready');
   const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
   MONTHS.forEach(m=>{
     const b=document.createElement('button');
@@ -1092,7 +1122,7 @@ function initMonths(){
     lc.appendChild(b);
   });
   renderMode('months');
-  speakNarration('There are twelve months in a year.',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month to learn about it!',()=>document.getElementById('months-info').classList.add('ready'));
+  speakNarration('Let\'s learn all twelve months of the year!',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month card to discover more, or press the big Quiz button to play!',()=>{document.getElementById('months-info').classList.add('ready');document.getElementById('months-mode-btn').classList.add('ready');});
 }
 
 // ─── DAYS ────────────────────────────────────────────────────────
@@ -1101,6 +1131,7 @@ function initDays(){
   document.getElementById('days-info').style.display='none';
   document.getElementById('days-info').classList.remove('filled','ready');
   document.getElementById('days-info').innerHTML='';
+  document.getElementById('days-mode-btn').classList.remove('ready');
   const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
@@ -1118,7 +1149,7 @@ function initDays(){
     lc.appendChild(b);
   });
   renderMode('days');
-  speakNarration('There are seven days in a week.',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap a day to find out more!',()=>document.getElementById('days-info').classList.add('ready'));
+  speakNarration('Let\'s learn the seven days of the week!',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap any day card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('days-info').classList.add('ready');document.getElementById('days-mode-btn').classList.add('ready');});
 }
 
 // ─── NUMBERS ─────────────────────────────────────────────────────
@@ -1127,6 +1158,7 @@ function initNumbers(){
   document.getElementById('numbers-info').style.display='none';
   document.getElementById('numbers-info').classList.remove('filled','ready');
   document.getElementById('numbers-info').innerHTML='';
+  document.getElementById('numbers-mode-btn').classList.remove('ready');
   const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
   NUMBERS.forEach(n=>{
     const b=document.createElement('button');
@@ -1144,7 +1176,7 @@ function initNumbers(){
     lc.appendChild(b);
   });
   renderMode('numbers');
-  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Tap a number to learn about it!',()=>document.getElementById('numbers-info').classList.add('ready'));
+  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Great counting! Tap any number to explore it, or press the big Quiz button to play!',()=>{document.getElementById('numbers-info').classList.add('ready');document.getElementById('numbers-mode-btn').classList.add('ready');});
 }
 
 // ─── SHAPES ──────────────────────────────────────────────────────
@@ -1164,6 +1196,7 @@ function initShapes(){
   document.getElementById('shapes-info').style.display='none';
   document.getElementById('shapes-info').classList.remove('filled','ready');
   document.getElementById('shapes-info').innerHTML='';
+  document.getElementById('shapes-mode-btn').classList.remove('ready');
   const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
   SHAPES.forEach(sh=>{
     const b=document.createElement('button');
@@ -1181,7 +1214,7 @@ function initShapes(){
     lc.appendChild(b);
   });
   renderMode('shapes');
-  speakNarration("Let's learn about shapes!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap a shape to find out more!',()=>document.getElementById('shapes-info').classList.add('ready'));
+  speakNarration("Let's discover amazing shapes all around us!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap any shape card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('shapes-info').classList.add('ready');document.getElementById('shapes-mode-btn').classList.add('ready');});
 }
 
 // ─── COLORS ──────────────────────────────────────────────────────
@@ -1190,6 +1223,7 @@ function initColors(){
   document.getElementById('colors-info').style.display='none';
   document.getElementById('colors-info').classList.remove('filled','ready');
   document.getElementById('colors-info').innerHTML='';
+  document.getElementById('colors-mode-btn').classList.remove('ready');
   const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
   COLORS.forEach(c=>{
     const b=document.createElement('button');
@@ -1209,7 +1243,7 @@ function initColors(){
     lc.appendChild(b);
   });
   renderMode('colors');
-  speakNarration("Let's explore colors!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap a color to learn about it!',()=>document.getElementById('colors-info').classList.add('ready'));
+  speakNarration("Let's discover beautiful colors of the rainbow!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap any color card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('colors-info').classList.add('ready');document.getElementById('colors-mode-btn').classList.add('ready');});
 }
 
 // ─── ALPHABET ────────────────────────────────────────────────────
@@ -1218,6 +1252,7 @@ function initAlphabet(){
   document.getElementById('alphabet-info').style.display='none';
   document.getElementById('alphabet-info').classList.remove('filled','ready');
   document.getElementById('alphabet-info').innerHTML='';
+  document.getElementById('alphabet-mode-btn').classList.remove('ready');
   const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
   ALPHABET.forEach(a=>{
     const b=document.createElement('button');
@@ -1235,7 +1270,7 @@ function initAlphabet(){
     lc.appendChild(b);
   });
   renderMode('alphabet');
-  speakNarration("Let's learn the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word!',()=>document.getElementById('alphabet-info').classList.add('ready'));
+  speakNarration("Let's learn all the letters of the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word, or press the big Quiz button to play!',()=>{document.getElementById('alphabet-info').classList.add('ready');document.getElementById('alphabet-mode-btn').classList.add('ready');});
 }
 
 // ─── SPARKLES ────────────────────────────────────────────────────
