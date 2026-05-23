@@ -68,26 +68,6 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .speak-btn{background:var(--accent3);color:var(--text);font-size:clamp(18px,3vw,24px);font-weight:700;padding:9px 13px;border-radius:18px;flex-shrink:0;line-height:1;box-shadow:0 3px 10px rgba(255,216,110,0.4)}
 .g-title{font-family:'Fredoka',sans-serif;font-size:clamp(18px,3.5vw,28px);font-weight:600;color:var(--text);text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mode-btn{display:none}
-/* Big Quiz button — fixed bottom-right, never affects layout */
-.big-quiz-btn{
-  display:none;
-  position:fixed;
-  bottom:max(24px,env(safe-area-inset-bottom,24px));
-  right:24px;
-  z-index:200;
-  background:linear-gradient(135deg,#A77BFF,#7C4FFF);
-  color:#fff;font-family:'Fredoka',sans-serif;
-  font-size:clamp(17px,2.2vw,22px);font-weight:700;
-  padding:16px 30px;border-radius:30px;border:none;
-  box-shadow:0 8px 30px rgba(124,79,255,0.55);
-  align-items:center;justify-content:center;gap:8px;
-  animation:glowQuiz 2.4s ease-in-out infinite;
-}
-.big-quiz-btn.ready{display:flex}
-@keyframes glowQuiz{
-  0%,100%{box-shadow:0 8px 30px rgba(124,79,255,0.5)}
-  50%{box-shadow:0 12px 44px rgba(124,79,255,0.85),0 0 70px rgba(167,123,255,0.3)}
-}
 /* Back-to-cards button inside quiz section */
 .back-to-cards-btn{
   background:rgba(255,255,255,0.82);color:var(--text);
@@ -189,6 +169,28 @@ input,textarea{-webkit-user-select:text;user-select:text}
 .opt-emoji{font-size:clamp(28px,4.5vw,40px)}
 .opt-label{font-size:clamp(14px,2vw,19px);text-align:center}
 .next-btn{display:none!important}
+
+/* ── MODE TABS ── */
+.mode-tabs{display:flex;gap:8px;padding:10px 16px 6px;width:100%;align-self:center;max-width:960px;background:rgba(255,240,247,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,111,181,0.12);position:sticky;top:52px;z-index:9}
+.mode-tab{flex:1;padding:10px 6px;border-radius:14px;border:1.5px solid rgba(61,31,79,0.1);background:rgba(255,255,255,0.85);color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(14px,2.2vw,18px);font-weight:700;cursor:pointer;transition:all .18s var(--ease-out);display:flex;align-items:center;justify-content:center;gap:5px}
+.mode-tab:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(61,31,79,0.12)}
+.mode-tab.active{border:none;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
+
+/* ── MATCH GAME ── */
+.match-section{display:none;width:100%;flex-direction:column;align-items:center;gap:14px;padding:14px 16px}
+.match-prompt{font-family:'Fredoka',sans-serif;font-size:clamp(15px,2.2vw,20px);font-weight:600;color:var(--text-soft);text-align:center}
+.match-items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:640px}
+.match-item{border-radius:var(--card-radius);padding:16px 12px;border:2.5px dashed rgba(61,31,79,0.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:105px;cursor:pointer;transition:all .2s var(--ease-out);background:rgba(255,255,255,0.7)}
+.match-item.matched{border-style:solid;border-color:transparent;color:#fff}
+.match-item:hover:not(.matched){transform:scale(1.03);border-color:var(--accent)}
+.match-item.match-wrong{animation:shake .5s ease-in-out;border-color:#FF5C5C}
+.match-item-icon{font-size:clamp(30px,5vw,44px);line-height:1}
+.match-item-label{font-family:'Fredoka',sans-serif;font-size:clamp(13px,2vw,17px);font-weight:700;color:#fff;text-align:center}
+.match-labels{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%;max-width:640px}
+.match-label{background:var(--primary);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,19px);font-weight:600;padding:10px 22px;border-radius:999px;cursor:pointer;transition:all .2s var(--ease-out);border:none;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.match-label:hover{transform:translateY(-3px) scale(1.05)!important}
+.match-label.selected{background:var(--accent);transform:scale(1.06)!important;box-shadow:0 6px 20px rgba(167,123,255,0.5)}
+.match-all-done{font-family:'Fredoka',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:700;color:var(--primary);text-align:center;padding:30px 20px}
 
 /* ── CONFETTI / CELEBRATION ── */
 #celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}
@@ -430,13 +432,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title" id="seasons-title">🌸 Seasons</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="seasons-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('seasons','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('seasons','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('seasons','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="seasons-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 🌸</p>
     <div class="learn-grid" id="seasons-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
     <div id="seasons-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="seasons-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('seasons')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="seasons-score">✨ Score: 0</span>
@@ -446,6 +452,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="seasons-opts"></div>
     <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next ➡</button>
   </div>
+  <div class="match-section" id="seasons-match"></div>
 </div>
 
 <!-- MONTHS -->
@@ -455,13 +462,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">📅 Months of the Year</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="months-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('months','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('months','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('months','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="months-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 📅</p>
     <div class="mini-grid" id="months-learn-cards"></div>
     <div id="months-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="months-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('months')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="months-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="months-score">✨ Score: 0</span>
@@ -471,6 +482,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="months-opts"></div>
     <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next ➡</button>
   </div>
+  <div class="match-section" id="months-match"></div>
 </div>
 
 <!-- DAYS -->
@@ -480,13 +492,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">📆 Days of the Week</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="days-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('days','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('days','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('days','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="days-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 📆</p>
     <div class="days-rail" id="days-learn-cards"></div>
     <div id="days-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="days-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('days')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="days-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="days-score">✨ Score: 0</span>
@@ -496,6 +512,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="days-opts"></div>
     <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next ➡</button>
   </div>
+  <div class="match-section" id="days-match"></div>
 </div>
 
 <!-- NUMBERS -->
@@ -505,13 +522,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">🔢 Numbers 1–20</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="numbers-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('numbers','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('numbers','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('numbers','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="numbers-learn">
     <p class="learn-prompt">Listen and count along! 🔢</p>
     <div class="mini-grid" id="numbers-learn-cards"></div>
     <div id="numbers-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="numbers-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('numbers')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="numbers-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="numbers-score">✨ Score: 0</span>
@@ -521,6 +542,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="numbers-opts"></div>
     <button class="next-btn" id="numbers-next" style="display:none" onclick="nextQ('numbers')">Next ➡</button>
   </div>
+  <div class="match-section" id="numbers-match"></div>
 </div>
 
 <!-- SHAPES -->
@@ -530,13 +552,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">⭐ Shapes</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="shapes-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('shapes','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('shapes','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('shapes','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="shapes-learn">
     <p class="learn-prompt">Listen and watch the shapes appear! ⭐</p>
     <div class="shapes-grid" id="shapes-learn-cards"></div>
     <div id="shapes-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="shapes-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('shapes')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="shapes-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="shapes-score">✨ Score: 0</span>
@@ -546,6 +572,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="shapes-opts"></div>
     <button class="next-btn" id="shapes-next" style="display:none" onclick="nextQ('shapes')">Next ➡</button>
   </div>
+  <div class="match-section" id="shapes-match"></div>
 </div>
 
 <!-- COLORS -->
@@ -555,13 +582,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">🌈 Colors</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="colors-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('colors','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('colors','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('colors','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="colors-learn">
     <p class="learn-prompt">Listen and watch the colors appear! 🌈</p>
     <div class="colors-grid" id="colors-learn-cards"></div>
     <div id="colors-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="colors-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('colors')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="colors-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="colors-score">✨ Score: 0</span>
@@ -571,6 +602,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="colors-opts"></div>
     <button class="next-btn" id="colors-next" style="display:none" onclick="nextQ('colors')">Next ➡</button>
   </div>
+  <div class="match-section" id="colors-match"></div>
 </div>
 
 <!-- ALPHABET -->
@@ -580,13 +612,17 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <span class="g-title">🔤 Alphabet A–Z</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
+  <div class="mode-tabs" id="alphabet-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('alphabet','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('alphabet','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('alphabet','match')">🧩 Match</button>
+  </div>
   <div class="learn-section" id="alphabet-learn">
     <p class="learn-prompt">Listen and watch the letters appear! 🔤</p>
     <div class="alpha-grid" id="alphabet-learn-cards"></div>
     <div id="alphabet-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="alphabet-quiz">
-    <button class="back-to-cards-btn" onclick="backToCards('alphabet')">← Back to Cards</button>
     <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="alphabet-prog-fill"></div></div></div>
     <div class="score-row">
       <span class="score-badge" id="alphabet-score">✨ Score: 0</span>
@@ -596,6 +632,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <div class="opts-grid" id="alphabet-opts"></div>
     <button class="next-btn" id="alphabet-next" style="display:none" onclick="nextQ('alphabet')">Next ➡</button>
   </div>
+  <div class="match-section" id="alphabet-match"></div>
 </div>
 
 <script>
@@ -724,7 +761,7 @@ async function speakNarration(intro,items,outro,onDone){
 }
 
 // ─── DATA ────────────────────────────────────────────────────────
-const TOPIC_COLORS=['#FF6FB5','#A77BFF','#6FE3C8','#FFD86E','#FF9AC4','#7FB4FF','#FFB39B'];
+const TOPIC_COLORS={seasons:'#FF9EC2',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F'};
 
 const SEASONS=[
   {name:'Spring',emoji:'🌸',sub:'🌺🌷🌼🦋',color:'#FF9AC4',fact:'Flowers bloom and birds sing! Trees grow new green leaves.',months:'March, April, May'},
@@ -854,7 +891,6 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   if(id==='seasons') initSeasons();
   else if(id==='months') initMonths();
   else if(id==='days') initDays();
@@ -865,44 +901,44 @@ function go(id){
   else cancelSpeech();
 }
 
-function toggleMode(game){
+function setMode(game,mode){
   _clearRevealTimers();cancelSpeech();
-  state[game].mode='quiz';
-  if(!state[game].questions.length) buildQ(game);
+  state[game].mode=mode;
   renderMode(game);
-}
-
-function backToCards(game){
-  cancelSpeech();_clearRevealTimers();
-  state[game].mode='learn';
-  document.getElementById(game).classList.remove('quiz-active');
-  const learn=document.getElementById(game+'-learn');
-  const quiz=document.getElementById(game+'-quiz');
-  learn.style.display='flex';
-  quiz.style.display='none';
-  const info=document.getElementById(game+'-info');
-  if(info){info.classList.add('ready');if(state[game].active)info.classList.add('filled');}
-  const qb=document.getElementById('global-quiz-btn');
-  qb.onclick=()=>toggleMode(game);
-  qb.classList.add('ready');
+  if(mode==='learn'){
+    const info=document.getElementById(game+'-info');
+    if(info)info.classList.add('ready');
+  }
+  if(mode==='match'){
+    buildMatch(game);
+    renderMatch(game);
+    speak('Match the pictures to their names!');
+  }
 }
 
 function renderMode(game){
   const s=state[game];
-  const learn=document.getElementById(game+'-learn');
-  const quiz=document.getElementById(game+'-quiz');
-  if(s.mode==='learn'){
-    learn.style.display='flex';
-    quiz.style.display='none';
-  }else{
-    learn.style.display='none';
-    quiz.style.display='flex';
+  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F'}[game]||'var(--primary)';
+  document.querySelectorAll('#'+game+'-tabs .mode-tab').forEach(btn=>{
+    const active=btn.dataset.mode===s.mode;
+    btn.classList.toggle('active',active);
+    btn.style.background=active?tabColor:'';
+    btn.style.boxShadow=active?`0 6px 18px ${tabColor}66`:'';
+  });
+  const learnEl=document.getElementById(game+'-learn');
+  const quizEl=document.getElementById(game+'-quiz');
+  const matchEl=document.getElementById(game+'-match');
+  if(learnEl)learnEl.style.display=s.mode==='learn'?'flex':'none';
+  if(quizEl)quizEl.style.display=s.mode==='quiz'?'flex':'none';
+  if(matchEl)matchEl.style.display=s.mode==='match'?'flex':'none';
+  if(s.mode==='quiz'){
     document.getElementById(game).classList.add('quiz-active');
-    document.getElementById('global-quiz-btn').classList.remove('ready');
     s.score=0;s.qi=0;s.attempts=0;s.locked=false;
-    if(!s.questions.length) buildQ(game);
+    if(!s.questions.length)buildQ(game);
     speak('Quiz time! Let\'s see what you know.');
     setTimeout(()=>renderQ(game),1600);
+  }else{
+    document.getElementById(game).classList.remove('quiz-active');
   }
 }
 
@@ -1088,13 +1124,77 @@ function nextQ(game){
   renderQ(game);
 }
 
+// ─── MATCH GAME ──────────────────────────────────────────────────
+function buildMatch(game){
+  const s=state[game];
+  let pool=[];
+  if(game==='seasons') pool=SEASONS.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='months') pool=shuffle([...MONTHS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='days') pool=shuffle([...DAYS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='numbers') pool=shuffle([...NUMBERS]).slice(0,6).map(x=>({name:x.name,icon:x.numeral,color:x.color}));
+  else if(game==='shapes') pool=shuffle([...SHAPES]).slice(0,6).map(x=>({name:x.name,icon:shapeIcon(x,44),color:x.color}));
+  else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
+  else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  const items=shuffle(pool).slice(0,4);
+  s.matchItems=items;
+  s.matchLabels=shuffle(items.map(x=>x.name));
+  s.matchSelected=null;
+  s.matchDone={};
+}
+
+function renderMatch(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-match');
+  if(!s.matchItems||!el)return;
+  const allDone=s.matchItems.every(x=>s.matchDone[x.name]);
+  if(allDone){
+    el.innerHTML='<div class="match-all-done">🎉 Amazing! You matched them all! 🎉</div>';
+    return;
+  }
+  const itemsHTML=s.matchItems.map(item=>{
+    const done=s.matchDone[item.name];
+    const safeId='mitem-'+game+'-'+item.name.replace(/[^a-zA-Z0-9]/g,'_');
+    const safeName=item.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="match-item${done?' matched':''}" id="${safeId}" style="${done?'background:'+item.color+';border-color:transparent':''}" onclick="tapMatchItem('${game}','${safeName}')"><span class="match-item-icon">${item.icon}</span>${done?'<span class="match-item-label">'+item.name+'</span>':''}</div>`;
+  }).join('');
+  const labelsHTML=s.matchLabels.filter(n=>!s.matchDone[n]).map(name=>{
+    const sel=s.matchSelected===name;
+    const safeName=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<button class="match-label${sel?' selected':''}" onclick="tapMatchLabel('${game}','${safeName}')">${name}</button>`;
+  }).join('');
+  el.innerHTML='<div class="match-prompt">Tap a name, then tap the matching picture!</div><div class="match-items-grid">'+itemsHTML+'</div><div class="match-labels">'+labelsHTML+'</div>';
+}
+
+function tapMatchLabel(game,name){
+  const s=state[game];
+  if(s.matchDone[name])return;
+  s.matchSelected=(s.matchSelected===name)?null:name;
+  if(s.matchSelected)speak(name);
+  renderMatch(game);
+}
+
+function tapMatchItem(game,name){
+  const s=state[game];
+  const sel=s.matchSelected;
+  if(!sel){speak('Tap a name first, then tap the picture!');return;}
+  if(sel===name){
+    s.matchDone[name]=true;s.matchSelected=null;
+    speak(name+'! Great match!');
+    renderMatch(game);
+    if(s.matchItems.every(x=>s.matchDone[x.name]))setTimeout(()=>celebrate('You matched them all!'),400);
+  }else{
+    speak('Try again!');
+    const el=document.getElementById('mitem-'+game+'-'+name.replace(/[^a-zA-Z0-9]/g,'_'));
+    if(el){el.classList.add('match-wrong');setTimeout(()=>el.classList.remove('match-wrong'),600);}
+  }
+}
+
 // ─── SEASONS ─────────────────────────────────────────────────────
 function initSeasons(){
   const s=state.seasons;s.mode='learn';s.active=null;
   document.getElementById('seasons-info').style.display='none';
   document.getElementById('seasons-info').classList.remove('filled','ready');
   document.getElementById('seasons-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
   SEASONS.forEach(sea=>{
     const b=document.createElement('button');
@@ -1112,7 +1212,7 @@ function initSeasons(){
     lc.appendChild(b);
   });
   renderMode('seasons');
-  speakNarration('Let\'s explore the four seasons!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Now tap a card to learn more, or press the big Quiz button to play a game!',()=>{document.getElementById('seasons-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('seasons');qb.classList.add('ready');});
+  speakNarration('Let\'s explore the four seasons!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Now tap a card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('seasons-info').classList.add('ready');});
 }
 
 // ─── MONTHS ──────────────────────────────────────────────────────
@@ -1121,7 +1221,6 @@ function initMonths(){
   document.getElementById('months-info').style.display='none';
   document.getElementById('months-info').classList.remove('filled','ready');
   document.getElementById('months-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
   MONTHS.forEach(m=>{
     const b=document.createElement('button');
@@ -1139,7 +1238,7 @@ function initMonths(){
     lc.appendChild(b);
   });
   renderMode('months');
-  speakNarration('Let\'s learn all twelve months of the year!',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month card to discover more, or press the big Quiz button to play!',()=>{document.getElementById('months-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('months');qb.classList.add('ready');});
+  speakNarration('Let\'s learn all twelve months of the year!',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month card to discover more, or try Quiz or Match to play!',()=>{document.getElementById('months-info').classList.add('ready');});
 }
 
 // ─── DAYS ────────────────────────────────────────────────────────
@@ -1148,7 +1247,6 @@ function initDays(){
   document.getElementById('days-info').style.display='none';
   document.getElementById('days-info').classList.remove('filled','ready');
   document.getElementById('days-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
   DAYS.forEach(d=>{
     const b=document.createElement('button');
@@ -1166,7 +1264,7 @@ function initDays(){
     lc.appendChild(b);
   });
   renderMode('days');
-  speakNarration('Let\'s learn the seven days of the week!',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap any day card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('days-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('days');qb.classList.add('ready');});
+  speakNarration('Let\'s learn the seven days of the week!',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap any day card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('days-info').classList.add('ready');});
 }
 
 // ─── NUMBERS ─────────────────────────────────────────────────────
@@ -1175,7 +1273,6 @@ function initNumbers(){
   document.getElementById('numbers-info').style.display='none';
   document.getElementById('numbers-info').classList.remove('filled','ready');
   document.getElementById('numbers-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
   NUMBERS.forEach(n=>{
     const b=document.createElement('button');
@@ -1193,7 +1290,7 @@ function initNumbers(){
     lc.appendChild(b);
   });
   renderMode('numbers');
-  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Great counting! Tap any number to explore it, or press the big Quiz button to play!',()=>{document.getElementById('numbers-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('numbers');qb.classList.add('ready');});
+  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Great counting! Tap any number to explore it, or try Quiz or Match to play!',()=>{document.getElementById('numbers-info').classList.add('ready');});
 }
 
 // ─── SHAPES ──────────────────────────────────────────────────────
@@ -1213,7 +1310,6 @@ function initShapes(){
   document.getElementById('shapes-info').style.display='none';
   document.getElementById('shapes-info').classList.remove('filled','ready');
   document.getElementById('shapes-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
   SHAPES.forEach(sh=>{
     const b=document.createElement('button');
@@ -1231,7 +1327,7 @@ function initShapes(){
     lc.appendChild(b);
   });
   renderMode('shapes');
-  speakNarration("Let's discover amazing shapes all around us!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap any shape card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('shapes-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('shapes');qb.classList.add('ready');});
+  speakNarration("Let's discover amazing shapes all around us!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap any shape card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('shapes-info').classList.add('ready');});
 }
 
 // ─── COLORS ──────────────────────────────────────────────────────
@@ -1240,7 +1336,6 @@ function initColors(){
   document.getElementById('colors-info').style.display='none';
   document.getElementById('colors-info').classList.remove('filled','ready');
   document.getElementById('colors-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
   COLORS.forEach(c=>{
     const b=document.createElement('button');
@@ -1260,7 +1355,7 @@ function initColors(){
     lc.appendChild(b);
   });
   renderMode('colors');
-  speakNarration("Let's discover beautiful colors of the rainbow!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap any color card to learn more, or press the big Quiz button to play!',()=>{document.getElementById('colors-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('colors');qb.classList.add('ready');});
+  speakNarration("Let's discover beautiful colors of the rainbow!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap any color card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('colors-info').classList.add('ready');});
 }
 
 // ─── ALPHABET ────────────────────────────────────────────────────
@@ -1269,7 +1364,6 @@ function initAlphabet(){
   document.getElementById('alphabet-info').style.display='none';
   document.getElementById('alphabet-info').classList.remove('filled','ready');
   document.getElementById('alphabet-info').innerHTML='';
-  document.getElementById('global-quiz-btn').classList.remove('ready');
   const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
   ALPHABET.forEach(a=>{
     const b=document.createElement('button');
@@ -1287,7 +1381,7 @@ function initAlphabet(){
     lc.appendChild(b);
   });
   renderMode('alphabet');
-  speakNarration("Let's learn all the letters of the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word, or press the big Quiz button to play!',()=>{document.getElementById('alphabet-info').classList.add('ready');const qb=document.getElementById('global-quiz-btn');qb.onclick=()=>toggleMode('alphabet');qb.classList.add('ready');});
+  speakNarration("Let's learn all the letters of the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word, or try Quiz or Match to play!',()=>{document.getElementById('alphabet-info').classList.add('ready');});
 }
 
 // ─── SPARKLES ────────────────────────────────────────────────────
@@ -1308,7 +1402,5 @@ function initAlphabet(){
   }
 })();
 </script>
-<!-- Global floating quiz button — fixed bottom-right, outside all screens -->
-<button class="big-quiz-btn" id="global-quiz-btn">🎯 Quiz Time!</button>
 </body>
 </html>
