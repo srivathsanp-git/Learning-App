@@ -767,7 +767,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   </div>
   <div class="learn-section" id="animals-learn">
     <p class="learn-prompt">Listen and meet the animals! 🐾</p>
-    <div class="learn-grid" id="animals-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div class="mini-grid" id="animals-learn-cards"></div>
     <div id="animals-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="animals-quiz">
@@ -801,7 +801,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   </div>
   <div class="learn-section" id="fruits-learn">
     <p class="learn-prompt">Let's explore delicious fruits! 🍎</p>
-    <div class="learn-grid" id="fruits-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div class="mini-grid" id="fruits-learn-cards"></div>
     <div id="fruits-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="fruits-quiz">
@@ -835,7 +835,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   </div>
   <div class="learn-section" id="weather-learn">
     <p class="learn-prompt">Let's learn about the weather! ☀️</p>
-    <div class="learn-grid" id="weather-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div class="mini-grid" id="weather-learn-cards"></div>
     <div id="weather-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="weather-quiz">
@@ -869,7 +869,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   </div>
   <div class="learn-section" id="family-learn">
     <p class="learn-prompt">Let's meet the family! 👨‍👩‍👧‍👦</p>
-    <div class="learn-grid" id="family-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div class="mini-grid" id="family-learn-cards"></div>
     <div id="family-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="family-quiz">
@@ -903,7 +903,7 @@ input,textarea{-webkit-user-select:text;user-select:text}
   </div>
   <div class="learn-section" id="countries-learn">
     <p class="learn-prompt">Let's discover countries around the world! 🌍</p>
-    <div class="learn-grid" id="countries-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div class="mini-grid" id="countries-learn-cards"></div>
     <div id="countries-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
   <div class="quiz-section" id="countries-quiz">
@@ -2117,10 +2117,10 @@ function initAnimals(){
   const lc=document.getElementById('animals-learn-cards');lc.innerHTML='';
   ANIMALS.forEach(a=>{
     const b=document.createElement('button');
-    b.className='learn-card card-pre';b.id='an-'+a.name;
+    b.className='mini-card card-pre';b.id='an-'+a.name;
     b.style.background=`linear-gradient(135deg,${a.color},${a.color}bb)`;
-    b.style.boxShadow=`0 12px 30px ${a.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${a.emoji}</div><div class="lc-name">${a.name}</div><div class="lc-sub">${a.sound}!</div>`;
+    b.style.boxShadow=`0 8px 20px ${a.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${a.emoji}</div><div class="mi-name">${a.name}</div><div class="mi-num">${a.sound}!</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('animals',a,
@@ -2143,10 +2143,10 @@ function initFruits(){
   const lc=document.getElementById('fruits-learn-cards');lc.innerHTML='';
   FRUITS.forEach(f=>{
     const b=document.createElement('button');
-    b.className='learn-card card-pre';b.id='fr-'+f.name;
+    b.className='mini-card card-pre';b.id='fr-'+f.name;
     b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
-    b.style.boxShadow=`0 12px 30px ${f.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${f.emoji}</div><div class="lc-name">${f.name}</div>`;
+    b.style.boxShadow=`0 8px 20px ${f.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${f.emoji}</div><div class="mi-name">${f.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('fruits',f,
@@ -2169,10 +2169,10 @@ function initWeather(){
   const lc=document.getElementById('weather-learn-cards');lc.innerHTML='';
   WEATHER.forEach(w=>{
     const b=document.createElement('button');
-    b.className='learn-card card-pre';b.id='we-'+w.name;
+    b.className='mini-card card-pre';b.id='we-'+w.name;
     b.style.background=`linear-gradient(135deg,${w.color},${w.color}bb)`;
-    b.style.boxShadow=`0 12px 30px ${w.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${w.emoji}</div><div class="lc-name">${w.name}</div>`;
+    b.style.boxShadow=`0 8px 20px ${w.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${w.emoji}</div><div class="mi-name">${w.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('weather',w,
@@ -2195,10 +2195,10 @@ function initFamily(){
   const lc=document.getElementById('family-learn-cards');lc.innerHTML='';
   FAMILY.forEach(f=>{
     const b=document.createElement('button');
-    b.className='learn-card card-pre';b.id='fa-'+f.name;
+    b.className='mini-card card-pre';b.id='fa-'+f.name;
     b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
-    b.style.boxShadow=`0 12px 30px ${f.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${f.emoji}</div><div class="lc-name">${f.name}</div>`;
+    b.style.boxShadow=`0 8px 20px ${f.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${f.emoji}</div><div class="mi-name">${f.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('family',f,
@@ -2221,10 +2221,10 @@ function initCountries(){
   const lc=document.getElementById('countries-learn-cards');lc.innerHTML='';
   COUNTRIES.forEach(c=>{
     const b=document.createElement('button');
-    b.className='learn-card card-pre';b.id='co-'+c.name;
+    b.className='mini-card card-pre';b.id='co-'+c.name;
     b.style.background=`linear-gradient(135deg,${c.color},${c.color}bb)`;
-    b.style.boxShadow=`0 12px 30px ${c.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
-    b.innerHTML=`<div class="lc-icon">${c.emoji}</div><div class="lc-name">${c.name}</div>`;
+    b.style.boxShadow=`0 8px 20px ${c.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${c.emoji}</div><div class="mi-name">${c.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
       showInfo('countries',c,
