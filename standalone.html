@@ -317,6 +317,41 @@ input,textarea{-webkit-user-select:text;user-select:text}
 @media(min-width:1100px){
   .learn-section [id$="-info"]{flex:0 0 360px;width:360px!important}
 }
+
+/* ─── MEMORY GAME ─────────────────────────────── */
+.memory-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:12px}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:500px;width:100%}
+.mem-card{aspect-ratio:1;border-radius:16px;border:none;cursor:pointer;font-size:clamp(22px,6vw,36px);display:flex;align-items:center;justify-content:center;transition:transform .25s,opacity .3s;background:linear-gradient(135deg,#A77BFF,#FF6FB5);color:#fff;font-weight:700;box-shadow:0 4px 14px rgba(167,123,255,0.35);user-select:none}
+.mem-card.flipped{background:linear-gradient(135deg,#fff8fe,#fff0fb);color:#3D1F4F;box-shadow:0 4px 14px rgba(0,0,0,0.15)}
+.mem-card.matched{background:linear-gradient(135deg,#3FD868,#25B34B)!important;color:#fff!important;opacity:0.85;cursor:default;transform:scale(0.95)}
+.mem-card.shake{animation:memShake .4s}
+@keyframes memShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.mem-stats{display:flex;gap:16px;font-size:15px;font-weight:700;color:var(--text)}
+
+/* ─── SPELLING GAME ───────────────────────────── */
+.spell-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:14px}
+.spell-icon{font-size:clamp(56px,15vw,90px);line-height:1}
+.spell-blanks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.spell-blank{width:44px;height:52px;border-radius:12px;border:3px solid var(--primary);background:#fff8fe;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--text);transition:background .2s}
+.spell-blank.filled{background:linear-gradient(135deg,#FF6FB5,#A77BFF);color:#fff;border-color:transparent}
+.spell-blank.correct-flash{background:#3FD868!important;border-color:#25B34B!important}
+.spell-letter-bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:360px}
+.spell-letter-btn{width:44px;height:44px;border-radius:12px;border:2px solid var(--primary);background:#fff;font-size:20px;font-weight:800;color:var(--text);cursor:pointer;transition:transform .15s,background .15s;display:flex;align-items:center;justify-content:center}
+.spell-letter-btn:active{transform:scale(0.9)}
+.spell-letter-btn.used{opacity:0.35;pointer-events:none}
+.spell-letter-btn.wrong-flash{background:#FF4B4B!important;color:#fff!important;animation:memShake .4s}
+.spell-prog{font-size:15px;font-weight:700;color:var(--text)}
+
+/* ─── TRACE GAME ──────────────────────────────── */
+.trace-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:12px}
+.trace-guide{font-size:clamp(80px,22vw,140px);line-height:1;color:rgba(167,123,255,0.18);user-select:none;position:absolute;pointer-events:none;font-weight:900}
+.trace-canvas-wrap{position:relative;width:min(280px,80vw);height:min(280px,80vw);border-radius:24px;border:3px dashed var(--primary);background:#fff8fe;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.trace-canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+.trace-btns{display:flex;gap:12px}
+.trace-btn{padding:12px 24px;border-radius:16px;border:none;font-size:16px;font-weight:700;cursor:pointer}
+.trace-btn.clear{background:#FFE4F3;color:var(--text)}
+.trace-btn.next{background:linear-gradient(135deg,#FF6FB5,#A77BFF);color:#fff}
+.trace-label{font-size:22px;font-weight:800;color:var(--text)}
 </style>
 </head>
 <body>
@@ -460,6 +495,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('seasons','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('seasons','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('seasons','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('seasons','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('seasons','spell')">🔤 Spell</button>
   </div>
   <div class="learn-section" id="seasons-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 🌸</p>
@@ -477,6 +514,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next ➡</button>
   </div>
   <div class="match-section" id="seasons-match"></div>
+  <div class="memory-section" id="seasons-memory"></div>
+  <div class="spell-section" id="seasons-spell"></div>
 </div>
 
 <!-- MONTHS -->
@@ -490,6 +529,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('months','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('months','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('months','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('months','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('months','spell')">🔤 Spell</button>
   </div>
   <div class="learn-section" id="months-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 📅</p>
@@ -507,6 +548,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next ➡</button>
   </div>
   <div class="match-section" id="months-match"></div>
+  <div class="memory-section" id="months-memory"></div>
+  <div class="spell-section" id="months-spell"></div>
 </div>
 
 <!-- DAYS -->
@@ -520,6 +563,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('days','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('days','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('days','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('days','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('days','spell')">🔤 Spell</button>
   </div>
   <div class="learn-section" id="days-learn">
     <p class="learn-prompt">Listen and watch the cards appear! 📆</p>
@@ -537,6 +582,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next ➡</button>
   </div>
   <div class="match-section" id="days-match"></div>
+  <div class="memory-section" id="days-memory"></div>
+  <div class="spell-section" id="days-spell"></div>
 </div>
 
 <!-- NUMBERS -->
@@ -550,6 +597,9 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('numbers','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('numbers','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('numbers','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('numbers','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('numbers','spell')">🔤 Spell</button>
+    <button class="mode-tab" data-mode="trace" onclick="setMode('numbers','trace')">✏️ Trace</button>
   </div>
   <div class="learn-section" id="numbers-learn">
     <p class="learn-prompt">Listen and count along! 🔢</p>
@@ -567,6 +617,9 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="numbers-next" style="display:none" onclick="nextQ('numbers')">Next ➡</button>
   </div>
   <div class="match-section" id="numbers-match"></div>
+  <div class="memory-section" id="numbers-memory"></div>
+  <div class="spell-section" id="numbers-spell"></div>
+  <div class="trace-section" id="numbers-trace"></div>
 </div>
 
 <!-- SHAPES -->
@@ -580,6 +633,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('shapes','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('shapes','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('shapes','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('shapes','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('shapes','spell')">🔤 Spell</button>
   </div>
   <div class="learn-section" id="shapes-learn">
     <p class="learn-prompt">Listen and watch the shapes appear! ⭐</p>
@@ -597,6 +652,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="shapes-next" style="display:none" onclick="nextQ('shapes')">Next ➡</button>
   </div>
   <div class="match-section" id="shapes-match"></div>
+  <div class="memory-section" id="shapes-memory"></div>
+  <div class="spell-section" id="shapes-spell"></div>
 </div>
 
 <!-- COLORS -->
@@ -610,6 +667,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('colors','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('colors','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('colors','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('colors','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('colors','spell')">🔤 Spell</button>
   </div>
   <div class="learn-section" id="colors-learn">
     <p class="learn-prompt">Listen and watch the colors appear! 🌈</p>
@@ -627,6 +686,8 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="colors-next" style="display:none" onclick="nextQ('colors')">Next ➡</button>
   </div>
   <div class="match-section" id="colors-match"></div>
+  <div class="memory-section" id="colors-memory"></div>
+  <div class="spell-section" id="colors-spell"></div>
 </div>
 
 <!-- ALPHABET -->
@@ -897,10 +958,61 @@ const ALPHABET=[
   {name:'Z',word:'Zebra',   emoji:'🦓',color:'#FFD86E'},
 ];
 
+const ANIMALS=[
+  {name:'Dog',     emoji:'🐶',sound:'Woof',  color:'#F4A460',fact:'Dogs are loyal pets that love to play fetch!'},
+  {name:'Cat',     emoji:'🐱',sound:'Meow',  color:'#DDA0DD',fact:'Cats love to purr and sleep in sunny spots!'},
+  {name:'Cow',     emoji:'🐮',sound:'Moo',   color:'#F5DEB3',fact:'Cows give us milk to make cheese and butter!'},
+  {name:'Pig',     emoji:'🐷',sound:'Oink',  color:'#FFB6C1',fact:'Pigs are very smart and love to roll in mud!'},
+  {name:'Duck',    emoji:'🦆',sound:'Quack', color:'#98FB98',fact:'Ducks can swim, walk and fly!'},
+  {name:'Lion',    emoji:'🦁',sound:'Roar',  color:'#DAA520',fact:'Lions are called the kings of the jungle!'},
+  {name:'Elephant',emoji:'🐘',sound:'Trumpet',color:'#B0C4DE',fact:'Elephants are the largest land animals!'},
+  {name:'Monkey',  emoji:'🐒',sound:'Ooh ooh',color:'#CD853F',fact:'Monkeys love to swing from tree to tree!'},
+];
+
+const FRUITS=[
+  {name:'Apple',      emoji:'🍎',color:'#FF4444',fact:'An apple a day keeps the doctor away!'},
+  {name:'Banana',     emoji:'🍌',color:'#FFD700',fact:'Bananas are a great source of energy!'},
+  {name:'Orange',     emoji:'🍊',color:'#FF8C00',fact:'Oranges are full of vitamin C!'},
+  {name:'Grapes',     emoji:'🍇',color:'#8B4BA8',fact:'Grapes grow in big bunches on vines!'},
+  {name:'Strawberry', emoji:'🍓',color:'#FF1493',fact:'Strawberries are red and super sweet!'},
+  {name:'Mango',      emoji:'🥭',color:'#FF6347',fact:'Mangoes are called the king of fruits!'},
+  {name:'Pineapple',  emoji:'🍍',color:'#DAA520',fact:'Pineapples take 2 years to grow!'},
+  {name:'Watermelon', emoji:'🍉',color:'#FF69B4',fact:'Watermelons are 92 percent water!'},
+];
+
+const WEATHER=[
+  {name:'Sunny',  emoji:'☀️',color:'#FFD700',fact:'On sunny days the sun shines bright and warm!'},
+  {name:'Rainy',  emoji:'🌧️',color:'#4169E1',fact:'Rain helps plants grow and fills rivers!'},
+  {name:'Cloudy', emoji:'⛅',color:'#87CEEB',fact:'Clouds are made of tiny water droplets!'},
+  {name:'Snowy',  emoji:'❄️',color:'#B0E0E6',fact:'Every snowflake has a unique pattern!'},
+  {name:'Windy',  emoji:'💨',color:'#98FB98',fact:'Wind is moving air that we can feel!'},
+  {name:'Stormy', emoji:'⛈️',color:'#708090',fact:'Thunder and lightning happen in storms!'},
+];
+
+const FAMILY=[
+  {name:'Mom',     emoji:'👩',color:'#FF69B4',fact:'Mom loves and takes care of the whole family!'},
+  {name:'Dad',     emoji:'👨',color:'#4169E1',fact:'Dad is always there to help and have fun!'},
+  {name:'Sister',  emoji:'👧',color:'#FF9999',fact:'Sisters are wonderful best friends!'},
+  {name:'Brother', emoji:'👦',color:'#87CEEB',fact:'Brothers love to play and explore together!'},
+  {name:'Grandma', emoji:'👵',color:'#DDA0DD',fact:'Grandma tells the best stories and makes yummy food!'},
+  {name:'Grandpa', emoji:'👴',color:'#90EE90',fact:'Grandpa knows so many amazing and fun things!'},
+];
+
+const COUNTRIES=[
+  {name:'USA',       emoji:'🇺🇸',color:'#B22234',fact:'The USA has 50 states and the Statue of Liberty!'},
+  {name:'UK',        emoji:'🇬🇧',color:'#012169',fact:'The UK is home to Big Ben and the royal family!'},
+  {name:'India',     emoji:'🇮🇳',color:'#FF9933',fact:'India is famous for the beautiful Taj Mahal!'},
+  {name:'France',    emoji:'🇫🇷',color:'#0055A4',fact:'France has the tall and beautiful Eiffel Tower!'},
+  {name:'Japan',     emoji:'🇯🇵',color:'#BC002D',fact:'Japan is known for cherry blossoms and sushi!'},
+  {name:'Australia', emoji:'🇦🇺',color:'#00008B',fact:'Australia has kangaroos and the Great Barrier Reef!'},
+  {name:'Brazil',    emoji:'🇧🇷',color:'#009C3B',fact:'Brazil has the amazing Amazon rainforest!'},
+  {name:'Canada',    emoji:'🇨🇦',color:'#FF0000',fact:'Canada has a beautiful maple leaf on its flag!'},
+];
+
 // ─── STATE ───────────────────────────────────────────────────────
-const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet'];
+const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet','animals','fruits','weather','family','countries'];
 const state={};
-TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false};});
+TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false,memCards:[],memFlipped:[],memMoves:0,memMatched:0,spellItems:[],spellIdx:0,spellWord:'',spellEntered:[],spellBank:[],spellItem:null,traceIdx:0,traceData:null};});
 state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{},matchPool:[],matchRound:0,matchScore:0};
 
 // ─── HELPERS ─────────────────────────────────────────────────────
