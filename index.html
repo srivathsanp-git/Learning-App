@@ -1,0 +1,2261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#FFE3F1"/>
+<title>Fairy Meadow Learning! ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+<style>
+:root{
+  --bg:linear-gradient(160deg,#FFE3F1 0%,#E8DFFF 50%,#DFF6FF 100%);
+  --primary:#FF6FB5;
+  --accent:#A77BFF;
+  --accent2:#6FE3C8;
+  --accent3:#FFD86E;
+  --text:#3D1F4F;
+  --text-soft:#7A5B8E;
+  --surface:#fff;
+  --card-shadow:0 12px 30px rgba(255,111,181,0.25),0 2px 0 rgba(255,255,255,0.9) inset;
+  --card-radius:28px;
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Quicksand',Arial,sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden;color:var(--text)}
+h1,h2,h3,.fredoka{font-family:'Fredoka',sans-serif}
+button{cursor:pointer;border:none;font-family:'Quicksand',sans-serif;transition:transform .18s var(--ease-out),box-shadow .18s;font-weight:600;touch-action:manipulation}
+button:active{transform:scale(.93)!important;opacity:.85!important}
+input,textarea{-webkit-user-select:text;user-select:text}
+
+/* ── SCREENS ── */
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding-bottom:max(56px,env(safe-area-inset-bottom,0px));background:var(--bg)}
+.screen.active{display:flex;animation:screenEnter .42s var(--ease-out) both}
+@keyframes screenEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME ── */
+#home{justify-content:flex-start;padding:0 0 max(40px,env(safe-area-inset-bottom,0px));position:relative;overflow-x:hidden}
+#home-learn{padding:14px 16px 0;width:100%}
+.home-inner{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:1000px;position:relative;z-index:1}
+.home-hero{display:flex;align-items:center;gap:14px;width:100%;max-width:960px;background:rgba(255,255,255,0.55);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-radius:22px;padding:10px 18px}
+.lumi-wrap{animation:lumiFloat 3s ease-in-out infinite;flex-shrink:0}
+.lumi-wrap svg{width:clamp(58px,10vw,84px);height:auto}
+@keyframes lumiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.home-hero-text{flex:1;min-width:0}
+.home-heading{font-family:'Fredoka',sans-serif;font-size:clamp(18px,3vw,36px);font-weight:700;color:var(--text);letter-spacing:-.01em;line-height:1.2}
+.home-heading span{color:var(--primary)}
+.home-sub{font-size:clamp(11px,1.5vw,16px);color:var(--text-soft);font-weight:600;margin-top:3px}
+.topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;max-width:960px}
+.topic-card{border-radius:20px;padding:16px 10px 12px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;border:none;position:relative;overflow:hidden;transition:transform .25s var(--ease-out),box-shadow .25s}
+.topic-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.22) 0%,transparent 50%);pointer-events:none}
+.topic-card:hover{transform:translateY(-6px) scale(1.03)}
+.tc-icon{font-size:clamp(34px,5.5vw,52px);animation:tcBounce 2s ease-in-out infinite alternate;line-height:1}
+@keyframes tcBounce{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+.tc-title{font-family:'Fredoka',sans-serif;font-size:clamp(14px,2.2vw,22px);font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.25)}
+.tc-desc{font-size:clamp(12px,1.8vw,16px);color:rgba(255,255,255,0.92);font-weight:600}
+
+/* ── SPARKLES ── */
+.sparkle{position:fixed;pointer-events:none;z-index:0;border-radius:50%;animation:kc-twinkle 2.5s ease-in-out infinite}
+@keyframes kc-twinkle{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+/* ── GAME HEADER ── */
+.game-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(255,255,255,0.75);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:1.5px solid rgba(255,111,181,0.15);box-shadow:0 2px 16px rgba(255,111,181,0.12);gap:10px;position:sticky;top:0;z-index:10;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.back-btn{background:var(--primary);color:#fff;font-size:clamp(13px,2vw,16px);font-weight:700;padding:11px 18px;border-radius:22px;flex-shrink:0;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.back-btn:hover{background:#ff4da0}
+.speak-btn{background:var(--accent3);color:var(--text);font-size:clamp(18px,3vw,24px);font-weight:700;padding:9px 13px;border-radius:18px;flex-shrink:0;line-height:1;box-shadow:0 3px 10px rgba(255,216,110,0.4)}
+.g-title{font-family:'Fredoka',sans-serif;font-size:clamp(18px,3.5vw,28px);font-weight:600;color:var(--text);text-align:center;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode-btn{display:none}
+/* Back-to-cards button inside quiz section */
+.back-to-cards-btn{
+  background:rgba(255,255,255,0.82);color:var(--text);
+  font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,18px);
+  font-weight:700;padding:11px 22px;border-radius:20px;border:none;
+  box-shadow:0 3px 10px rgba(61,31,79,0.1);
+  align-self:flex-start;margin:0 0 4px 16px;
+}
+.back-to-cards-btn:hover{background:#fff}
+
+/* ── LEARN AREA ── */
+.learn-section{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;padding:24px 0 12px}
+.learn-prompt{color:var(--text-soft);font-size:clamp(17px,2.5vw,22px);font-weight:600;text-align:center;padding:0 20px}
+
+/* ── LEARN GRID (seasons / shapes / colors) ── */
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;width:100%;max-width:920px;padding:0 18px}
+.learn-card{border-radius:var(--card-radius);padding:34px 18px;border:none;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .22s var(--ease-out),box-shadow .22s;position:relative;overflow:hidden}
+.learn-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.learn-card:hover{transform:translateY(-5px) scale(1.03)}
+.learn-card.active{transform:translateY(-5px) scale(1.05);outline:3px solid rgba(255,255,255,0.8)}
+.card-pre{opacity:0!important;transform:translateY(24px) scale(0.93)!important;pointer-events:none!important;transition:opacity .44s var(--ease-out),transform .44s var(--spring)!important}
+.card-pre.show{opacity:1!important;transform:translateY(0) scale(1)!important}
+.lc-icon{font-size:clamp(56px,9vw,80px);animation:tcBounce 2s ease-in-out infinite alternate;line-height:1}
+.lc-name{font-family:'Fredoka',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:600;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.25)}
+.lc-sub{font-size:clamp(20px,3vw,26px)}
+.lc-num{font-family:'Fredoka',sans-serif;font-size:clamp(46px,7vw,66px);font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.2);line-height:1}
+.lc-letter{font-family:'Fredoka',sans-serif;font-size:clamp(52px,8vw,72px);font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.2);line-height:1}
+
+/* ── MINI GRID (months / numbers) ── */
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:960px;padding:0 16px}
+.mini-card{border-radius:20px;padding:18px 10px;border:none;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;position:relative;overflow:hidden}
+.mini-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.mini-card:hover{transform:translateY(-4px) scale(1.06)}
+.mini-card.active{transform:translateY(-4px) scale(1.07);outline:2.5px solid rgba(255,255,255,0.85)}
+.mi-num{font-family:'Fredoka',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,0.85)}
+.mi-emoji{font-size:clamp(32px,5vw,44px)}
+.mi-big{font-family:'Fredoka',sans-serif;font-size:clamp(34px,5.5vw,52px);font-weight:700;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25);line-height:1}
+.mi-name{font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);text-align:center}
+
+/* ── DAYS RAIL ── */
+.days-rail{display:flex;flex-wrap:wrap;gap:12px;width:100%;max-width:960px;padding:0 16px;justify-content:center}
+.day-card{flex:1;min-width:100px;max-width:160px;border-radius:20px;padding:20px 10px;border:none;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform .2s var(--ease-out),box-shadow .2s;position:relative;overflow:hidden}
+.day-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.day-card:hover{transform:translateY(-4px) scale(1.05)}
+.day-card.active{transform:translateY(-4px) scale(1.07);outline:2.5px solid rgba(255,255,255,0.85)}
+
+/* ── INFO CARD ── */
+.info-card{width:100%;max-width:580px;border-radius:26px;padding:28px 32px;text-align:center;animation:slideUp .36s var(--ease-out);margin:0 16px;background:#fff;box-shadow:var(--card-shadow)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ic-row{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:14px}
+.ic-big{font-size:clamp(52px,8vw,72px)}
+.ic-name{font-family:'Fredoka',sans-serif;font-size:clamp(28px,4.5vw,38px);font-weight:700;color:var(--text)}
+.ic-sub{font-size:clamp(15px,2.2vw,19px);color:var(--text-soft);font-weight:600;margin-top:2px}
+.ic-fact{font-size:clamp(18px,2.8vw,23px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4}
+.ic-extra{font-size:clamp(15px,2vw,18px);color:var(--text-soft);font-weight:600;margin-bottom:4px}
+.ic-swatch{width:60px;height:60px;border-radius:16px;margin:0 auto 12px;border:2px solid rgba(0,0,0,0.08)}
+
+/* ── ALPHABET GRID ── */
+.alpha-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:980px;padding:0 14px}
+.alpha-card{border-radius:18px;padding:16px 8px 12px;border:none;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:transform .2s var(--ease-out);position:relative;overflow:hidden}
+.alpha-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.18) 0%,transparent 40%);pointer-events:none}
+.alpha-card:hover{transform:translateY(-3px) scale(1.05)}
+.alpha-card.active{outline:2.5px solid rgba(255,255,255,0.9);transform:translateY(-3px) scale(1.07)}
+.ac-letter{font-family:'Fredoka',sans-serif;font-size:clamp(30px,5vw,46px);font-weight:700;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,0.25);line-height:1}
+.ac-emoji{font-size:clamp(24px,3.5vw,34px)}
+.ac-word{font-family:'Fredoka',sans-serif;font-size:clamp(11px,1.8vw,15px);font-weight:600;color:rgba(255,255,255,0.95);text-align:center}
+
+/* ── SHAPES GRID ── */
+.shapes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;width:100%;max-width:900px;padding:0 16px}
+
+/* ── COLORS GRID ── */
+.colors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;width:100%;max-width:900px;padding:0 16px}
+.color-card{border-radius:var(--card-radius);padding:30px 14px;border:none;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .22s var(--ease-out),box-shadow .22s;position:relative;overflow:hidden}
+.color-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.20) 0%,transparent 45%);pointer-events:none}
+.color-card:hover{transform:translateY(-4px) scale(1.03)}
+.color-card.active{outline:3px solid rgba(255,255,255,0.9);transform:translateY(-4px) scale(1.05)}
+
+/* ── QUIZ ── */
+.screen.quiz-active{height:100dvh;max-height:100dvh;overflow:hidden;min-height:unset;padding-bottom:0}
+.screen.quiz-active .quiz-section{flex:1;min-height:0;overflow-y:auto;padding-bottom:max(12px,env(safe-area-inset-bottom,12px))}
+.quiz-section{display:none;width:100%;flex-direction:column;align-items:center;gap:10px;padding-top:8px}
+.quiz-prog-track{width:100%;max-width:640px;padding:4px 20px 0}
+.quiz-prog-bar{height:6px;background:rgba(61,31,79,0.12);border-radius:99px;overflow:hidden}
+.quiz-prog-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent),var(--accent2));border-radius:99px;transition:width .5s var(--ease-out);width:0%}
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;padding:0 20px}
+.score-badge{background:linear-gradient(135deg,var(--primary),#ff4da0);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,18px);font-weight:600;padding:8px 18px;border-radius:18px;box-shadow:0 4px 14px rgba(255,111,181,0.35)}
+.prog-badge{background:rgba(61,31,79,0.08);color:var(--text-soft);font-size:clamp(13px,1.8vw,16px);font-weight:600;padding:8px 16px;border-radius:18px}
+.q-card{width:100%;max-width:640px;border-radius:var(--card-radius);padding:18px 20px;text-align:center;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;margin:0 16px;box-shadow:var(--card-shadow)}
+.q-char{font-size:clamp(46px,8vw,72px);animation:tcBounce 1.2s ease-in-out infinite alternate;line-height:1}
+.q-text{font-family:'Fredoka',sans-serif;font-size:clamp(18px,2.8vw,24px);font-weight:600;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.2);line-height:1.2}
+.q-hint{font-size:clamp(12px,1.8vw,16px);color:rgba(255,255,255,0.88);font-weight:600;background:rgba(0,0,0,0.12);border-radius:12px;padding:6px 14px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:640px;padding:0 16px}
+.opt-btn{background:#fff;color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(15px,2.4vw,20px);font-weight:600;padding:14px 10px;border-radius:18px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 18px rgba(61,31,79,0.12),0 2px 0 rgba(255,255,255,0.9) inset;transition:all .2s var(--ease-out)}
+.opt-btn:hover{transform:translateY(-3px) scale(1.02)!important;box-shadow:0 10px 28px rgba(61,31,79,0.18)}
+.opt-btn.correct{background:linear-gradient(135deg,#3FD868,#25B34B)!important;color:#fff!important;transform:scale(1.05)!important;box-shadow:0 8px 24px rgba(63,216,104,0.45)!important;animation:correctPop .4s var(--spring)}
+.opt-btn.wrong{background:linear-gradient(135deg,#FF5C5C,#E03333)!important;color:#fff!important;animation:shake .5s ease-in-out}
+@keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1.05)}}
+@keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(-8px) rotate(-2deg)}40%{transform:translate(8px) rotate(2deg)}60%{transform:translate(-6px)}80%{transform:translate(6px)}}
+.opt-emoji{font-size:clamp(28px,4.5vw,40px)}
+.opt-label{font-size:clamp(14px,2vw,19px);text-align:center}
+.next-btn{display:none!important}
+
+/* ── MODE TABS ── */
+.mode-tabs{display:flex;gap:8px;padding:10px 16px 6px;width:100%;align-self:center;max-width:960px;background:rgba(255,240,247,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,111,181,0.12)}
+/* Game screen tabs stick just below the sticky game-header (~64px) */
+.screen:not(#home) .mode-tabs{position:sticky;top:64px;z-index:9}
+.mode-tab{flex:1;padding:10px 6px;border-radius:14px;border:1.5px solid rgba(61,31,79,0.1);background:rgba(255,255,255,0.85);color:var(--text);font-family:'Fredoka',sans-serif;font-size:clamp(14px,2.2vw,18px);font-weight:700;cursor:pointer;transition:all .18s var(--ease-out);display:flex;align-items:center;justify-content:center;gap:5px}
+.mode-tab:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(61,31,79,0.12)}
+.mode-tab.active{border:none;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.15)}
+
+/* ── MATCH GAME ── */
+.match-section{display:none;width:100%;flex-direction:column;align-items:center;gap:14px;padding:14px 16px}
+.match-prompt{font-family:'Fredoka',sans-serif;font-size:clamp(15px,2.2vw,20px);font-weight:600;color:var(--text-soft);text-align:center}
+.match-items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:640px}
+.match-item{border-radius:var(--card-radius);padding:16px 12px;border:2.5px dashed rgba(61,31,79,0.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:105px;transition:all .2s var(--ease-out);background:rgba(255,255,255,0.7)}
+.match-item.matched{border-style:solid;border-color:transparent;color:#fff}
+.match-item.drag-over{border-style:solid;border-color:var(--accent);transform:scale(1.06);background:rgba(167,123,255,0.12)}
+.match-item.match-wrong{animation:shake .5s ease-in-out;border-color:#FF5C5C}
+.match-item-icon{font-size:clamp(30px,5vw,44px);line-height:1}
+.match-item-label{font-family:'Fredoka',sans-serif;font-size:clamp(13px,2vw,17px);font-weight:700;color:#fff;text-align:center}
+.match-labels{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%;max-width:640px}
+.match-label{background:var(--primary);color:#fff;font-family:'Fredoka',sans-serif;font-size:clamp(14px,2vw,19px);font-weight:600;padding:10px 22px;border-radius:999px;cursor:grab;transition:all .2s var(--ease-out);border:none;box-shadow:0 4px 14px rgba(255,111,181,0.35);user-select:none;-webkit-user-select:none;touch-action:none}
+.match-label:hover{transform:translateY(-3px) scale(1.05)!important}
+.match-label.dragging{opacity:0.35;transform:scale(0.95)!important}
+.match-all-done{font-family:'Fredoka',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:700;color:var(--primary);text-align:center;padding:30px 20px}
+
+/* ── CONFETTI / CELEBRATION ── */
+#celebration{display:none;position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}
+#celebration.show{display:block}
+.confetti-piece{position:absolute;top:-20px;font-size:30px;animation:confettiFall linear forwards;pointer-events:none}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0)}80%{opacity:1}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
+.cel-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fff,#FFF0FA);border-radius:28px;padding:24px 44px;text-align:center;box-shadow:0 12px 40px rgba(255,111,181,0.35);animation:toastUp .4s var(--spring) both;pointer-events:none;z-index:1000}
+@keyframes toastUp{from{opacity:0;transform:translateX(-50%) translateY(30px) scale(.9)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+.cel-toast-icon{font-size:clamp(52px,8vw,72px);display:block}
+.cel-toast-msg{font-family:'Fredoka',sans-serif;font-size:clamp(24px,3.5vw,32px);font-weight:700;color:var(--text);margin-top:6px}
+
+/* ══════════════════════════════════════════════
+   ADAPTIVE BREAKPOINTS
+   ══════════════════════════════════════════════ */
+
+/* ── Tiny phone  (<400px) ── */
+@media(max-width:399px){
+  .topic-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .mini-grid{grid-template-columns:repeat(3,1fr);gap:8px;padding:0 10px}
+  .alpha-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .shapes-grid{grid-template-columns:repeat(2,1fr)}
+  .colors-grid{grid-template-columns:repeat(2,1fr)}
+  .mode-btn{display:none}
+  .learn-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── Phone portrait  (400px – 599px) ── */
+@media(min-width:400px)and(max-width:599px){
+  .topic-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .mini-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .alpha-grid{grid-template-columns:repeat(4,1fr)}
+  .shapes-grid{grid-template-columns:repeat(2,1fr)}
+  .colors-grid{grid-template-columns:repeat(2,1fr)}
+  .learn-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── Shared phone adjustments  (<600px) ── */
+@media(max-width:599px){
+  .game-header{padding:10px 12px;gap:6px}
+  .back-btn{font-size:13px;padding:9px 13px}
+  .speak-btn{font-size:16px;padding:8px 10px}
+  .mode-btn{font-size:12px;padding:9px 12px}
+  .learn-card{padding:22px 12px}
+  .mini-card{padding:14px 7px}
+  .day-card{min-width:80px;padding:14px 8px}
+  .info-card{margin:0 10px;padding:20px 16px}
+  .q-card{padding:22px 14px;margin:0 10px}
+  .opts-grid{padding:0 10px;gap:10px}
+  .opt-btn{padding:17px 8px}
+}
+
+/* ── Tablet  (600px – 899px) ── */
+@media(min-width:600px)and(max-width:899px){
+  .mini-grid{grid-template-columns:repeat(4,1fr);gap:12px}
+  .alpha-grid{grid-template-columns:repeat(5,1fr)}
+}
+
+/* ── Desktop / large tablet  (900px+) ── */
+@media(min-width:900px){
+  .topic-grid{gap:16px}
+  .topic-card{padding:20px 14px 16px}
+  .mini-grid{grid-template-columns:repeat(5,1fr);gap:14px}
+  .alpha-grid{grid-template-columns:repeat(7,1fr);gap:12px}
+  .learn-grid{gap:22px}
+  .days-rail{gap:14px}
+  .day-card{min-width:110px;max-width:180px}
+}
+
+/* ── Wide desktop  (1200px+) ── */
+@media(min-width:1200px){
+  .mini-grid{grid-template-columns:repeat(6,1fr)}
+  .alpha-grid{grid-template-columns:repeat(7,1fr)}
+  .learn-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+}
+
+/* ── PERMANENT TWO-COLUMN: cards left, info panel right (tablet+) ── */
+@media(min-width:700px){
+  .learn-section{
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    gap:12px 20px;
+    padding:16px 20px 12px;
+  }
+  .learn-section .learn-prompt{flex:0 0 100%;padding:0}
+  .learn-section .learn-grid,
+  .learn-section .mini-grid,
+  .learn-section .days-rail,
+  .learn-section .shapes-grid,
+  .learn-section .colors-grid,
+  .learn-section .alpha-grid{
+    flex:1 1 0;min-width:0;
+    width:auto!important;max-width:none!important;padding:0!important;
+  }
+  .learn-section [id$="-info"]{
+    flex:0 0 300px;
+    width:300px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    align-self:flex-start;
+    padding:0!important;
+    position:sticky;
+    top:74px;
+    min-height:160px;
+    justify-content:center;
+  }
+  .learn-section [id$="-info"].ready:not(.filled)::before{
+    content:'👆 Tap a card to see details!';
+    font-family:'Fredoka',sans-serif;
+    font-size:clamp(14px,2vw,17px);
+    color:var(--text-soft);
+    text-align:center;
+    padding:24px 18px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.6);
+    border:2px dashed rgba(255,111,181,0.35);
+    line-height:1.5;
+  }
+}
+@media(min-width:1100px){
+  .learn-section [id$="-info"]{flex:0 0 360px;width:360px!important}
+}
+
+/* ─── MEMORY GAME ─────────────────────────────── */
+.memory-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:12px}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:500px;width:100%}
+.mem-card{aspect-ratio:1;border-radius:16px;border:none;cursor:pointer;font-size:clamp(22px,6vw,36px);display:flex;align-items:center;justify-content:center;transition:transform .25s,opacity .3s;background:linear-gradient(135deg,#A77BFF,#FF6FB5);color:#fff;font-weight:700;box-shadow:0 4px 14px rgba(167,123,255,0.35);user-select:none}
+.mem-card.flipped{background:linear-gradient(135deg,#fff8fe,#fff0fb);color:#3D1F4F;box-shadow:0 4px 14px rgba(0,0,0,0.15)}
+.mem-card.matched{background:linear-gradient(135deg,#3FD868,#25B34B)!important;color:#fff!important;opacity:0.85;cursor:default;transform:scale(0.95)}
+.mem-card.shake{animation:memShake .4s}
+@keyframes memShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.mem-stats{display:flex;gap:16px;font-size:15px;font-weight:700;color:var(--text)}
+
+/* ─── SPELLING GAME ───────────────────────────── */
+.spell-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:14px}
+.spell-icon{font-size:clamp(56px,15vw,90px);line-height:1}
+.spell-blanks{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.spell-blank{width:44px;height:52px;border-radius:12px;border:3px solid var(--primary);background:#fff8fe;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--text);transition:background .2s}
+.spell-blank.filled{background:linear-gradient(135deg,#FF6FB5,#A77BFF);color:#fff;border-color:transparent}
+.spell-blank.correct-flash{background:#3FD868!important;border-color:#25B34B!important}
+.spell-letter-bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:360px}
+.spell-letter-btn{width:44px;height:44px;border-radius:12px;border:2px solid var(--primary);background:#fff;font-size:20px;font-weight:800;color:var(--text);cursor:pointer;transition:transform .15s,background .15s;display:flex;align-items:center;justify-content:center}
+.spell-letter-btn:active{transform:scale(0.9)}
+.spell-letter-btn.used{opacity:0.35;pointer-events:none}
+.spell-letter-btn.wrong-flash{background:#FF4B4B!important;color:#fff!important;animation:memShake .4s}
+.spell-prog{font-size:15px;font-weight:700;color:var(--text)}
+
+/* ─── TRACE GAME ──────────────────────────────── */
+.trace-section{display:flex;flex-direction:column;align-items:center;padding:12px 16px;width:100%;gap:12px}
+.trace-guide{font-size:clamp(80px,22vw,140px);line-height:1;color:rgba(167,123,255,0.18);user-select:none;position:absolute;pointer-events:none;font-weight:900}
+.trace-canvas-wrap{position:relative;width:min(280px,80vw);height:min(280px,80vw);border-radius:24px;border:3px dashed var(--primary);background:#fff8fe;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.trace-canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+.trace-btns{display:flex;gap:12px}
+.trace-btn{padding:12px 24px;border-radius:16px;border:none;font-size:16px;font-weight:700;cursor:pointer}
+.trace-btn.clear{background:#FFE4F3;color:var(--text)}
+.trace-btn.next{background:linear-gradient(135deg,#FF6FB5,#A77BFF);color:#fff}
+.trace-label{font-size:22px;font-weight:800;color:var(--text)}
+</style>
+</head>
+<body>
+
+<!-- Floating sparkle dots -->
+<div id="sparkles"></div>
+
+<!-- Celebration overlay -->
+<div id="celebration">
+  <div id="confetti-container"></div>
+</div>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="mode-tabs" id="home-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setHomeMode('learn')" style="background:linear-gradient(135deg,#FF6FB5,#A77BFF);color:#fff;border:none;box-shadow:0 6px 22px rgba(255,111,181,0.45)">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setHomeMode('quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setHomeMode('match')">🧩 Match</button>
+  </div>
+  <div class="home-inner" id="home-learn">
+
+    <!-- Compact hero: mascot + heading side by side -->
+    <div class="home-hero">
+    <div class="lumi-wrap">
+      <svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" aria-label="Lumi the fairy">
+        <defs>
+          <radialGradient id="wg1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#FF6FB5" stop-opacity="0.4"/>
+          </radialGradient>
+          <radialGradient id="wg2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+            <stop offset="100%" stop-color="#A77BFF" stop-opacity="0.4"/>
+          </radialGradient>
+        </defs>
+        <!-- Wings (4 ellipses) -->
+        <ellipse cx="28" cy="68" rx="30" ry="18" fill="url(#wg1)" opacity="0.85" transform="rotate(-25,28,68)"/>
+        <ellipse cx="22" cy="90" rx="22" ry="13" fill="url(#wg2)" opacity="0.75" transform="rotate(-15,22,90)"/>
+        <ellipse cx="92" cy="68" rx="30" ry="18" fill="url(#wg1)" opacity="0.85" transform="rotate(25,92,68)"/>
+        <ellipse cx="98" cy="90" rx="22" ry="13" fill="url(#wg2)" opacity="0.75" transform="rotate(15,98,90)"/>
+        <!-- Body / dress (pink) -->
+        <ellipse cx="60" cy="105" rx="22" ry="26" fill="#FF6FB5"/>
+        <!-- Gold accent on dress -->
+        <ellipse cx="60" cy="108" rx="10" ry="5" fill="#FFD86E" opacity="0.8"/>
+        <!-- Skin neck -->
+        <rect x="54" y="82" width="12" height="14" rx="5" fill="#FDDCB5"/>
+        <!-- Head -->
+        <circle cx="60" cy="70" r="22" fill="#FDDCB5"/>
+        <!-- Purple hair -->
+        <ellipse cx="60" cy="53" rx="22" ry="10" fill="#A77BFF"/>
+        <ellipse cx="42" cy="62" rx="8" ry="14" fill="#A77BFF"/>
+        <ellipse cx="78" cy="62" rx="8" ry="14" fill="#A77BFF"/>
+        <!-- Eyes -->
+        <circle cx="52" cy="70" r="4" fill="#3D1F4F"/>
+        <circle cx="68" cy="70" r="4" fill="#3D1F4F"/>
+        <circle cx="53.5" cy="68.5" r="1.5" fill="#fff"/>
+        <circle cx="69.5" cy="68.5" r="1.5" fill="#fff"/>
+        <!-- Pink cheeks -->
+        <ellipse cx="46" cy="76" rx="6" ry="4" fill="#FF6FB5" opacity="0.5"/>
+        <ellipse cx="74" cy="76" rx="6" ry="4" fill="#FF6FB5" opacity="0.5"/>
+        <!-- Smile -->
+        <path d="M54,80 Q60,86 66,80" stroke="#E05090" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- Wand arm -->
+        <line x1="82" y1="96" x2="100" y2="72" stroke="#FDDCB5" stroke-width="6" stroke-linecap="round"/>
+        <!-- Star wand -->
+        <polygon points="100,62 103,70 112,70 105,76 108,84 100,78 92,84 95,76 88,70 97,70" fill="#FFD86E" stroke="#FF6FB5" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="home-hero-text">
+      <h1 class="home-heading">Hi, I'm Lumi! <span>✨</span><br>What shall we learn?</h1>
+      <p class="home-sub">Tap a topic to start your magical adventure!</p>
+    </div>
+    </div><!-- end .home-hero -->
+
+    <!-- 7 topic cards -->
+    <div class="topic-grid">
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF6FB5,#ff4da0);box-shadow:0 10px 26px rgba(255,111,181,0.4)" onclick="onHomeTopic('seasons')">
+        <div class="tc-icon">🌸</div>
+        <div class="tc-title">Seasons</div>
+        <div class="tc-desc">Spring, Summer, Fall, Winter</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#A77BFF,#7C4FFF);box-shadow:0 10px 26px rgba(167,123,255,0.4)" onclick="onHomeTopic('months')">
+        <div class="tc-icon">📅</div>
+        <div class="tc-title">Months</div>
+        <div class="tc-desc">All 12 months of the year</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#6FE3C8,#3DBBAA);box-shadow:0 10px 26px rgba(111,227,200,0.4)" onclick="onHomeTopic('days')">
+        <div class="tc-icon">📆</div>
+        <div class="tc-title">Days</div>
+        <div class="tc-desc">Monday through Sunday</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFD86E,#FFC02B);box-shadow:0 10px 26px rgba(255,216,110,0.4)" onclick="onHomeTopic('numbers')">
+        <div class="tc-icon">🔢</div>
+        <div class="tc-title">Numbers</div>
+        <div class="tc-desc">Count from 1 to 20!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF9AC4,#FF6FB5);box-shadow:0 10px 26px rgba(255,154,196,0.4)" onclick="onHomeTopic('shapes')">
+        <div class="tc-icon">⭐</div>
+        <div class="tc-title">Shapes</div>
+        <div class="tc-desc">Circles, stars &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#7FB4FF,#4A8FFF);box-shadow:0 10px 26px rgba(127,180,255,0.4)" onclick="onHomeTopic('colors')">
+        <div class="tc-icon">🌈</div>
+        <div class="tc-title">Colors</div>
+        <div class="tc-desc">Red, blue, green &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFB39B,#FF8060);box-shadow:0 10px 26px rgba(255,179,155,0.4)" onclick="onHomeTopic('alphabet')">
+        <div class="tc-icon">🔤</div>
+        <div class="tc-title">Alphabet</div>
+        <div class="tc-desc">A is for Apple, B for Bee…</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFB347,#FF8C00);box-shadow:0 10px 26px rgba(255,179,71,0.4)" onclick="onHomeTopic('animals')">
+        <div class="tc-icon">🐾</div>
+        <div class="tc-title">Animals</div>
+        <div class="tc-desc">Dogs, cats, lions &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF6B6B,#FF4444);box-shadow:0 10px 26px rgba(255,107,107,0.4)" onclick="onHomeTopic('fruits')">
+        <div class="tc-icon">🍎</div>
+        <div class="tc-title">Fruits</div>
+        <div class="tc-desc">Apples, bananas &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#87CEEB,#4AA8D4);box-shadow:0 10px 26px rgba(135,206,235,0.4)" onclick="onHomeTopic('weather')">
+        <div class="tc-icon">🌤️</div>
+        <div class="tc-title">Weather</div>
+        <div class="tc-desc">Sunny, rainy, snowy &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#DDA0DD,#BA55D3);box-shadow:0 10px 26px rgba(221,160,221,0.4)" onclick="onHomeTopic('family')">
+        <div class="tc-icon">👨‍👩‍👧‍👦</div>
+        <div class="tc-title">Family</div>
+        <div class="tc-desc">Mom, Dad, Sister, Brother…</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#3CB371,#2E8B57);box-shadow:0 10px 26px rgba(60,179,113,0.4)" onclick="onHomeTopic('vegetables')">
+        <div class="tc-icon">🥦</div>
+        <div class="tc-title">Vegetables</div>
+        <div class="tc-desc">Carrots, broccoli &amp; more!</div>
+      </button>
+    </div>
+
+  </div><!-- end #home-learn -->
+
+  <!-- All-topics quiz -->
+  <div class="quiz-section" id="home-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="home-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="home-score">✨ Score: 0</span>
+      <span class="prog-badge" id="home-prog">Q 1 of 15</span>
+    </div>
+    <div class="q-card" id="home-qcard"></div>
+    <div class="opts-grid" id="home-opts"></div>
+    <button class="next-btn" id="home-next" style="display:none" onclick="nextQ('home')">Next ➡</button>
+  </div>
+
+  <!-- All-topics match -->
+  <div class="match-section" id="home-match"></div>
+
+</div>
+
+<!-- SEASONS -->
+<div class="screen" id="seasons">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="seasons-title">🌸 Seasons</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="seasons-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('seasons','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('seasons','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('seasons','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('seasons','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('seasons','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="seasons-learn">
+    <p class="learn-prompt">Listen and watch the cards appear! 🌸</p>
+    <div class="learn-grid" id="seasons-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="seasons-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="seasons-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="seasons-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="seasons-score">✨ Score: 0</span>
+      <span class="prog-badge" id="seasons-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="seasons-qcard"></div>
+    <div class="opts-grid" id="seasons-opts"></div>
+    <button class="next-btn" id="seasons-next" style="display:none" onclick="nextQ('seasons')">Next ➡</button>
+  </div>
+  <div class="match-section" id="seasons-match"></div>
+  <div class="memory-section" id="seasons-memory"></div>
+  <div class="spell-section" id="seasons-spell"></div>
+</div>
+
+<!-- MONTHS -->
+<div class="screen" id="months">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">📅 Months of the Year</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="months-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('months','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('months','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('months','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('months','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('months','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="months-learn">
+    <p class="learn-prompt">Listen and watch the cards appear! 📅</p>
+    <div class="mini-grid" id="months-learn-cards"></div>
+    <div id="months-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="months-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="months-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="months-score">✨ Score: 0</span>
+      <span class="prog-badge" id="months-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="months-qcard"></div>
+    <div class="opts-grid" id="months-opts"></div>
+    <button class="next-btn" id="months-next" style="display:none" onclick="nextQ('months')">Next ➡</button>
+  </div>
+  <div class="match-section" id="months-match"></div>
+  <div class="memory-section" id="months-memory"></div>
+  <div class="spell-section" id="months-spell"></div>
+</div>
+
+<!-- DAYS -->
+<div class="screen" id="days">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">📆 Days of the Week</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="days-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('days','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('days','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('days','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('days','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('days','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="days-learn">
+    <p class="learn-prompt">Listen and watch the cards appear! 📆</p>
+    <div class="days-rail" id="days-learn-cards"></div>
+    <div id="days-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="days-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="days-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="days-score">✨ Score: 0</span>
+      <span class="prog-badge" id="days-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="days-qcard"></div>
+    <div class="opts-grid" id="days-opts"></div>
+    <button class="next-btn" id="days-next" style="display:none" onclick="nextQ('days')">Next ➡</button>
+  </div>
+  <div class="match-section" id="days-match"></div>
+  <div class="memory-section" id="days-memory"></div>
+  <div class="spell-section" id="days-spell"></div>
+</div>
+
+<!-- NUMBERS -->
+<div class="screen" id="numbers">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🔢 Numbers 1–20</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="numbers-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('numbers','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('numbers','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('numbers','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('numbers','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('numbers','spell')">🔤 Spell</button>
+    <button class="mode-tab" data-mode="trace" onclick="setMode('numbers','trace')">✏️ Trace</button>
+  </div>
+  <div class="learn-section" id="numbers-learn">
+    <p class="learn-prompt">Listen and count along! 🔢</p>
+    <div class="mini-grid" id="numbers-learn-cards"></div>
+    <div id="numbers-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="numbers-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="numbers-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="numbers-score">✨ Score: 0</span>
+      <span class="prog-badge" id="numbers-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="numbers-qcard"></div>
+    <div class="opts-grid" id="numbers-opts"></div>
+    <button class="next-btn" id="numbers-next" style="display:none" onclick="nextQ('numbers')">Next ➡</button>
+  </div>
+  <div class="match-section" id="numbers-match"></div>
+  <div class="memory-section" id="numbers-memory"></div>
+  <div class="spell-section" id="numbers-spell"></div>
+  <div class="trace-section" id="numbers-trace"></div>
+</div>
+
+<!-- SHAPES -->
+<div class="screen" id="shapes">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">⭐ Shapes</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="shapes-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('shapes','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('shapes','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('shapes','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('shapes','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('shapes','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="shapes-learn">
+    <p class="learn-prompt">Listen and watch the shapes appear! ⭐</p>
+    <div class="shapes-grid" id="shapes-learn-cards"></div>
+    <div id="shapes-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="shapes-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="shapes-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="shapes-score">✨ Score: 0</span>
+      <span class="prog-badge" id="shapes-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="shapes-qcard"></div>
+    <div class="opts-grid" id="shapes-opts"></div>
+    <button class="next-btn" id="shapes-next" style="display:none" onclick="nextQ('shapes')">Next ➡</button>
+  </div>
+  <div class="match-section" id="shapes-match"></div>
+  <div class="memory-section" id="shapes-memory"></div>
+  <div class="spell-section" id="shapes-spell"></div>
+</div>
+
+<!-- COLORS -->
+<div class="screen" id="colors">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🌈 Colors</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="colors-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('colors','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('colors','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('colors','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('colors','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('colors','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="colors-learn">
+    <p class="learn-prompt">Listen and watch the colors appear! 🌈</p>
+    <div class="colors-grid" id="colors-learn-cards"></div>
+    <div id="colors-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="colors-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="colors-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="colors-score">✨ Score: 0</span>
+      <span class="prog-badge" id="colors-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="colors-qcard"></div>
+    <div class="opts-grid" id="colors-opts"></div>
+    <button class="next-btn" id="colors-next" style="display:none" onclick="nextQ('colors')">Next ➡</button>
+  </div>
+  <div class="match-section" id="colors-match"></div>
+  <div class="memory-section" id="colors-memory"></div>
+  <div class="spell-section" id="colors-spell"></div>
+</div>
+
+<!-- ALPHABET -->
+<div class="screen" id="alphabet">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title">🔤 Alphabet A–Z</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="alphabet-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('alphabet','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('alphabet','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('alphabet','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('alphabet','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('alphabet','spell')">🔤 Spell</button>
+    <button class="mode-tab" data-mode="trace" onclick="setMode('alphabet','trace')">✏️ Trace</button>
+  </div>
+  <div class="learn-section" id="alphabet-learn">
+    <p class="learn-prompt">Listen and watch the letters appear! 🔤</p>
+    <div class="alpha-grid" id="alphabet-learn-cards"></div>
+    <div id="alphabet-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="alphabet-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="alphabet-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="alphabet-score">✨ Score: 0</span>
+      <span class="prog-badge" id="alphabet-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="alphabet-qcard"></div>
+    <div class="opts-grid" id="alphabet-opts"></div>
+    <button class="next-btn" id="alphabet-next" style="display:none" onclick="nextQ('alphabet')">Next ➡</button>
+  </div>
+  <div class="match-section" id="alphabet-match"></div>
+  <div class="memory-section" id="alphabet-memory"></div>
+  <div class="spell-section" id="alphabet-spell"></div>
+  <div class="trace-section" id="alphabet-trace"></div>
+</div>
+
+<!-- ANIMALS -->
+<div class="screen" id="animals">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="animals-title">🐾 Animals</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="animals-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('animals','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('animals','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('animals','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('animals','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('animals','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="animals-learn">
+    <p class="learn-prompt">Listen and meet the animals! 🐾</p>
+    <div class="mini-grid" id="animals-learn-cards"></div>
+    <div id="animals-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="animals-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="animals-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="animals-score">✨ Score: 0</span>
+      <span class="prog-badge" id="animals-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="animals-qcard"></div>
+    <div class="opts-grid" id="animals-opts"></div>
+    <button class="next-btn" id="animals-next" style="display:none" onclick="nextQ('animals')">Next ➡</button>
+  </div>
+  <div class="match-section" id="animals-match"></div>
+  <div class="memory-section" id="animals-memory"></div>
+  <div class="spell-section" id="animals-spell"></div>
+</div>
+
+<!-- FRUITS -->
+<div class="screen" id="fruits">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="fruits-title">🍎 Fruits</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="fruits-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('fruits','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('fruits','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('fruits','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('fruits','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('fruits','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="fruits-learn">
+    <p class="learn-prompt">Let's explore delicious fruits! 🍎</p>
+    <div class="mini-grid" id="fruits-learn-cards"></div>
+    <div id="fruits-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="fruits-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="fruits-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="fruits-score">✨ Score: 0</span>
+      <span class="prog-badge" id="fruits-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="fruits-qcard"></div>
+    <div class="opts-grid" id="fruits-opts"></div>
+    <button class="next-btn" id="fruits-next" style="display:none" onclick="nextQ('fruits')">Next ➡</button>
+  </div>
+  <div class="match-section" id="fruits-match"></div>
+  <div class="memory-section" id="fruits-memory"></div>
+  <div class="spell-section" id="fruits-spell"></div>
+</div>
+
+<!-- WEATHER -->
+<div class="screen" id="weather">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="weather-title">🌤️ Weather</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="weather-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('weather','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('weather','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('weather','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('weather','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('weather','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="weather-learn">
+    <p class="learn-prompt">Let's learn about the weather! ☀️</p>
+    <div class="mini-grid" id="weather-learn-cards"></div>
+    <div id="weather-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="weather-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="weather-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="weather-score">✨ Score: 0</span>
+      <span class="prog-badge" id="weather-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="weather-qcard"></div>
+    <div class="opts-grid" id="weather-opts"></div>
+    <button class="next-btn" id="weather-next" style="display:none" onclick="nextQ('weather')">Next ➡</button>
+  </div>
+  <div class="match-section" id="weather-match"></div>
+  <div class="memory-section" id="weather-memory"></div>
+  <div class="spell-section" id="weather-spell"></div>
+</div>
+
+<!-- FAMILY -->
+<div class="screen" id="family">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="family-title">👨‍👩‍👧‍👦 Family</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="family-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('family','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('family','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('family','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('family','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('family','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="family-learn">
+    <p class="learn-prompt">Let's meet the family! 👨‍👩‍👧‍👦</p>
+    <div class="mini-grid" id="family-learn-cards"></div>
+    <div id="family-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="family-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="family-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="family-score">✨ Score: 0</span>
+      <span class="prog-badge" id="family-prog">Q 1 of 6</span>
+    </div>
+    <div class="q-card" id="family-qcard"></div>
+    <div class="opts-grid" id="family-opts"></div>
+    <button class="next-btn" id="family-next" style="display:none" onclick="nextQ('family')">Next ➡</button>
+  </div>
+  <div class="match-section" id="family-match"></div>
+  <div class="memory-section" id="family-memory"></div>
+  <div class="spell-section" id="family-spell"></div>
+</div>
+
+<!-- VEGETABLES -->
+<div class="screen" id="vegetables">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="vegetables-title">🥦 Vegetables</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="vegetables-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('vegetables','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('vegetables','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('vegetables','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('vegetables','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('vegetables','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="vegetables-learn">
+    <p class="learn-prompt">Let's explore yummy vegetables! 🥦</p>
+    <div class="mini-grid" id="vegetables-learn-cards"></div>
+    <div id="vegetables-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="vegetables-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="vegetables-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="vegetables-score">✨ Score: 0</span>
+      <span class="prog-badge" id="vegetables-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="vegetables-qcard"></div>
+    <div class="opts-grid" id="vegetables-opts"></div>
+    <button class="next-btn" id="vegetables-next" style="display:none" onclick="nextQ('vegetables')">Next ➡</button>
+  </div>
+  <div class="match-section" id="vegetables-match"></div>
+  <div class="memory-section" id="vegetables-memory"></div>
+  <div class="spell-section" id="vegetables-spell"></div>
+</div>
+
+<script>
+// ─── iOS AUDIO UNLOCK ────────────────────────────────────────────
+(function(){
+  let done=false;
+  function unlock(){
+    if(done)return;done=true;
+    const a=new Audio();a.play().catch(()=>{});
+  }
+  document.addEventListener('touchstart',unlock,{once:true,passive:true});
+  document.addEventListener('click',unlock,{once:true});
+})();
+
+// ─── SPEECH ENGINE ───────────────────────────────────────────────
+const _BASE_CPS=14,_NARRATION_RATE=0.82;
+let _revealTimers=[],_narrationId=0,_clipResolvers=[];
+let _lastText='',_sfxAudio=null,_ttsMode='auto',_bestVoice=null;
+
+(function initVoices(){
+  if(!window.speechSynthesis)return;
+  function pick(){
+    const vs=speechSynthesis.getVoices();if(!vs.length)return;
+    const tests=[
+      v=>/Aria.*Natural|Jenny.*Natural|Zira.*Natural/i.test(v.name)&&v.lang==='en-US',
+      v=>/Samantha|Karen|Moira/i.test(v.name)&&v.lang.startsWith('en'),
+      v=>v.name==='Google US English',
+      v=>v.lang==='en-US'&&/Microsoft/i.test(v.name),
+      v=>v.lang==='en-US',
+      v=>v.lang.startsWith('en'),
+    ];
+    for(const t of tests){const v=vs.find(t);if(v){_bestVoice=v;break;}}
+  }
+  pick();speechSynthesis.onvoiceschanged=pick;
+})();
+
+function cancelSpeech(){
+  try{if(_sfxAudio){_sfxAudio.pause();_sfxAudio.src='';_sfxAudio=null;}}catch(e){}
+  try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}
+  try{if(window.responsiveVoice)responsiveVoice.cancel();}catch(e){}
+}
+
+function _speakFallback(clean){
+  if(_bestVoice&&window.speechSynthesis){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(clean);
+    u.voice=_bestVoice;u.rate=1.0;u.pitch=1.1;u.volume=1;
+    speechSynthesis.speak(u);
+  }else if(window.responsiveVoice){
+    responsiveVoice.cancel();
+    responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:1.0,volume:1});
+  }
+}
+
+function speak(t){
+  try{
+    _lastText=t;
+    const clean=t.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim();
+    if(!clean)return;
+    cancelSpeech();
+    if(_ttsMode!=='fallback'){
+      const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
+      audio.playbackRate=1.0;_sfxAudio=audio;
+      audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
+        _sfxAudio=null;_ttsMode='fallback';_speakFallback(clean);
+      });
+    }else{_speakFallback(clean);}
+  }catch(e){try{_speakFallback(t.replace(/[^\x00-\x7E]/g,' ').trim());}catch(e2){}}
+}
+function replaySpeak(){speak(_lastText||'Hello! Welcome to Fairy Meadow Learning! Tap a topic to start.');}
+
+function _clearRevealTimers(){
+  _revealTimers.forEach(clearTimeout);_revealTimers=[];
+  _narrationId++;
+  const rs=[..._clipResolvers];_clipResolvers=[];rs.forEach(f=>f());
+}
+
+function _playClip(clean){
+  return new Promise(resolve=>{
+    if(!clean){resolve();return;}
+    let settled=false;
+    const fin=()=>{if(!settled){settled=true;_clipResolvers=_clipResolvers.filter(x=>x!==fin);resolve();}};
+    _clipResolvers.push(fin);
+    _revealTimers.push(setTimeout(fin,Math.max(700,(clean.length/(_BASE_CPS*_NARRATION_RATE))*1000+800)));
+    if(_ttsMode!=='fallback'){
+      const audio=new Audio('https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text='+encodeURIComponent(clean));
+      audio.playbackRate=_NARRATION_RATE;_sfxAudio=audio;
+      audio.addEventListener('ended',fin,{once:true});
+      audio.addEventListener('error',fin,{once:true});
+      audio.play().then(()=>{_ttsMode='stream';}).catch(()=>{
+        _sfxAudio=null;_ttsMode='fallback';_clipFallback(clean,fin);
+      });
+    }else{_clipFallback(clean,fin);}
+  });
+}
+
+function _clipFallback(clean,fin){
+  if(_bestVoice&&window.speechSynthesis){
+    speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(clean);
+    u.voice=_bestVoice;u.rate=_NARRATION_RATE;u.pitch=1.1;u.volume=1;
+    u.onend=fin;u.onerror=()=>setTimeout(fin,100);speechSynthesis.speak(u);
+  }else if(window.responsiveVoice){
+    responsiveVoice.cancel();
+    responsiveVoice.speak(clean,'US English Female',{pitch:1.1,rate:_NARRATION_RATE,volume:1,onend:fin});
+  }
+}
+
+async function speakNarration(intro,items,outro,onDone){
+  const myId=++_narrationId;
+  cancelSpeech();
+  _lastText=[intro,...items.map(x=>x.name),outro].filter(Boolean).join('. ');
+  const strip=t=>t?t.replace(/[^\x00-\x7E]/g,' ').replace(/\s+/g,' ').trim():'';
+  const alive=()=>_narrationId===myId;
+  const enableClicks=()=>items.forEach(({id})=>{const el=document.getElementById(id);if(el)el.classList.remove('card-pre');});
+  const finish=()=>{enableClicks();if(onDone)onDone();}
+  try{
+    if(intro&&alive())await _playClip(strip(intro));
+    for(const{id,name}of items){
+      if(!alive())return;
+      document.getElementById(id)?.classList.add('show');
+      await _playClip(strip(name));
+    }
+    if(outro&&alive())await _playClip(strip(outro));
+    if(alive())finish();
+  }catch(e){if(alive())finish();}
+}
+
+// ─── DATA ────────────────────────────────────────────────────────
+const TOPIC_COLORS={seasons:'#FF9EC2',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F'};
+
+const SEASONS=[
+  {name:'Spring',emoji:'🌸',sub:'🌺🌷🌼🦋',color:'#FF9AC4',fact:'Flowers bloom and birds sing! Trees grow new green leaves.',months:'March, April, May'},
+  {name:'Summer',emoji:'☀️',sub:'🌊🏖️🍦🌻',color:'#FFD86E',fact:'It is hot and sunny! Great for swimming and playing outside.',months:'June, July, August'},
+  {name:'Fall',emoji:'🍂',sub:'🍁🎃🌰🍎',color:'#FFB39B',fact:'Leaves turn orange and red! Pumpkins and cozy sweaters.',months:'September, October, November'},
+  {name:'Winter',emoji:'❄️',sub:'⛄🎿🦌🎁',color:'#7FB4FF',fact:'It is cold and snowy! Time for hot cocoa and cozy blankets.',months:'December, January, February'},
+];
+
+const MONTHS=[
+  {name:'January',  num:1,  emoji:'⛄',season:'Winter',color:'#7FB4FF',fact:'New Year starts! Happy New Year!'},
+  {name:'February', num:2,  emoji:'💝',season:'Winter',color:'#FF9AC4',fact:"Valentine's Day is in February!"},
+  {name:'March',    num:3,  emoji:'🌸',season:'Spring',color:'#A77BFF',fact:'Spring begins in March!'},
+  {name:'April',    num:4,  emoji:'🌧️',season:'Spring',color:'#6FE3C8',fact:'April showers bring May flowers!'},
+  {name:'May',      num:5,  emoji:'🌺',season:'Spring',color:'#FF6FB5',fact:'Flowers bloom everywhere in May!'},
+  {name:'June',     num:6,  emoji:'☀️',season:'Summer',color:'#FFD86E',fact:'Summer starts in June!'},
+  {name:'July',     num:7,  emoji:'🎆',season:'Summer',color:'#FF9AC4',fact:'Fireworks light up July skies!'},
+  {name:'August',   num:8,  emoji:'🌻',season:'Summer',color:'#FFB39B',fact:'August is one of the hottest months!'},
+  {name:'September',num:9,  emoji:'🍎',season:'Fall',  color:'#A77BFF',fact:'Back to school in September!'},
+  {name:'October',  num:10, emoji:'🎃',season:'Fall',  color:'#FF6FB5',fact:'Halloween is on October 31st!'},
+  {name:'November', num:11, emoji:'🦃',season:'Fall',  color:'#6FE3C8',fact:'Thanksgiving is in November!'},
+  {name:'December', num:12, emoji:'🎄',season:'Winter',color:'#7FB4FF',fact:'Christmas and winter holidays!'},
+];
+
+const DAYS=[
+  {name:'Monday',   short:'Mon',num:1,emoji:'🌙',color:'#A77BFF',activity:'Start of the school week!',fact:'Monday is the first day of the school week.'},
+  {name:'Tuesday',  short:'Tue',num:2,emoji:'🔥',color:'#FF6FB5',activity:'Taco Tuesday!',fact:'Tuesday comes right after Monday.'},
+  {name:'Wednesday',short:'Wed',num:3,emoji:'🌊',color:'#6FE3C8',activity:'Hump day! Halfway there!',fact:'Wednesday is the middle of the week.'},
+  {name:'Thursday', short:'Thu',num:4,emoji:'⚡',color:'#FFD86E',activity:'Almost Friday!',fact:'Thursday means the weekend is close!'},
+  {name:'Friday',   short:'Fri',num:5,emoji:'🎉',color:'#7FB4FF',activity:'TGIF! Weekend starts!',fact:'Friday is the last school day of the week.'},
+  {name:'Saturday', short:'Sat',num:6,emoji:'🌟',color:'#FF9AC4',activity:'Weekend fun day!',fact:'Saturday is the first day of the weekend.'},
+  {name:'Sunday',   short:'Sun',num:7,emoji:'☀️',color:'#FFB39B',activity:'Rest and family day!',fact:'Sunday is the last day of the week.'},
+];
+
+const NUMBERS=[
+  {name:'One',   numeral:1,  emoji:'1️⃣',color:'#FF6FB5',fact:'One is all by itself!'},
+  {name:'Two',   numeral:2,  emoji:'2️⃣',color:'#A77BFF',fact:'Two makes a pair, like your eyes!'},
+  {name:'Three', numeral:3,  emoji:'3️⃣',color:'#6FE3C8',fact:'Three sides make a triangle!'},
+  {name:'Four',  numeral:4,  emoji:'4️⃣',color:'#FFD86E',fact:'Four legs on a dog or a chair!'},
+  {name:'Five',  numeral:5,  emoji:'5️⃣',color:'#FF9AC4',fact:'Five fingers on one hand!'},
+  {name:'Six',   numeral:6,  emoji:'6️⃣',color:'#7FB4FF',fact:'Six legs on every insect!'},
+  {name:'Seven', numeral:7,  emoji:'7️⃣',color:'#FFB39B',fact:'Seven days in a week!'},
+  {name:'Eight', numeral:8,  emoji:'8️⃣',color:'#FF6FB5',fact:'Eight legs on an octopus!'},
+  {name:'Nine',  numeral:9,  emoji:'9️⃣',color:'#A77BFF',fact:'Nine planets… well, eight now!'},
+  {name:'Ten',   numeral:10, emoji:'🔟',color:'#6FE3C8',fact:'Ten fingers and ten toes!'},
+  {name:'Eleven',    numeral:11,emoji:'1️⃣1️⃣',color:'#FFD86E',fact:'Eleven is one more than ten!'},
+  {name:'Twelve',    numeral:12,emoji:'🕛',   color:'#FF9AC4',fact:'Twelve months in a year!'},
+  {name:'Thirteen',  numeral:13,emoji:'🎲',   color:'#7FB4FF',fact:'Thirteen is a teen number!'},
+  {name:'Fourteen',  numeral:14,emoji:'🌸',   color:'#FFB39B',fact:'Fourteen days in two weeks!'},
+  {name:'Fifteen',   numeral:15,emoji:'⭐',   color:'#FF6FB5',fact:'Fifteen is three groups of five!'},
+  {name:'Sixteen',   numeral:16,emoji:'🎂',   color:'#A77BFF',fact:'Sweet sixteen!'},
+  {name:'Seventeen', numeral:17,emoji:'🌙',   color:'#6FE3C8',fact:'Seventeen is a prime number!'},
+  {name:'Eighteen',  numeral:18,emoji:'🎈',   color:'#FFD86E',fact:'Almost twenty!'},
+  {name:'Nineteen',  numeral:19,emoji:'🦋',   color:'#FF9AC4',fact:'One away from twenty!'},
+  {name:'Twenty',    numeral:20,emoji:'🎉',   color:'#7FB4FF',fact:'Twenty — we made it!'},
+];
+
+const SHAPES=[
+  {name:'Circle',   emoji:'⭕',color:'#FF6FB5',fact:'A circle is perfectly round — like the sun!'},
+  {name:'Square',   emoji:'🟦',color:'#A77BFF',fact:'A square has 4 equal sides and 4 corners!'},
+  {name:'Triangle', emoji:'🔺',color:'#6FE3C8',fact:'A triangle has 3 sides and 3 pointy corners!'},
+  {name:'Rectangle',points:'10,25 90,25 90,75 10,75',color:'#FFD86E',fact:'A rectangle has 2 long sides and 2 short sides!'},
+  {name:'Star',     emoji:'⭐',color:'#FF9AC4',fact:'A star has 5 pointy points all around!'},
+  {name:'Heart',    emoji:'❤️',color:'#FF6FB5',fact:'A heart is the shape we use for love!'},
+  {name:'Diamond',  emoji:'🔷',color:'#7FB4FF',fact:'A diamond is like a square standing on its tip!'},
+  {name:'Oval',     emoji:'🥚',color:'#FFB39B',fact:'An oval is a stretched circle, like an egg!'},
+  {name:'Pentagon', points:'50,9 91,39 75,87 25,87 9,39',color:'#A77BFF',fact:'A pentagon has 5 sides — like home plate!'},
+  {name:'Hexagon',  points:'50,7 87,29 87,71 50,93 13,71 13,29',color:'#6FE3C8',fact:'A hexagon has 6 sides — like a honeycomb!'},
+];
+
+const COLORS=[
+  {name:'Red',    emoji:'🍎',hex:'#FF4B4B',fact:'Red is the color of apples and fire trucks!'},
+  {name:'Orange', emoji:'🍊',hex:'#FF8A2B',fact:'Orange is bright and juicy like an orange!'},
+  {name:'Yellow', emoji:'🌟',hex:'#FFD700',fact:'Yellow is the color of sunshine!'},
+  {name:'Green',  emoji:'🌿',hex:'#3FCF74',fact:'Green like grass and leaves on trees!'},
+  {name:'Blue',   emoji:'💙',hex:'#3F88FF',fact:'Blue is the color of the sky and ocean!'},
+  {name:'Purple', emoji:'🍇',hex:'#A14BFF',fact:'Purple like grapes and royal crowns!'},
+  {name:'Pink',   emoji:'🌸',hex:'#FF7AC4',fact:'Pink like flowers and bubble gum!'},
+  {name:'Brown',  emoji:'🐻',hex:'#8B5A2B',fact:'Brown like bears and chocolate!'},
+  {name:'White',  emoji:'⬜',hex:'#C8C8C8',fact:'White is the color of clouds and snow!'},
+  {name:'Black',  emoji:'🖤',hex:'#444444',fact:'Black is dark like the night sky!'},
+];
+
+const ALPHABET=[
+  {name:'A',word:'Apple',   emoji:'🍎',color:'#FF6FB5'},
+  {name:'B',word:'Bee',     emoji:'🐝',color:'#FFD86E'},
+  {name:'C',word:'Cat',     emoji:'🐱',color:'#A77BFF'},
+  {name:'D',word:'Dog',     emoji:'🐶',color:'#6FE3C8'},
+  {name:'E',word:'Elephant',emoji:'🐘',color:'#FF9AC4'},
+  {name:'F',word:'Fox',     emoji:'🦊',color:'#FFB39B'},
+  {name:'G',word:'Giraffe', emoji:'🦒',color:'#FFD86E'},
+  {name:'H',word:'House',   emoji:'🏠',color:'#7FB4FF'},
+  {name:'I',word:'Ice cream',emoji:'🍦',color:'#FF6FB5'},
+  {name:'J',word:'Juggle',  emoji:'🤹',color:'#A77BFF'},
+  {name:'K',word:'Kite',    emoji:'🪁',color:'#6FE3C8'},
+  {name:'L',word:'Lion',    emoji:'🦁',color:'#FFD86E'},
+  {name:'M',word:'Moon',    emoji:'🌙',color:'#FF9AC4'},
+  {name:'N',word:'Nest',    emoji:'🪺',color:'#FFB39B'},
+  {name:'O',word:'Octopus', emoji:'🐙',color:'#7FB4FF'},
+  {name:'P',word:'Penguin', emoji:'🐧',color:'#FF6FB5'},
+  {name:'Q',word:'Queen',   emoji:'👸',color:'#A77BFF'},
+  {name:'R',word:'Rainbow', emoji:'🌈',color:'#6FE3C8'},
+  {name:'S',word:'Sun',     emoji:'☀️',color:'#FFD86E'},
+  {name:'T',word:'Tree',    emoji:'🌳',color:'#FF9AC4'},
+  {name:'U',word:'Umbrella',emoji:'☂️',color:'#FFB39B'},
+  {name:'V',word:'Violin',  emoji:'🎻',color:'#7FB4FF'},
+  {name:'W',word:'Whale',   emoji:'🐋',color:'#FF6FB5'},
+  {name:'X',word:'X marks spot',emoji:'❌',color:'#A77BFF'},
+  {name:'Y',word:'Yo-yo',   emoji:'🪀',color:'#6FE3C8'},
+  {name:'Z',word:'Zebra',   emoji:'🦓',color:'#FFD86E'},
+];
+
+const ANIMALS=[
+  {name:'Dog',     emoji:'🐶',sound:'Woof',  color:'#F4A460',fact:'Dogs are loyal pets that love to play fetch!'},
+  {name:'Cat',     emoji:'🐱',sound:'Meow',  color:'#DDA0DD',fact:'Cats love to purr and sleep in sunny spots!'},
+  {name:'Cow',     emoji:'🐮',sound:'Moo',   color:'#F5DEB3',fact:'Cows give us milk to make cheese and butter!'},
+  {name:'Pig',     emoji:'🐷',sound:'Oink',  color:'#FFB6C1',fact:'Pigs are very smart and love to roll in mud!'},
+  {name:'Duck',    emoji:'🦆',sound:'Quack', color:'#98FB98',fact:'Ducks can swim, walk and fly!'},
+  {name:'Lion',    emoji:'🦁',sound:'Roar',  color:'#DAA520',fact:'Lions are called the kings of the jungle!'},
+  {name:'Elephant',emoji:'🐘',sound:'Trumpet',color:'#B0C4DE',fact:'Elephants are the largest land animals!'},
+  {name:'Monkey',  emoji:'🐒',sound:'Ooh ooh',color:'#CD853F',fact:'Monkeys love to swing from tree to tree!'},
+  {name:'Bunny',   emoji:'🐰',sound:'Squeak', color:'#FFB6C1',fact:'Bunnies have long ears and love to hop around!'},
+];
+
+const FRUITS=[
+  {name:'Apple',      emoji:'🍎',color:'#FF4444',fact:'An apple a day keeps the doctor away!'},
+  {name:'Banana',     emoji:'🍌',color:'#FFD700',fact:'Bananas are a great source of energy!'},
+  {name:'Orange',     emoji:'🍊',color:'#FF8C00',fact:'Oranges are full of vitamin C!'},
+  {name:'Grapes',     emoji:'🍇',color:'#8B4BA8',fact:'Grapes grow in big bunches on vines!'},
+  {name:'Strawberry', emoji:'🍓',color:'#FF1493',fact:'Strawberries are red and super sweet!'},
+  {name:'Mango',      emoji:'🥭',color:'#FF6347',fact:'Mangoes are called the king of fruits!'},
+  {name:'Pineapple',  emoji:'🍍',color:'#DAA520',fact:'Pineapples take 2 years to grow!'},
+  {name:'Watermelon', emoji:'🍉',color:'#FF69B4',fact:'Watermelons are 92 percent water!'},
+];
+
+const WEATHER=[
+  {name:'Sunny',  emoji:'☀️',color:'#FFD700',fact:'On sunny days the sun shines bright and warm!'},
+  {name:'Rainy',  emoji:'🌧️',color:'#4169E1',fact:'Rain helps plants grow and fills rivers!'},
+  {name:'Cloudy', emoji:'⛅',color:'#87CEEB',fact:'Clouds are made of tiny water droplets!'},
+  {name:'Snowy',  emoji:'❄️',color:'#B0E0E6',fact:'Every snowflake has a unique pattern!'},
+  {name:'Windy',  emoji:'💨',color:'#98FB98',fact:'Wind is moving air that we can feel!'},
+  {name:'Stormy', emoji:'⛈️',color:'#708090',fact:'Thunder and lightning happen in storms!'},
+];
+
+const FAMILY=[
+  {name:'Mom',     emoji:'👩',color:'#FF69B4',fact:'Mom loves and takes care of the whole family!'},
+  {name:'Dad',     emoji:'👨',color:'#4169E1',fact:'Dad is always there to help and have fun!'},
+  {name:'Sister',  emoji:'👧',color:'#FF9999',fact:'Sisters are wonderful best friends!'},
+  {name:'Brother', emoji:'👦',color:'#87CEEB',fact:'Brothers love to play and explore together!'},
+  {name:'Grandma', emoji:'👵',color:'#DDA0DD',fact:'Grandma tells the best stories and makes yummy food!'},
+  {name:'Grandpa', emoji:'👴',color:'#90EE90',fact:'Grandpa knows so many amazing and fun things!'},
+];
+
+const VEGETABLES=[
+  {name:'Carrot',   emoji:'🥕',color:'#FF8C00',fact:'Carrots help you see better and rabbits love them!'},
+  {name:'Broccoli', emoji:'🥦',color:'#3CB371',fact:'Broccoli looks like a tiny tree and is super healthy!'},
+  {name:'Corn',     emoji:'🌽',color:'#FFD700',fact:'Corn grows tall on stalks and has hundreds of kernels!'},
+  {name:'Tomato',   emoji:'🍅',color:'#FF4444',fact:'Tomatoes are a fruit but we use them as a vegetable!'},
+  {name:'Potato',   emoji:'🥔',color:'#DEB887',fact:'Potatoes grow underground and make great chips and mash!'},
+  {name:'Peas',     emoji:'🫛',color:'#90EE90',fact:'Peas grow in pods and are tiny and perfectly round!'},
+  {name:'Onion',    emoji:'🧅',color:'#DDA0DD',fact:'Onions make you cry when you cut them!'},
+  {name:'Cucumber', emoji:'🥒',color:'#2E8B57',fact:'Cucumbers are cool and refreshing and mostly water!'},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────
+const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet','animals','fruits','weather','family','vegetables'];
+const state={};
+TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false,memCards:[],memFlipped:[],memMoves:0,memMatched:0,spellItems:[],spellIdx:0,spellWord:'',spellEntered:[],spellBank:[],spellItem:null,traceIdx:0,traceData:null};});
+state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{},matchPool:[],matchRound:0,matchScore:0};
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function pickOpts(arr,correct,n,keyFn){
+  keyFn=keyFn||(x=>x.name);
+  const others=shuffle(arr.filter(x=>keyFn(x)!==keyFn(correct))).slice(0,n).map(keyFn);
+  return shuffle([keyFn(correct),...others]);
+}
+
+function go(id){
+  _clearRevealTimers();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  if(id==='home') setHomeMode('learn');
+  else if(id==='seasons') initSeasons();
+  else if(id==='months') initMonths();
+  else if(id==='days') initDays();
+  else if(id==='numbers') initNumbers();
+  else if(id==='shapes') initShapes();
+  else if(id==='colors') initColors();
+  else if(id==='alphabet') initAlphabet();
+  else if(id==='animals') initAnimals();
+  else if(id==='fruits') initFruits();
+  else if(id==='weather') initWeather();
+  else if(id==='family') initFamily();
+  else if(id==='vegetables') initVegetables();
+  else cancelSpeech();
+}
+
+function setHomeMode(mode){
+  cancelSpeech();_clearRevealTimers();
+  state.home.mode=mode;
+  const tabGrad='linear-gradient(135deg,#FF6FB5,#A77BFF)';
+  document.querySelectorAll('#home-tabs .mode-tab').forEach(btn=>{
+    const active=btn.dataset.mode===mode;
+    btn.classList.toggle('active',active);
+    btn.style.background=active?tabGrad:'';
+    btn.style.boxShadow=active?'0 6px 22px rgba(255,111,181,0.45)':'';
+  });
+  const learnEl=document.getElementById('home-learn');
+  const quizEl=document.getElementById('home-quiz');
+  const matchEl=document.getElementById('home-match');
+  if(learnEl)learnEl.style.display=mode==='learn'?'':'none';
+  if(quizEl)quizEl.style.display=mode==='quiz'?'flex':'none';
+  if(matchEl)matchEl.style.display=mode==='match'?'flex':'none';
+  if(mode==='quiz'){
+    document.getElementById('home').classList.add('quiz-active');
+    const s=state.home;
+    s.score=0;s.qi=0;s.attempts=0;s.locked=false;s.questions=[];
+    buildQ('home');
+    speak('All topics quiz! How many can you get?');
+    setTimeout(()=>renderQ('home'),1600);
+  }else{
+    document.getElementById('home').classList.remove('quiz-active');
+  }
+  if(mode==='match'){
+    const s=state.home;
+    s.matchRound=0;s.matchScore=0;
+    buildMatch('home');
+    renderMatch('home');
+    speak('Drag each name to its matching picture!');
+  }
+}
+
+function onHomeTopic(game){go(game);}
+
+function setMode(game,mode){
+  _clearRevealTimers();cancelSpeech();
+  state[game].mode=mode;
+  renderMode(game);
+  if(mode==='learn'){
+    const info=document.getElementById(game+'-info');
+    if(info)info.classList.add('ready');
+  }
+  if(mode==='match'){buildMatch(game);renderMatch(game);speak('Match the pictures to their names!');}
+  if(mode==='memory'){buildMemory(game);renderMemory(game);speak('Flip the cards and find the matching pairs!');}
+  if(mode==='spell'){buildSpell(game);renderSpell(game);speak('Let\'s spell the word! Tap the letters in order.');}
+  if(mode==='trace'){buildTrace(game);renderTrace(game);}
+}
+
+function renderMode(game){
+  const s=state[game];
+  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F',animals:'#FFB347',fruits:'#FF6B6B',weather:'#87CEEB',family:'#DDA0DD',vegetables:'#3CB371'}[game]||'var(--primary)';
+  document.querySelectorAll('#'+game+'-tabs .mode-tab').forEach(btn=>{
+    const active=btn.dataset.mode===s.mode;
+    btn.classList.toggle('active',active);
+    btn.style.background=active?tabColor:'';
+    btn.style.boxShadow=active?`0 6px 18px ${tabColor}66`:'';
+  });
+  const learnEl=document.getElementById(game+'-learn');
+  const quizEl=document.getElementById(game+'-quiz');
+  const matchEl=document.getElementById(game+'-match');
+  const memEl=document.getElementById(game+'-memory');
+  const spellEl=document.getElementById(game+'-spell');
+  const traceEl=document.getElementById(game+'-trace');
+  if(learnEl)learnEl.style.display=s.mode==='learn'?'flex':'none';
+  if(quizEl)quizEl.style.display=s.mode==='quiz'?'flex':'none';
+  if(matchEl)matchEl.style.display=s.mode==='match'?'flex':'none';
+  if(memEl)memEl.style.display=s.mode==='memory'?'flex':'none';
+  if(spellEl)spellEl.style.display=s.mode==='spell'?'flex':'none';
+  if(traceEl)traceEl.style.display=s.mode==='trace'?'flex':'none';
+  if(s.mode==='quiz'){
+    document.getElementById(game).classList.add('quiz-active');
+    s.score=0;s.qi=0;s.attempts=0;s.locked=false;
+    if(!s.questions.length)buildQ(game);
+    speak('Quiz time! Let\'s see what you know.');
+    setTimeout(()=>renderQ(game),1600);
+  }else{
+    document.getElementById(game).classList.remove('quiz-active');
+  }
+}
+
+// ─── CELEBRATION ─────────────────────────────────────────────────
+function celebrate(msg){
+  const cel=document.getElementById('confetti-container');
+  cel.innerHTML='';
+  const pieces=['🌸','⭐','✨','💫','🎀','🌈','🎉','🎊','🦋','💖','🌺','🍀'];
+  for(let i=0;i<18;i++){
+    const d=document.createElement('div');
+    d.className='confetti-piece';
+    d.textContent=pieces[i%pieces.length];
+    d.style.left=Math.random()*95+2+'%';
+    d.style.animationDelay=Math.random()*0.8+'s';
+    d.style.animationDuration=(2+Math.random()*1.5)+'s';
+    d.style.fontSize=(20+Math.random()*18)+'px';
+    cel.appendChild(d);
+  }
+  document.getElementById('celebration').classList.add('show');
+  // Show toast
+  const existing=document.querySelector('.cel-toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.className='cel-toast';
+  toast.innerHTML=`<span class="cel-toast-icon">🌟</span><div class="cel-toast-msg">${msg}</div>`;
+  document.body.appendChild(toast);
+  speak('Well done! ' + msg.replace(/[^\x00-\x7E]/g,''));
+  setTimeout(()=>{
+    document.getElementById('celebration').classList.remove('show');
+    toast.style.opacity='0';toast.style.transition='opacity .3s';
+    setTimeout(()=>toast.remove(),350);
+  },2200);
+}
+
+// ─── INFO PANEL ──────────────────────────────────────────────────
+function showInfo(game,item,html,speakText){
+  const d=document.getElementById(game+'-info');
+  const prev=state[game].active;
+  if(prev===item.name){
+    state[game].active=null;
+    d.classList.remove('filled','ready');
+    d.innerHTML='';
+    d.style.display='none';
+    return;
+  }
+  state[game].active=item.name;
+  const prevCard=document.querySelector(`#${game}-learn-cards .active`);
+  if(prevCard)prevCard.classList.remove('active');
+  d.innerHTML=html;
+  d.classList.add('filled');
+  d.style.display='flex';
+  d.style.flexDirection='column';
+  d.style.alignItems='center';
+  if(window.innerWidth<700)d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  speak(speakText);
+}
+
+// ─── QUIZ ENGINE ─────────────────────────────────────────────────
+function buildQ(game){
+  let qs=[];
+  if(game==='seasons'){
+    SEASONS.forEach(s=>{
+      qs.push({prompt:`Which season has ${s.emoji}?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SEASONS,s,3)});
+      qs.push({prompt:`Months: ${s.months} — which season?`,answer:s.name,hint:s.fact,icon:s.emoji,color:s.color,options:pickOpts(SEASONS,s,3)});
+    });
+    state.seasons.questions=shuffle(qs).slice(0,8);
+  }else if(game==='months'){
+    MONTHS.forEach((m,i)=>{
+      qs.push({prompt:`Which is month number ${m.num}?`,answer:m.name,hint:m.fact,icon:m.emoji,color:m.color,options:pickOpts(MONTHS,m,3)});
+      qs.push({prompt:`${m.emoji} ${m.fact.split('!')[0]}. Which month?`,answer:m.name,hint:'Month #'+m.num,icon:m.emoji,color:m.color,options:pickOpts(MONTHS,m,3)});
+    });
+    state.months.questions=shuffle(qs).slice(0,10);
+  }else if(game==='days'){
+    const ord=['1st','2nd','3rd','4th','5th','6th','7th'];
+    DAYS.forEach((d,i)=>{
+      qs.push({prompt:`Which is the ${ord[i]} day?`,answer:d.name,hint:d.fact,icon:d.emoji,color:d.color,options:pickOpts(DAYS,d,3)});
+      qs.push({prompt:`${d.emoji} ${d.activity} What day is this?`,answer:d.name,hint:d.fact,icon:d.emoji,color:d.color,options:pickOpts(DAYS,d,3)});
+    });
+    state.days.questions=shuffle(qs).slice(0,10);
+  }else if(game==='numbers'){
+    NUMBERS.forEach(n=>{
+      qs.push({prompt:`What number is ${n.numeral}?`,answer:n.name,hint:n.fact,icon:n.emoji,color:n.color,options:pickOpts(NUMBERS,n,3)});
+      qs.push({prompt:`${n.fact} What number is this?`,answer:n.name,hint:'Numeral: '+n.numeral,icon:n.emoji,color:n.color,options:pickOpts(NUMBERS,n,3)});
+    });
+    state.numbers.questions=shuffle(qs).slice(0,10);
+  }else if(game==='shapes'){
+    SHAPES.forEach(s=>{
+      const icon=shapeIcon(s,60);
+      qs.push({prompt:'What shape is this?',answer:s.name,hint:s.fact,icon,color:s.color,options:pickOpts(SHAPES,s,3)});
+      qs.push({prompt:`${s.fact.split('!')[0]}. What shape?`,answer:s.name,hint:s.fact,icon,color:s.color,options:pickOpts(SHAPES,s,3)});
+    });
+    state.shapes.questions=shuffle(qs).slice(0,10);
+  }else if(game==='colors'){
+    COLORS.forEach(c=>{
+      qs.push({prompt:`${c.emoji} What color is this?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.hex,options:pickOpts(COLORS,c,3)});
+      qs.push({prompt:`${c.fact.split('!')[0]}. What color?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.hex,options:pickOpts(COLORS,c,3)});
+    });
+    state.colors.questions=shuffle(qs).slice(0,10);
+  }else if(game==='alphabet'){
+    ALPHABET.forEach(a=>{
+      qs.push({prompt:`${a.emoji} ${a.word}. What letter starts this word?`,answer:a.name,hint:`${a.name} is for ${a.word}`,icon:a.emoji,color:a.color,options:pickOpts(ALPHABET,a,3)});
+      qs.push({prompt:`What does the letter ${a.name} stand for?`,answer:a.word,hint:`Letter ${a.name}`,icon:a.emoji,color:a.color,options:shuffle([a.word,...shuffle(ALPHABET.filter(x=>x.name!==a.name)).slice(0,3).map(x=>x.word)])});
+    });
+    state.alphabet.questions=shuffle(qs).slice(0,10);
+  }else if(game==='animals'){
+    ANIMALS.forEach(a=>{
+      qs.push({prompt:`${a.emoji} Which animal says ${a.sound}?`,answer:a.name,hint:a.fact,icon:a.emoji,color:a.color,options:pickOpts(ANIMALS,a,3)});
+      qs.push({prompt:`${a.emoji} What animal is this?`,answer:a.name,hint:a.fact,icon:a.emoji,color:a.color,options:pickOpts(ANIMALS,a,3)});
+    });
+    state.animals.questions=shuffle(qs).slice(0,10);
+  }else if(game==='fruits'){
+    FRUITS.forEach(f=>{
+      qs.push({prompt:`${f.emoji} What fruit is this?`,answer:f.name,hint:f.fact,icon:f.emoji,color:f.color,options:pickOpts(FRUITS,f,3)});
+    });
+    state.fruits.questions=shuffle(qs).slice(0,8);
+  }else if(game==='weather'){
+    WEATHER.forEach(w=>{
+      qs.push({prompt:`${w.emoji} What is this weather called?`,answer:w.name,hint:w.fact,icon:w.emoji,color:w.color,options:pickOpts(WEATHER,w,3)});
+      qs.push({prompt:w.fact.split('!')[0]+'! What weather is this?',answer:w.name,hint:w.fact,icon:w.emoji,color:w.color,options:pickOpts(WEATHER,w,3)});
+    });
+    state.weather.questions=shuffle(qs).slice(0,8);
+  }else if(game==='family'){
+    FAMILY.forEach(f=>{
+      qs.push({prompt:`${f.emoji} Who is this family member?`,answer:f.name,hint:f.fact,icon:f.emoji,color:f.color,options:pickOpts(FAMILY,f,3)});
+    });
+    state.family.questions=shuffle(qs).slice(0,8);
+  }else if(game==='vegetables'){
+    VEGETABLES.forEach(v=>{
+      qs.push({prompt:`${v.emoji} What vegetable is this?`,answer:v.name,hint:v.fact,icon:v.emoji,color:v.color,options:pickOpts(VEGETABLES,v,3)});
+      qs.push({prompt:v.fact.split('!')[0]+'! What vegetable is this?',answer:v.name,hint:v.fact,icon:v.emoji,color:v.color,options:pickOpts(VEGETABLES,v,3)});
+    });
+    state.vegetables.questions=shuffle(qs).slice(0,10);
+  }else if(game==='home'){
+    let all=[];
+    TOPICS.forEach(g=>{const prev=state[g].questions;buildQ(g);all.push(...state[g].questions);state[g].questions=prev;});
+    state.home.questions=shuffle(all);
+  }
+}
+
+function renderQ(game){
+  const s=state[game];
+  const q=s.questions[s.qi];
+  if(!q)return;
+  s.selected=null;s.attempts=0;s.locked=false;
+  document.getElementById(game+'-score').textContent='✨ Score: '+s.score;
+  document.getElementById(game+'-prog').textContent='Q '+(s.qi+1)+' of '+s.questions.length;
+  const fill=document.getElementById(game+'-prog-fill');
+  if(fill)fill.style.width=Math.round((s.qi/s.questions.length)*100)+'%';
+  const qc=document.getElementById(game+'-qcard');
+  const bg=`linear-gradient(135deg,${q.color},${q.color}bb)`;
+  qc.style.background=bg;
+  qc.innerHTML=`<div class="q-char">${q.icon}</div><div class="q-text">${q.prompt}</div><div class="q-hint">${q.hint}</div>`;
+  const og=document.getElementById(game+'-opts');
+  og.innerHTML='';
+  q.options.forEach(opt=>{
+    let optItem;
+    if(game==='seasons') optItem=SEASONS.find(x=>x.name===opt);
+    else if(game==='months') optItem=MONTHS.find(x=>x.name===opt);
+    else if(game==='days') optItem=DAYS.find(x=>x.name===opt);
+    else if(game==='numbers') optItem=NUMBERS.find(x=>x.name===opt);
+    else if(game==='shapes') optItem=SHAPES.find(x=>x.name===opt);
+    else if(game==='colors') optItem=COLORS.find(x=>x.name===opt);
+    else if(game==='alphabet') optItem=ALPHABET.find(x=>x.name===opt||x.word===opt);
+    else if(game==='animals') optItem=ANIMALS.find(x=>x.name===opt);
+    else if(game==='fruits') optItem=FRUITS.find(x=>x.name===opt);
+    else if(game==='weather') optItem=WEATHER.find(x=>x.name===opt);
+    else if(game==='family') optItem=FAMILY.find(x=>x.name===opt);
+    else if(game==='vegetables') optItem=VEGETABLES.find(x=>x.name===opt);
+    // Fallback: search all arrays so icons always resolve
+    if(!optItem) optItem=SEASONS.find(x=>x.name===opt)||MONTHS.find(x=>x.name===opt)||DAYS.find(x=>x.name===opt)||NUMBERS.find(x=>x.name===opt)||SHAPES.find(x=>x.name===opt)||COLORS.find(x=>x.name===opt)||ALPHABET.find(x=>x.name===opt||x.word===opt)||ANIMALS.find(x=>x.name===opt)||FRUITS.find(x=>x.name===opt)||WEATHER.find(x=>x.name===opt)||FAMILY.find(x=>x.name===opt)||VEGETABLES.find(x=>x.name===opt);
+    const isShape=optItem&&optItem.points;
+    const optIcon=isShape?shapeIcon(optItem,30,optItem.color):(optItem?(optItem.emoji||optItem.numeral||'❓'):'❓');
+    const b=document.createElement('button');
+    b.className='opt-btn';
+    b.dataset.opt=opt;
+    b.innerHTML=`<span class="opt-emoji">${optIcon}</span><span class="opt-label">${opt}</span>`;
+    b.onclick=()=>answerQ(game,opt);
+    og.appendChild(b);
+  });
+  document.getElementById(game+'-next').style.display='none';
+  speak(q.prompt);
+}
+
+function answerQ(game,opt){
+  const s=state[game];
+  if(s.locked)return;
+  const q=s.questions[s.qi];
+  const correct=opt===q.answer;
+  const btn=document.querySelector('#'+game+'-opts [data-opt="'+opt+'"]');
+  if(correct){
+    s.locked=true;s.score++;
+    if(btn)btn.classList.add('correct');
+    celebrate(q.answer+' is correct!');
+    setTimeout(()=>nextQ(game),2600);
+  }else{
+    s.attempts++;
+    if(btn)btn.classList.add('wrong');
+    if(s.attempts<2){
+      speak('Try again!');
+      setTimeout(()=>{if(btn)btn.classList.remove('wrong');},900);
+    }else{
+      s.locked=true;
+      document.querySelectorAll('#'+game+'-opts .opt-btn').forEach(b=>{
+        if(b.dataset.opt===q.answer)b.classList.add('correct');
+      });
+      speak('The answer is '+q.answer+'. Let\'s try the next one!');
+      setTimeout(()=>nextQ(game),3200);
+    }
+  }
+}
+
+function nextQ(game){
+  const s=state[game];
+  s.qi++;
+  if(s.qi>=s.questions.length){
+    s.qi=0;s.questions=[];buildQ(game);
+  }
+  renderQ(game);
+}
+
+// ─── MATCH GAME ──────────────────────────────────────────────────
+function buildMatch(game){
+  const s=state[game];
+  let pool=[];
+  if(game==='seasons') pool=SEASONS.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='months') pool=shuffle([...MONTHS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='days') pool=shuffle([...DAYS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='numbers') pool=shuffle([...NUMBERS]).slice(0,6).map(x=>({name:x.name,icon:x.numeral,color:x.color}));
+  else if(game==='shapes') pool=shuffle([...SHAPES]).slice(0,6).map(x=>({name:x.name,icon:shapeIcon(x,44),color:x.color}));
+  else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
+  else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='animals') pool=shuffle([...ANIMALS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='fruits') pool=shuffle([...FRUITS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='weather') pool=WEATHER.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='family') pool=FAMILY.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='vegetables') pool=shuffle([...VEGETABLES]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='home'){
+    TOPICS.forEach(g=>{
+      const prev={matchItems:state[g].matchItems,matchLabels:state[g].matchLabels,matchDone:state[g].matchDone,matchSelected:state[g].matchSelected};
+      buildMatch(g);
+      pool.push(...state[g].matchItems);
+      state[g].matchItems=prev.matchItems;state[g].matchLabels=prev.matchLabels;state[g].matchDone=prev.matchDone;state[g].matchSelected=prev.matchSelected;
+    });
+    s.matchPool=pool;s.matchRound=0;s.matchScore=0;
+    _loadMatchRound('home');
+    return;
+  }
+  const items=shuffle(pool).slice(0,5);
+  s.matchItems=items;
+  s.matchLabels=shuffle(items.map(x=>x.name));
+  s.matchSelected=null;
+  s.matchDone={};
+}
+
+function _loadMatchRound(game){
+  const s=state[game];
+  const start=s.matchRound*5;
+  const items=(s.matchPool||[]).slice(start,start+5);
+  s.matchItems=items;
+  s.matchLabels=shuffle(items.map(x=>x.name));
+  s.matchSelected=null;
+  s.matchDone={};
+}
+
+// Touch-drag global state
+const _drag={game:null,name:null,ghost:null,origin:null};
+
+function renderMatch(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-match');
+  if(!s.matchItems||!el)return;
+  const allDone=s.matchItems.every(x=>s.matchDone[x.name]);
+  // Build round-progress header for home (mirrors quiz layout)
+  let progressHTML='';
+  if(game==='home'&&s.matchPool&&s.matchPool.length){
+    const totalRounds=Math.ceil(s.matchPool.length/5);
+    const pct=Math.round((s.matchRound/totalRounds)*100);
+    progressHTML=`<div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div></div><div class="score-row"><span class="score-badge">✨ Matched: ${s.matchScore}</span><span class="prog-badge">Round ${s.matchRound+1} of ${totalRounds}</span></div>`;
+  }
+  if(allDone){
+    const msg=game==='home'&&s.matchPool?'🎉 Round complete! Get ready for the next round…':'🎉 Amazing! You matched them all! 🎉';
+    el.innerHTML=progressHTML+'<div class="match-all-done">'+msg+'</div>';
+    return;
+  }
+  const itemsHTML=s.matchItems.map(item=>{
+    const done=s.matchDone[item.name];
+    const safeId='mitem-'+game+'-'+item.name.replace(/[^a-zA-Z0-9]/g,'_');
+    const safeName=item.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="match-item${done?' matched':''}" id="${safeId}" style="${done?'background:'+item.color+';border-color:transparent':''}" ondragover="matchDragOver(event,'${game}','${safeName}')" ondragleave="matchDragLeave(event,'${safeName}')" ondrop="matchDrop(event,'${game}','${safeName}')"><span class="match-item-icon">${item.icon}</span>${done?'<span class="match-item-label">'+item.name+'</span>':''}</div>`;
+  }).join('');
+  const labelsHTML=s.matchLabels.filter(n=>!s.matchDone[n]).map(name=>{
+    const safeName=name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return `<div class="match-label" draggable="true" ondragstart="matchDragStart(event,'${game}','${safeName}')" ondragend="matchDragEnd(event,'${game}')" ontouchstart="matchTouchStart(event,'${game}','${safeName}')" ontouchmove="matchTouchMove(event,'${game}')" ontouchend="matchTouchEnd(event,'${game}','${safeName}')">${name}</div>`;
+  }).join('');
+  el.innerHTML=progressHTML+'<div class="match-prompt">Drag the name to the matching picture!</div><div class="match-items-grid">'+itemsHTML+'</div><div class="match-labels">'+labelsHTML+'</div>';
+}
+
+function matchDragStart(e,game,name){
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain',name);
+  state[game].matchDragging=name;
+  e.currentTarget.classList.add('dragging');
+  speak(name);
+}
+function matchDragEnd(e,game){
+  e.currentTarget.classList.remove('dragging');
+  state[game].matchDragging=null;
+}
+function matchDragOver(e,game,name){
+  if(state[game].matchDone[name])return;
+  e.preventDefault();
+  const el=document.getElementById('mitem-'+game+'-'+name.replace(/[^a-zA-Z0-9]/g,'_'));
+  if(el)el.classList.add('drag-over');
+}
+function matchDragLeave(e,name){
+  // only remove if leaving the item itself (not a child)
+  if(e.currentTarget.contains(e.relatedTarget))return;
+  e.currentTarget.classList.remove('drag-over');
+}
+function matchDrop(e,game,name){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const s=state[game];
+  if(s.matchDone[name])return;
+  const dragged=e.dataTransfer.getData('text/plain')||s.matchDragging;
+  if(!dragged)return;
+  _resolveMatch(game,dragged,name);
+}
+
+function matchTouchStart(e,game,name){
+  e.preventDefault();
+  const touch=e.touches[0];
+  _drag.game=game;_drag.name=name;
+  speak(name);
+  const src=e.currentTarget;
+  src.classList.add('dragging');
+  _drag.origin=src;
+  const r=src.getBoundingClientRect();
+  const ghost=src.cloneNode(true);
+  ghost.style.cssText=`position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;z-index:9999;pointer-events:none;opacity:0.85;transform:scale(1.1) rotate(-3deg);margin:0;cursor:grabbing`;
+  document.body.appendChild(ghost);
+  _drag.ghost=ghost;
+}
+function matchTouchMove(e,game){
+  if(!_drag.ghost)return;
+  e.preventDefault();
+  const touch=e.touches[0];
+  const gw=_drag.ghost.offsetWidth;const gh=_drag.ghost.offsetHeight;
+  _drag.ghost.style.left=(touch.clientX-gw/2)+'px';
+  _drag.ghost.style.top=(touch.clientY-gh/2)+'px';
+  _drag.ghost.style.display='none';
+  const under=document.elementFromPoint(touch.clientX,touch.clientY);
+  _drag.ghost.style.display='';
+  document.querySelectorAll('#'+game+'-match .match-item').forEach(x=>x.classList.remove('drag-over'));
+  const item=under&&under.closest('.match-item:not(.matched)');
+  if(item)item.classList.add('drag-over');
+}
+function matchTouchEnd(e,game,name){
+  e.preventDefault();
+  if(_drag.ghost){_drag.ghost.remove();_drag.ghost=null;}
+  if(_drag.origin){_drag.origin.classList.remove('dragging');_drag.origin=null;}
+  document.querySelectorAll('#'+game+'-match .match-item').forEach(x=>x.classList.remove('drag-over'));
+  const touch=e.changedTouches[0];
+  const under=document.elementFromPoint(touch.clientX,touch.clientY);
+  const item=under&&under.closest('.match-item[id]');
+  const dragged=_drag.name;
+  _drag.game=null;_drag.name=null;
+  if(!item||!dragged)return;
+  const prefix='mitem-'+game+'-';
+  const safeTarget=item.id.startsWith(prefix)?item.id.slice(prefix.length):null;
+  if(!safeTarget)return;
+  const s=state[game];
+  const found=s.matchItems.find(x=>x.name.replace(/[^a-zA-Z0-9]/g,'_')===safeTarget);
+  if(found)_resolveMatch(game,dragged,found.name);
+}
+
+function _resolveMatch(game,dragged,target){
+  const s=state[game];
+  if(s.matchDone[target])return;
+  if(dragged===target){
+    s.matchDone[target]=true;
+    speak(target+'! Great match!');
+    renderMatch(game);
+    if(s.matchItems.every(x=>s.matchDone[x.name])){
+      if(game==='home'&&s.matchPool&&s.matchPool.length){
+        s.matchScore=(s.matchScore||0)+s.matchItems.length;
+        const totalRounds=Math.ceil(s.matchPool.length/5);
+        if((s.matchRound+1)<totalRounds){
+          setTimeout(()=>{s.matchRound++;_loadMatchRound(game);renderMatch(game);speak('Next round! Match the pictures!');},1800);
+        }else{
+          setTimeout(()=>celebrate('Amazing! You matched everything!'),400);
+        }
+      }else{
+        setTimeout(()=>celebrate('You matched them all!'),400);
+      }
+    }
+  }else{
+    speak('Try again!');
+    const el=document.getElementById('mitem-'+game+'-'+target.replace(/[^a-zA-Z0-9]/g,'_'));
+    if(el){el.classList.add('match-wrong');setTimeout(()=>el.classList.remove('match-wrong'),700);}
+  }
+}
+
+// ─── SEASONS ─────────────────────────────────────────────────────
+function initSeasons(){
+  const s=state.seasons;s.mode='learn';s.active=null;
+  document.getElementById('seasons-info').style.display='none';
+  document.getElementById('seasons-info').classList.remove('filled','ready');
+  document.getElementById('seasons-info').innerHTML='';
+  const lc=document.getElementById('seasons-learn-cards');lc.innerHTML='';
+  SEASONS.forEach(sea=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='sc-'+sea.name;
+    b.style.background=`linear-gradient(135deg,${sea.color},${sea.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${sea.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${sea.emoji}</div><div class="lc-name">${sea.name}</div><div class="lc-sub">${sea.sub}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('seasons',sea,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${sea.emoji}</span><div><div class="ic-name">${sea.name}</div><div class="ic-sub">${sea.months}</div></div></div><div class="ic-fact">${sea.fact}</div></div>`,
+        `${sea.name}. ${sea.fact} The months in ${sea.name} are ${sea.months}.`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('seasons');
+  speakNarration('Let\'s explore the four seasons!',SEASONS.map(x=>({id:'sc-'+x.name,name:x.name})),'Now tap a card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('seasons-info').classList.add('ready');});
+}
+
+// ─── MONTHS ──────────────────────────────────────────────────────
+function initMonths(){
+  const s=state.months;s.mode='learn';s.active=null;
+  document.getElementById('months-info').style.display='none';
+  document.getElementById('months-info').classList.remove('filled','ready');
+  document.getElementById('months-info').innerHTML='';
+  const lc=document.getElementById('months-learn-cards');lc.innerHTML='';
+  MONTHS.forEach(m=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='mc-'+m.name;
+    b.style.background=`linear-gradient(135deg,${m.color},${m.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${m.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-num">${m.num}</div><div class="mi-emoji">${m.emoji}</div><div class="mi-name">${m.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('months',m,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${m.emoji}</span><div><div class="ic-name">${m.name}</div><div class="ic-sub">Month #${m.num} · ${m.season}</div></div></div><div class="ic-fact">${m.fact}</div></div>`,
+        `${m.name}. Month number ${m.num}. ${m.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('months');
+  speakNarration('Let\'s learn all twelve months of the year!',MONTHS.map(x=>({id:'mc-'+x.name,name:x.name})),'Tap any month card to discover more, or try Quiz or Match to play!',()=>{document.getElementById('months-info').classList.add('ready');});
+}
+
+// ─── DAYS ────────────────────────────────────────────────────────
+function initDays(){
+  const s=state.days;s.mode='learn';s.active=null;
+  document.getElementById('days-info').style.display='none';
+  document.getElementById('days-info').classList.remove('filled','ready');
+  document.getElementById('days-info').innerHTML='';
+  const lc=document.getElementById('days-learn-cards');lc.innerHTML='';
+  DAYS.forEach(d=>{
+    const b=document.createElement('button');
+    b.className='day-card card-pre';b.id='dc-'+d.name;
+    b.style.background=`linear-gradient(135deg,${d.color},${d.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${d.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-num">${d.num}</div><div class="mi-emoji">${d.emoji}</div><div class="mi-name">${d.short}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('days',d,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${d.emoji}</span><div><div class="ic-name">${d.name}</div><div class="ic-sub">Day ${d.num} of the week</div></div></div><div class="ic-fact">${d.activity}</div><div class="ic-extra">${d.fact}</div></div>`,
+        `${d.name}. Day ${d.num}. ${d.fact} ${d.activity}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('days');
+  speakNarration('Let\'s learn the seven days of the week!',DAYS.map(x=>({id:'dc-'+x.name,name:x.name})),'Tap any day card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('days-info').classList.add('ready');});
+}
+
+// ─── NUMBERS ─────────────────────────────────────────────────────
+function initNumbers(){
+  const s=state.numbers;s.mode='learn';s.active=null;
+  document.getElementById('numbers-info').style.display='none';
+  document.getElementById('numbers-info').classList.remove('filled','ready');
+  document.getElementById('numbers-info').innerHTML='';
+  const lc=document.getElementById('numbers-learn-cards');lc.innerHTML='';
+  NUMBERS.forEach(n=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='nm-'+n.name;
+    b.style.background=`linear-gradient(135deg,${n.color},${n.color}cc)`;
+    b.style.boxShadow=`0 8px 20px ${n.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-big">${n.numeral}</div><div class="mi-name">${n.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('numbers',n,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${n.emoji}</span><div><div class="ic-name">${n.name}</div><div class="ic-sub">Numeral: ${n.numeral}</div></div></div><div class="ic-fact">${n.fact}</div></div>`,
+        `${n.name}. ${n.numeral}. ${n.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('numbers');
+  speakNarration("Let's count from one to twenty!",NUMBERS.map(x=>({id:'nm-'+x.name,name:x.name})),'Great counting! Tap any number to explore it, or try Quiz or Match to play!',()=>{document.getElementById('numbers-info').classList.add('ready');});
+}
+
+// ─── SHAPES ──────────────────────────────────────────────────────
+// Returns an SVG polygon for polygon-based shapes, else the emoji span.
+// fill='white' for colored-card contexts; fill=color for white-bg contexts.
+function shapeIcon(sh,size,fill){
+  if(sh.points){
+    const f=fill||'rgba(255,255,255,0.93)';
+    const stroke=fill&&fill!=='rgba(255,255,255,0.93)'?'none':'rgba(255,255,255,0.4)';
+    return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" style="display:block;overflow:visible"><polygon points="${sh.points}" fill="${f}" stroke="${stroke}" stroke-width="2"/></svg>`;
+  }
+  return sh.emoji;
+}
+
+function initShapes(){
+  const s=state.shapes;s.mode='learn';s.active=null;
+  document.getElementById('shapes-info').style.display='none';
+  document.getElementById('shapes-info').classList.remove('filled','ready');
+  document.getElementById('shapes-info').innerHTML='';
+  const lc=document.getElementById('shapes-learn-cards');lc.innerHTML='';
+  SHAPES.forEach(sh=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='sh-'+sh.name;
+    b.style.background=`linear-gradient(135deg,${sh.color},${sh.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${sh.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${shapeIcon(sh,52)}</div><div class="lc-name">${sh.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('shapes',sh,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${shapeIcon(sh,52,sh.color)}</span><div><div class="ic-name">${sh.name}</div></div></div><div class="ic-fact">${sh.fact}</div></div>`,
+        `${sh.name}. ${sh.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('shapes');
+  speakNarration("Let's discover amazing shapes all around us!",SHAPES.map(x=>({id:'sh-'+x.name,name:x.name})),'Tap any shape card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('shapes-info').classList.add('ready');});
+}
+
+// ─── COLORS ──────────────────────────────────────────────────────
+function initColors(){
+  const s=state.colors;s.mode='learn';s.active=null;
+  document.getElementById('colors-info').style.display='none';
+  document.getElementById('colors-info').classList.remove('filled','ready');
+  document.getElementById('colors-info').innerHTML='';
+  const lc=document.getElementById('colors-learn-cards');lc.innerHTML='';
+  COLORS.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='color-card card-pre';b.id='cl-'+c.name;
+    const isDark=c.name==='Black'||c.name==='Brown'||c.name==='Blue'||c.name==='Green'||c.name==='Purple';
+    const textColor=isDark?'#fff':'var(--text)';
+    b.style.background=c.hex;
+    b.style.boxShadow=`0 12px 30px ${c.hex}66,0 2px 0 rgba(255,255,255,0.7) inset`;
+    b.innerHTML=`<div style="font-size:36px">${c.emoji}</div><div style="font-family:'Fredoka',sans-serif;font-size:17px;font-weight:700;color:${textColor};text-shadow:0 1px 3px rgba(0,0,0,0.2)">${c.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('colors',c,
+        `<div class="info-card"><div class="ic-row"><div class="ic-swatch" style="background:${c.hex}"></div><div><div class="ic-name">${c.name}</div><div class="ic-sub">${c.emoji}</div></div></div><div class="ic-fact">${c.fact}</div></div>`,
+        `${c.name}. ${c.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('colors');
+  speakNarration("Let's discover beautiful colors of the rainbow!",COLORS.map(x=>({id:'cl-'+x.name,name:x.name})),'Tap any color card to learn more, or try Quiz or Match to play!',()=>{document.getElementById('colors-info').classList.add('ready');});
+}
+
+// ─── ALPHABET ────────────────────────────────────────────────────
+function initAlphabet(){
+  const s=state.alphabet;s.mode='learn';s.active=null;
+  document.getElementById('alphabet-info').style.display='none';
+  document.getElementById('alphabet-info').classList.remove('filled','ready');
+  document.getElementById('alphabet-info').innerHTML='';
+  const lc=document.getElementById('alphabet-learn-cards');lc.innerHTML='';
+  ALPHABET.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='alpha-card card-pre';b.id='al-'+a.name;
+    b.style.background=`linear-gradient(135deg,${a.color},${a.color}cc)`;
+    b.style.boxShadow=`0 6px 16px ${a.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="ac-letter">${a.name}</div><div class="ac-emoji">${a.emoji}</div><div class="ac-word">${a.word}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('alphabet',a,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${a.emoji}</span><div><div class="ic-name">${a.name} is for ${a.word}</div></div></div><div class="ic-fact">${a.name} — ${a.word} ${a.emoji}</div></div>`,
+        `${a.name} is for ${a.word}. ${a.word}.`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('alphabet');
+  speakNarration("Let's learn all the letters of the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word, or try Quiz or Match to play!',()=>{document.getElementById('alphabet-info').classList.add('ready');});
+}
+
+// ─── TOPIC DATA HELPER ───────────────────────────────────────────
+function _topicData(game){
+  if(game==='seasons')return SEASONS;
+  if(game==='months')return MONTHS;
+  if(game==='days')return DAYS;
+  if(game==='numbers')return NUMBERS;
+  if(game==='shapes')return SHAPES;
+  if(game==='colors')return COLORS;
+  if(game==='alphabet')return ALPHABET;
+  if(game==='animals')return ANIMALS;
+  if(game==='fruits')return FRUITS;
+  if(game==='weather')return WEATHER;
+  if(game==='family')return FAMILY;
+  if(game==='vegetables')return VEGETABLES;
+  return [];
+}
+
+// ─── MEMORY GAME ─────────────────────────────────────────────────
+function buildMemory(game){
+  const s=state[game];
+  let data=shuffle(_topicData(game)).slice(0,6);
+  const cards=[];
+  data.forEach(item=>{
+    const isShape=item.points;
+    const icon=isShape?shapeIcon(item,44,item.color):(item.emoji||item.numeral||'?');
+    const col=item.color||item.hex||'#A77BFF';
+    cards.push({icon,name:item.name,pairId:item.name,color:col,type:'icon',flipped:false,matched:false});
+    cards.push({icon,name:item.name,pairId:item.name,color:col,type:'name',flipped:false,matched:false});
+  });
+  s.memCards=shuffle(cards);s.memFlipped=[];s.memMoves=0;s.memMatched=0;
+}
+
+function renderMemory(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-memory');
+  if(!el||!s.memCards)return;
+  const total=s.memCards.length/2;
+  el.innerHTML=`<div class="mem-stats"><span>🃏 Moves: ${s.memMoves}</span><span>✅ ${s.memMatched} of ${total} pairs</span></div><div class="mem-grid">${
+    s.memCards.map((c,i)=>{
+      if(c.matched)return`<button class="mem-card matched" disabled>${c.type==='icon'?c.icon:c.name}</button>`;
+      if(c.flipped)return`<button class="mem-card flipped" onclick="flipMem('${game}',${i})">${c.type==='icon'?c.icon:c.name}</button>`;
+      return`<button class="mem-card" onclick="flipMem('${game}',${i})">?</button>`;
+    }).join('')
+  }</div>`;
+}
+
+function flipMem(game,idx){
+  const s=state[game];
+  const c=s.memCards[idx];
+  if(!c||c.flipped||c.matched||s.memFlipped.length>=2)return;
+  c.flipped=true;
+  s.memFlipped.push(idx);
+  speak(c.name);
+  renderMemory(game);
+  if(s.memFlipped.length===2){
+    s.memMoves++;
+    const [a,b]=s.memFlipped.map(i=>s.memCards[i]);
+    if(a.pairId===b.pairId){
+      a.matched=true;b.matched=true;s.memFlipped=[];s.memMatched++;
+      speak(a.name+'! Perfect match!');
+      renderMemory(game);
+      if(s.memMatched===s.memCards.length/2)setTimeout(()=>celebrate('Amazing memory!'),400);
+    }else{
+      setTimeout(()=>{
+        s.memFlipped.forEach(i=>{s.memCards[i].flipped=false;});
+        s.memFlipped=[];renderMemory(game);
+      },1000);
+    }
+  }
+}
+
+// ─── SPELLING GAME ────────────────────────────────────────────────
+function _spellWord(game,item){
+  if(game==='alphabet')return item.word.toUpperCase();
+  return item.name.toUpperCase();
+}
+
+function buildSpell(game){
+  const s=state[game];
+  s.spellItems=shuffle(_topicData(game));
+  s.spellIdx=0;
+  _loadSpellWord(game);
+}
+
+function _loadSpellWord(game){
+  const s=state[game];
+  const item=s.spellItems[s.spellIdx%s.spellItems.length];
+  const word=_spellWord(game,item);
+  s.spellWord=word;
+  s.spellItem=item;
+  s.spellEntered=[];
+  const wordLetters=[...new Set(word.split(''))];
+  const allLetters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l=>!wordLetters.includes(l));
+  const extras=shuffle(allLetters).slice(0,Math.max(0,12-wordLetters.length));
+  s.spellBank=shuffle([...word.split(''),...extras.slice(0,6)]);
+}
+
+function renderSpell(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-spell');
+  if(!el||!s.spellWord)return;
+  const item=s.spellItem;
+  const isShape=item&&item.points;
+  const icon=isShape?shapeIcon(item,60,item.color):(item?(item.emoji||item.numeral||'?'):'?');
+  const blanks=s.spellWord.split('').map((l,i)=>{
+    const filled=i<s.spellEntered.length;
+    return`<div class="spell-blank${filled?' filled':''}">${filled?s.spellEntered[i]:''}</div>`;
+  }).join('');
+  const bank=s.spellBank.map((l,i)=>{
+    const usedCount=s.spellEntered.filter(x=>x===l).length;
+    const wordCount=s.spellWord.split('').filter(x=>x===l).length;
+    const used=usedCount>=wordCount;
+    return`<button class="spell-letter-btn${used?' used':''}" id="${game}-sl-${i}" onclick="tapSpellLetter('${game}','${l}',${i})">${l}</button>`;
+  }).join('');
+  const prog=`<div class="spell-prog">Word ${(s.spellIdx%s.spellItems.length)+1} of ${s.spellItems.length}</div>`;
+  el.innerHTML=`${prog}<div class="spell-icon">${icon}</div><div class="spell-blanks">${blanks}</div><div class="spell-letter-bank">${bank}</div>`;
+}
+
+function tapSpellLetter(game,letter,btnIdx){
+  const s=state[game];
+  if(!s.spellWord||s.spellEntered.length>=s.spellWord.length)return;
+  const pos=s.spellEntered.length;
+  const expected=s.spellWord[pos];
+  if(letter===expected){
+    s.spellEntered.push(letter);
+    speak(letter);
+    renderSpell(game);
+    if(s.spellEntered.length===s.spellWord.length){
+      setTimeout(()=>{
+        speak('Well done! You spelled '+s.spellItem.name+'!');
+        setTimeout(()=>{s.spellIdx++;_loadSpellWord(game);renderSpell(game);},2000);
+      },400);
+    }
+  }else{
+    speak('Try again!');
+    const btn=document.getElementById(game+'-sl-'+btnIdx);
+    if(btn){btn.classList.add('wrong-flash');setTimeout(()=>btn.classList.remove('wrong-flash'),500);}
+  }
+}
+
+// ─── TRACE GAME ───────────────────────────────────────────────────
+function buildTrace(game){
+  const s=state[game];
+  s.traceIdx=0;
+  s.traceData=game==='alphabet'?ALPHABET:NUMBERS;
+}
+
+function renderTrace(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-trace');
+  if(!el||!s.traceData)return;
+  const item=s.traceData[s.traceIdx%s.traceData.length];
+  const guide=game==='alphabet'?item.name:(item.numeral||item.name);
+  const total=s.traceData.length;
+  const prog=`<div class="spell-prog">${s.traceIdx+1} of ${total}</div>`;
+  const label=game==='alphabet'?`${item.name} is for ${item.word}`:`${item.name} — ${item.numeral}`;
+  el.innerHTML=`${prog}<div class="trace-label">${label}</div><div class="trace-canvas-wrap"><div class="trace-guide">${guide}</div><canvas class="trace-canvas" id="${game}-trace-canvas" width="280" height="280"></canvas></div><div class="trace-btns"><button class="trace-btn clear" onclick="clearTrace('${game}')">↺ Clear</button><button class="trace-btn next" onclick="nextTrace('${game}')">Next →</button></div>`;
+  const canvas=document.getElementById(game+'-trace-canvas');
+  if(canvas)_setupTraceCanvas(canvas);
+  speak(game==='alphabet'?`Trace the letter ${item.name}. ${item.name} is for ${item.word}.`:`Trace the number ${item.name}.`);
+}
+
+function clearTrace(game){
+  const canvas=document.getElementById(game+'-trace-canvas');
+  if(canvas){const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
+}
+
+function nextTrace(game){
+  const s=state[game];
+  s.traceIdx=(s.traceIdx+1)%s.traceData.length;
+  renderTrace(game);
+}
+
+function _setupTraceCanvas(canvas){
+  let drawing=false;
+  const ctx=canvas.getContext('2d');
+  ctx.strokeStyle='#A77BFF';ctx.lineWidth=8;ctx.lineCap='round';ctx.lineJoin='round';
+  const pos=(e)=>{const r=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(canvas.width/r.width),y:(t.clientY-r.top)*(canvas.height/r.height)};};
+  const start=(e)=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);};
+  const move=(e)=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();};
+  const end=()=>{drawing=false;};
+  canvas.addEventListener('mousedown',start);canvas.addEventListener('mousemove',move);canvas.addEventListener('mouseup',end);canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});canvas.addEventListener('touchmove',move,{passive:false});canvas.addEventListener('touchend',end);
+}
+
+// ─── ANIMALS ─────────────────────────────────────────────────────
+function initAnimals(){
+  const s=state.animals;s.mode='learn';s.active=null;
+  document.getElementById('animals-info').style.display='none';
+  document.getElementById('animals-info').classList.remove('filled','ready');
+  document.getElementById('animals-info').innerHTML='';
+  const lc=document.getElementById('animals-learn-cards');lc.innerHTML='';
+  ANIMALS.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='an-'+a.name;
+    b.style.background=`linear-gradient(135deg,${a.color},${a.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${a.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${a.emoji}</div><div class="mi-name">${a.name}</div><div class="mi-num">${a.sound}!</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('animals',a,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${a.emoji}</span><div><div class="ic-name">${a.name}</div><div class="ic-sub">Says: ${a.sound}!</div></div></div><div class="ic-fact">${a.fact}</div></div>`,
+        `${a.name}. ${a.sound}! ${a.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('animals');
+  speakNarration('Let\'s meet the animals!',ANIMALS.map(x=>({id:'an-'+x.name,name:x.name+'. '+x.sound})),'Tap any animal to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('animals-info').classList.add('ready');});
+}
+
+// ─── FRUITS ──────────────────────────────────────────────────────
+function initFruits(){
+  const s=state.fruits;s.mode='learn';s.active=null;
+  document.getElementById('fruits-info').style.display='none';
+  document.getElementById('fruits-info').classList.remove('filled','ready');
+  document.getElementById('fruits-info').innerHTML='';
+  const lc=document.getElementById('fruits-learn-cards');lc.innerHTML='';
+  FRUITS.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='fr-'+f.name;
+    b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${f.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${f.emoji}</div><div class="mi-name">${f.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('fruits',f,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${f.emoji}</span><div><div class="ic-name">${f.name}</div></div></div><div class="ic-fact">${f.fact}</div></div>`,
+        `${f.name}. ${f.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('fruits');
+  speakNarration('Let\'s explore delicious fruits!',FRUITS.map(x=>({id:'fr-'+x.name,name:x.name})),'Tap any fruit to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('fruits-info').classList.add('ready');});
+}
+
+// ─── WEATHER ─────────────────────────────────────────────────────
+function initWeather(){
+  const s=state.weather;s.mode='learn';s.active=null;
+  document.getElementById('weather-info').style.display='none';
+  document.getElementById('weather-info').classList.remove('filled','ready');
+  document.getElementById('weather-info').innerHTML='';
+  const lc=document.getElementById('weather-learn-cards');lc.innerHTML='';
+  WEATHER.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='we-'+w.name;
+    b.style.background=`linear-gradient(135deg,${w.color},${w.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${w.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${w.emoji}</div><div class="mi-name">${w.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('weather',w,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${w.emoji}</span><div><div class="ic-name">${w.name}</div></div></div><div class="ic-fact">${w.fact}</div></div>`,
+        `${w.name}. ${w.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('weather');
+  speakNarration('Let\'s learn about the weather!',WEATHER.map(x=>({id:'we-'+x.name,name:x.name})),'Tap any weather type to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('weather-info').classList.add('ready');});
+}
+
+// ─── FAMILY ──────────────────────────────────────────────────────
+function initFamily(){
+  const s=state.family;s.mode='learn';s.active=null;
+  document.getElementById('family-info').style.display='none';
+  document.getElementById('family-info').classList.remove('filled','ready');
+  document.getElementById('family-info').innerHTML='';
+  const lc=document.getElementById('family-learn-cards');lc.innerHTML='';
+  FAMILY.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='fa-'+f.name;
+    b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${f.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${f.emoji}</div><div class="mi-name">${f.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('family',f,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${f.emoji}</span><div><div class="ic-name">${f.name}</div></div></div><div class="ic-fact">${f.fact}</div></div>`,
+        `${f.name}. ${f.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('family');
+  speakNarration('Let\'s meet the family!',FAMILY.map(x=>({id:'fa-'+x.name,name:x.name})),'Tap any family member to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('family-info').classList.add('ready');});
+}
+
+// ─── VEGETABLES ──────────────────────────────────────────────────
+function initVegetables(){
+  const s=state.vegetables;s.mode='learn';s.active=null;
+  document.getElementById('vegetables-info').style.display='none';
+  document.getElementById('vegetables-info').classList.remove('filled','ready');
+  document.getElementById('vegetables-info').innerHTML='';
+  const lc=document.getElementById('vegetables-learn-cards');lc.innerHTML='';
+  VEGETABLES.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='mini-card card-pre';b.id='vg-'+v.name;
+    b.style.background=`linear-gradient(135deg,${v.color},${v.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${v.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${v.emoji}</div><div class="mi-name">${v.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('vegetables',v,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${v.emoji}</span><div><div class="ic-name">${v.name}</div></div></div><div class="ic-fact">${v.fact}</div></div>`,
+        `${v.name}. ${v.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('vegetables');
+  speakNarration('Let\'s explore yummy vegetables!',VEGETABLES.map(x=>({id:'vg-'+x.name,name:x.name})),'Tap any vegetable to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('vegetables-info').classList.add('ready');});
+}
+
+// ─── SPARKLES ────────────────────────────────────────────────────
+(function(){
+  const colors=['#FF6FB5','#A77BFF','#6FE3C8','#FFD86E','#FF9AC4','#7FB4FF'];
+  const c=document.getElementById('sparkles');
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');
+    d.className='sparkle';
+    d.style.width=(6+Math.random()*8)+'px';
+    d.style.height=d.style.width;
+    d.style.background=colors[i%colors.length];
+    d.style.left=Math.random()*95+'%';
+    d.style.top=Math.random()*95+'%';
+    d.style.animationDelay=(Math.random()*3)+'s';
+    d.style.animationDuration=(2+Math.random()*2)+'s';
+    c.appendChild(d);
+  }
+})();
+</script>
+</body>
+</html>
