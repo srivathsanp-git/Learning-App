@@ -463,6 +463,31 @@ input,textarea{-webkit-user-select:text;user-select:text}
         <div class="tc-title">Alphabet</div>
         <div class="tc-desc">A is for Apple, B for Bee…</div>
       </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FFB347,#FF8C00);box-shadow:0 10px 26px rgba(255,179,71,0.4)" onclick="onHomeTopic('animals')">
+        <div class="tc-icon">🐾</div>
+        <div class="tc-title">Animals</div>
+        <div class="tc-desc">Dogs, cats, lions &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#FF6B6B,#FF4444);box-shadow:0 10px 26px rgba(255,107,107,0.4)" onclick="onHomeTopic('fruits')">
+        <div class="tc-icon">🍎</div>
+        <div class="tc-title">Fruits</div>
+        <div class="tc-desc">Apples, bananas &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#87CEEB,#4AA8D4);box-shadow:0 10px 26px rgba(135,206,235,0.4)" onclick="onHomeTopic('weather')">
+        <div class="tc-icon">🌤️</div>
+        <div class="tc-title">Weather</div>
+        <div class="tc-desc">Sunny, rainy, snowy &amp; more!</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#DDA0DD,#BA55D3);box-shadow:0 10px 26px rgba(221,160,221,0.4)" onclick="onHomeTopic('family')">
+        <div class="tc-icon">👨‍👩‍👧‍👦</div>
+        <div class="tc-title">Family</div>
+        <div class="tc-desc">Mom, Dad, Sister, Brother…</div>
+      </button>
+      <button class="topic-card" style="background:linear-gradient(135deg,#7FB4FF,#4A8FFF);box-shadow:0 10px 26px rgba(127,180,255,0.4)" onclick="onHomeTopic('countries')">
+        <div class="tc-icon">🌍</div>
+        <div class="tc-title">Countries</div>
+        <div class="tc-desc">Flags of the world!</div>
+      </button>
     </div>
 
   </div><!-- end #home-learn -->
@@ -701,6 +726,9 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="mode-tab active" data-mode="learn" onclick="setMode('alphabet','learn')">📖 Learn</button>
     <button class="mode-tab" data-mode="quiz" onclick="setMode('alphabet','quiz')">🎯 Quiz</button>
     <button class="mode-tab" data-mode="match" onclick="setMode('alphabet','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('alphabet','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('alphabet','spell')">🔤 Spell</button>
+    <button class="mode-tab" data-mode="trace" onclick="setMode('alphabet','trace')">✏️ Trace</button>
   </div>
   <div class="learn-section" id="alphabet-learn">
     <p class="learn-prompt">Listen and watch the letters appear! 🔤</p>
@@ -718,6 +746,179 @@ input,textarea{-webkit-user-select:text;user-select:text}
     <button class="next-btn" id="alphabet-next" style="display:none" onclick="nextQ('alphabet')">Next ➡</button>
   </div>
   <div class="match-section" id="alphabet-match"></div>
+  <div class="memory-section" id="alphabet-memory"></div>
+  <div class="spell-section" id="alphabet-spell"></div>
+  <div class="trace-section" id="alphabet-trace"></div>
+</div>
+
+<!-- ANIMALS -->
+<div class="screen" id="animals">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="animals-title">🐾 Animals</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="animals-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('animals','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('animals','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('animals','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('animals','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('animals','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="animals-learn">
+    <p class="learn-prompt">Listen and meet the animals! 🐾</p>
+    <div class="learn-grid" id="animals-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="animals-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="animals-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="animals-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="animals-score">✨ Score: 0</span>
+      <span class="prog-badge" id="animals-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="animals-qcard"></div>
+    <div class="opts-grid" id="animals-opts"></div>
+    <button class="next-btn" id="animals-next" style="display:none" onclick="nextQ('animals')">Next ➡</button>
+  </div>
+  <div class="match-section" id="animals-match"></div>
+  <div class="memory-section" id="animals-memory"></div>
+  <div class="spell-section" id="animals-spell"></div>
+</div>
+
+<!-- FRUITS -->
+<div class="screen" id="fruits">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="fruits-title">🍎 Fruits</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="fruits-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('fruits','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('fruits','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('fruits','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('fruits','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('fruits','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="fruits-learn">
+    <p class="learn-prompt">Let's explore delicious fruits! 🍎</p>
+    <div class="learn-grid" id="fruits-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="fruits-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="fruits-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="fruits-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="fruits-score">✨ Score: 0</span>
+      <span class="prog-badge" id="fruits-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="fruits-qcard"></div>
+    <div class="opts-grid" id="fruits-opts"></div>
+    <button class="next-btn" id="fruits-next" style="display:none" onclick="nextQ('fruits')">Next ➡</button>
+  </div>
+  <div class="match-section" id="fruits-match"></div>
+  <div class="memory-section" id="fruits-memory"></div>
+  <div class="spell-section" id="fruits-spell"></div>
+</div>
+
+<!-- WEATHER -->
+<div class="screen" id="weather">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="weather-title">🌤️ Weather</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="weather-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('weather','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('weather','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('weather','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('weather','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('weather','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="weather-learn">
+    <p class="learn-prompt">Let's learn about the weather! ☀️</p>
+    <div class="learn-grid" id="weather-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="weather-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="weather-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="weather-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="weather-score">✨ Score: 0</span>
+      <span class="prog-badge" id="weather-prog">Q 1 of 8</span>
+    </div>
+    <div class="q-card" id="weather-qcard"></div>
+    <div class="opts-grid" id="weather-opts"></div>
+    <button class="next-btn" id="weather-next" style="display:none" onclick="nextQ('weather')">Next ➡</button>
+  </div>
+  <div class="match-section" id="weather-match"></div>
+  <div class="memory-section" id="weather-memory"></div>
+  <div class="spell-section" id="weather-spell"></div>
+</div>
+
+<!-- FAMILY -->
+<div class="screen" id="family">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="family-title">👨‍👩‍👧‍👦 Family</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="family-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('family','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('family','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('family','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('family','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('family','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="family-learn">
+    <p class="learn-prompt">Let's meet the family! 👨‍👩‍👧‍👦</p>
+    <div class="learn-grid" id="family-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="family-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="family-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="family-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="family-score">✨ Score: 0</span>
+      <span class="prog-badge" id="family-prog">Q 1 of 6</span>
+    </div>
+    <div class="q-card" id="family-qcard"></div>
+    <div class="opts-grid" id="family-opts"></div>
+    <button class="next-btn" id="family-next" style="display:none" onclick="nextQ('family')">Next ➡</button>
+  </div>
+  <div class="match-section" id="family-match"></div>
+  <div class="memory-section" id="family-memory"></div>
+  <div class="spell-section" id="family-spell"></div>
+</div>
+
+<!-- COUNTRIES -->
+<div class="screen" id="countries">
+  <div class="game-header">
+    <button class="back-btn" onclick="go('home')">← Home</button>
+    <span class="g-title" id="countries-title">🌍 Countries</span>
+    <button class="speak-btn" onclick="replaySpeak()">🔊</button>
+  </div>
+  <div class="mode-tabs" id="countries-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('countries','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('countries','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('countries','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('countries','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('countries','spell')">🔤 Spell</button>
+  </div>
+  <div class="learn-section" id="countries-learn">
+    <p class="learn-prompt">Let's discover countries around the world! 🌍</p>
+    <div class="learn-grid" id="countries-learn-cards" style="grid-template-columns:repeat(2,1fr);max-width:700px"></div>
+    <div id="countries-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  </div>
+  <div class="quiz-section" id="countries-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="countries-prog-fill"></div></div></div>
+    <div class="score-row">
+      <span class="score-badge" id="countries-score">✨ Score: 0</span>
+      <span class="prog-badge" id="countries-prog">Q 1 of 10</span>
+    </div>
+    <div class="q-card" id="countries-qcard"></div>
+    <div class="opts-grid" id="countries-opts"></div>
+    <button class="next-btn" id="countries-next" style="display:none" onclick="nextQ('countries')">Next ➡</button>
+  </div>
+  <div class="match-section" id="countries-match"></div>
+  <div class="memory-section" id="countries-memory"></div>
+  <div class="spell-section" id="countries-spell"></div>
 </div>
 
 <script>
@@ -1036,6 +1237,11 @@ function go(id){
   else if(id==='shapes') initShapes();
   else if(id==='colors') initColors();
   else if(id==='alphabet') initAlphabet();
+  else if(id==='animals') initAnimals();
+  else if(id==='fruits') initFruits();
+  else if(id==='weather') initWeather();
+  else if(id==='family') initFamily();
+  else if(id==='countries') initCountries();
   else cancelSpeech();
 }
 
@@ -1084,16 +1290,15 @@ function setMode(game,mode){
     const info=document.getElementById(game+'-info');
     if(info)info.classList.add('ready');
   }
-  if(mode==='match'){
-    buildMatch(game);
-    renderMatch(game);
-    speak('Match the pictures to their names!');
-  }
+  if(mode==='match'){buildMatch(game);renderMatch(game);speak('Match the pictures to their names!');}
+  if(mode==='memory'){buildMemory(game);renderMemory(game);speak('Flip the cards and find the matching pairs!');}
+  if(mode==='spell'){buildSpell(game);renderSpell(game);speak('Let\'s spell the word! Tap the letters in order.');}
+  if(mode==='trace'){buildTrace(game);renderTrace(game);}
 }
 
 function renderMode(game){
   const s=state[game];
-  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F'}[game]||'var(--primary)';
+  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F',animals:'#FFB347',fruits:'#FF6B6B',weather:'#87CEEB',family:'#DDA0DD',countries:'#7FB4FF'}[game]||'var(--primary)';
   document.querySelectorAll('#'+game+'-tabs .mode-tab').forEach(btn=>{
     const active=btn.dataset.mode===s.mode;
     btn.classList.toggle('active',active);
@@ -1103,9 +1308,15 @@ function renderMode(game){
   const learnEl=document.getElementById(game+'-learn');
   const quizEl=document.getElementById(game+'-quiz');
   const matchEl=document.getElementById(game+'-match');
+  const memEl=document.getElementById(game+'-memory');
+  const spellEl=document.getElementById(game+'-spell');
+  const traceEl=document.getElementById(game+'-trace');
   if(learnEl)learnEl.style.display=s.mode==='learn'?'flex':'none';
   if(quizEl)quizEl.style.display=s.mode==='quiz'?'flex':'none';
   if(matchEl)matchEl.style.display=s.mode==='match'?'flex':'none';
+  if(memEl)memEl.style.display=s.mode==='memory'?'flex':'none';
+  if(spellEl)spellEl.style.display=s.mode==='spell'?'flex':'none';
+  if(traceEl)traceEl.style.display=s.mode==='trace'?'flex':'none';
   if(s.mode==='quiz'){
     document.getElementById(game).classList.add('quiz-active');
     s.score=0;s.qi=0;s.attempts=0;s.locked=false;
@@ -1218,6 +1429,34 @@ function buildQ(game){
       qs.push({prompt:`What does the letter ${a.name} stand for?`,answer:a.word,hint:`Letter ${a.name}`,icon:a.emoji,color:a.color,options:shuffle([a.word,...shuffle(ALPHABET.filter(x=>x.name!==a.name)).slice(0,3).map(x=>x.word)])});
     });
     state.alphabet.questions=shuffle(qs).slice(0,10);
+  }else if(game==='animals'){
+    ANIMALS.forEach(a=>{
+      qs.push({prompt:`${a.emoji} Which animal says ${a.sound}?`,answer:a.name,hint:a.fact,icon:a.emoji,color:a.color,options:pickOpts(ANIMALS,a,3)});
+      qs.push({prompt:`${a.emoji} What animal is this?`,answer:a.name,hint:a.fact,icon:a.emoji,color:a.color,options:pickOpts(ANIMALS,a,3)});
+    });
+    state.animals.questions=shuffle(qs).slice(0,10);
+  }else if(game==='fruits'){
+    FRUITS.forEach(f=>{
+      qs.push({prompt:`${f.emoji} What fruit is this?`,answer:f.name,hint:f.fact,icon:f.emoji,color:f.color,options:pickOpts(FRUITS,f,3)});
+    });
+    state.fruits.questions=shuffle(qs).slice(0,8);
+  }else if(game==='weather'){
+    WEATHER.forEach(w=>{
+      qs.push({prompt:`${w.emoji} What is this weather called?`,answer:w.name,hint:w.fact,icon:w.emoji,color:w.color,options:pickOpts(WEATHER,w,3)});
+      qs.push({prompt:w.fact.split('!')[0]+'! What weather is this?',answer:w.name,hint:w.fact,icon:w.emoji,color:w.color,options:pickOpts(WEATHER,w,3)});
+    });
+    state.weather.questions=shuffle(qs).slice(0,8);
+  }else if(game==='family'){
+    FAMILY.forEach(f=>{
+      qs.push({prompt:`${f.emoji} Who is this family member?`,answer:f.name,hint:f.fact,icon:f.emoji,color:f.color,options:pickOpts(FAMILY,f,3)});
+    });
+    state.family.questions=shuffle(qs).slice(0,8);
+  }else if(game==='countries'){
+    COUNTRIES.forEach(c=>{
+      qs.push({prompt:`${c.emoji} Which country has this flag?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.color,options:pickOpts(COUNTRIES,c,3)});
+      qs.push({prompt:c.fact.split('!')[0]+'! Which country is this?',answer:c.name,hint:c.fact,icon:c.emoji,color:c.color,options:pickOpts(COUNTRIES,c,3)});
+    });
+    state.countries.questions=shuffle(qs).slice(0,10);
   }else if(game==='home'){
     let all=[];
     TOPICS.forEach(g=>{const prev=state[g].questions;buildQ(g);all.push(...state[g].questions);state[g].questions=prev;});
@@ -1249,8 +1488,13 @@ function renderQ(game){
     else if(game==='shapes') optItem=SHAPES.find(x=>x.name===opt);
     else if(game==='colors') optItem=COLORS.find(x=>x.name===opt);
     else if(game==='alphabet') optItem=ALPHABET.find(x=>x.name===opt||x.word===opt);
+    else if(game==='animals') optItem=ANIMALS.find(x=>x.name===opt);
+    else if(game==='fruits') optItem=FRUITS.find(x=>x.name===opt);
+    else if(game==='weather') optItem=WEATHER.find(x=>x.name===opt);
+    else if(game==='family') optItem=FAMILY.find(x=>x.name===opt);
+    else if(game==='countries') optItem=COUNTRIES.find(x=>x.name===opt);
     // Fallback: search all arrays so icons always resolve
-    if(!optItem) optItem=SEASONS.find(x=>x.name===opt)||MONTHS.find(x=>x.name===opt)||DAYS.find(x=>x.name===opt)||NUMBERS.find(x=>x.name===opt)||SHAPES.find(x=>x.name===opt)||COLORS.find(x=>x.name===opt)||ALPHABET.find(x=>x.name===opt||x.word===opt);
+    if(!optItem) optItem=SEASONS.find(x=>x.name===opt)||MONTHS.find(x=>x.name===opt)||DAYS.find(x=>x.name===opt)||NUMBERS.find(x=>x.name===opt)||SHAPES.find(x=>x.name===opt)||COLORS.find(x=>x.name===opt)||ALPHABET.find(x=>x.name===opt||x.word===opt)||ANIMALS.find(x=>x.name===opt)||FRUITS.find(x=>x.name===opt)||WEATHER.find(x=>x.name===opt)||FAMILY.find(x=>x.name===opt)||COUNTRIES.find(x=>x.name===opt);
     const isShape=optItem&&optItem.points;
     const optIcon=isShape?shapeIcon(optItem,30,optItem.color):(optItem?(optItem.emoji||optItem.numeral||'❓'):'❓');
     const b=document.createElement('button');
@@ -1312,6 +1556,11 @@ function buildMatch(game){
   else if(game==='shapes') pool=shuffle([...SHAPES]).slice(0,6).map(x=>({name:x.name,icon:shapeIcon(x,44),color:x.color}));
   else if(game==='colors') pool=shuffle([...COLORS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.hex}));
   else if(game==='alphabet') pool=shuffle([...ALPHABET]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='animals') pool=shuffle([...ANIMALS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='fruits') pool=shuffle([...FRUITS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='weather') pool=WEATHER.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='family') pool=FAMILY.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='countries') pool=shuffle([...COUNTRIES]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='home'){
     TOPICS.forEach(g=>{
       const prev={matchItems:state[g].matchItems,matchLabels:state[g].matchLabels,matchDone:state[g].matchDone,matchSelected:state[g].matchSelected};
@@ -1672,6 +1921,321 @@ function initAlphabet(){
   });
   renderMode('alphabet');
   speakNarration("Let's learn all the letters of the alphabet!",ALPHABET.map(x=>({id:'al-'+x.name,name:x.name})),'Tap any letter to hear its word, or try Quiz or Match to play!',()=>{document.getElementById('alphabet-info').classList.add('ready');});
+}
+
+// ─── TOPIC DATA HELPER ───────────────────────────────────────────
+function _topicData(game){
+  if(game==='seasons')return SEASONS;
+  if(game==='months')return MONTHS;
+  if(game==='days')return DAYS;
+  if(game==='numbers')return NUMBERS;
+  if(game==='shapes')return SHAPES;
+  if(game==='colors')return COLORS;
+  if(game==='alphabet')return ALPHABET;
+  if(game==='animals')return ANIMALS;
+  if(game==='fruits')return FRUITS;
+  if(game==='weather')return WEATHER;
+  if(game==='family')return FAMILY;
+  if(game==='countries')return COUNTRIES;
+  return [];
+}
+
+// ─── MEMORY GAME ─────────────────────────────────────────────────
+function buildMemory(game){
+  const s=state[game];
+  let data=shuffle(_topicData(game)).slice(0,6);
+  const cards=[];
+  data.forEach(item=>{
+    const isShape=item.points;
+    const icon=isShape?shapeIcon(item,44,item.color):(item.emoji||item.numeral||'?');
+    const col=item.color||item.hex||'#A77BFF';
+    cards.push({icon,name:item.name,pairId:item.name,color:col,type:'icon',flipped:false,matched:false});
+    cards.push({icon,name:item.name,pairId:item.name,color:col,type:'name',flipped:false,matched:false});
+  });
+  s.memCards=shuffle(cards);s.memFlipped=[];s.memMoves=0;s.memMatched=0;
+}
+
+function renderMemory(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-memory');
+  if(!el||!s.memCards)return;
+  const total=s.memCards.length/2;
+  el.innerHTML=`<div class="mem-stats"><span>🃏 Moves: ${s.memMoves}</span><span>✅ ${s.memMatched} of ${total} pairs</span></div><div class="mem-grid">${
+    s.memCards.map((c,i)=>{
+      if(c.matched)return`<button class="mem-card matched" disabled>${c.type==='icon'?c.icon:c.name}</button>`;
+      if(c.flipped)return`<button class="mem-card flipped" onclick="flipMem('${game}',${i})">${c.type==='icon'?c.icon:c.name}</button>`;
+      return`<button class="mem-card" onclick="flipMem('${game}',${i})">?</button>`;
+    }).join('')
+  }</div>`;
+}
+
+function flipMem(game,idx){
+  const s=state[game];
+  const c=s.memCards[idx];
+  if(!c||c.flipped||c.matched||s.memFlipped.length>=2)return;
+  c.flipped=true;
+  s.memFlipped.push(idx);
+  speak(c.name);
+  renderMemory(game);
+  if(s.memFlipped.length===2){
+    s.memMoves++;
+    const [a,b]=s.memFlipped.map(i=>s.memCards[i]);
+    if(a.pairId===b.pairId){
+      a.matched=true;b.matched=true;s.memFlipped=[];s.memMatched++;
+      speak(a.name+'! Perfect match!');
+      renderMemory(game);
+      if(s.memMatched===s.memCards.length/2)setTimeout(()=>celebrate('Amazing memory!'),400);
+    }else{
+      setTimeout(()=>{
+        s.memFlipped.forEach(i=>{s.memCards[i].flipped=false;});
+        s.memFlipped=[];renderMemory(game);
+      },1000);
+    }
+  }
+}
+
+// ─── SPELLING GAME ────────────────────────────────────────────────
+function _spellWord(game,item){
+  if(game==='alphabet')return item.word.toUpperCase();
+  return item.name.toUpperCase();
+}
+
+function buildSpell(game){
+  const s=state[game];
+  s.spellItems=shuffle(_topicData(game));
+  s.spellIdx=0;
+  _loadSpellWord(game);
+}
+
+function _loadSpellWord(game){
+  const s=state[game];
+  const item=s.spellItems[s.spellIdx%s.spellItems.length];
+  const word=_spellWord(game,item);
+  s.spellWord=word;
+  s.spellItem=item;
+  s.spellEntered=[];
+  const wordLetters=[...new Set(word.split(''))];
+  const allLetters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(l=>!wordLetters.includes(l));
+  const extras=shuffle(allLetters).slice(0,Math.max(0,12-wordLetters.length));
+  s.spellBank=shuffle([...word.split(''),...extras.slice(0,6)]);
+}
+
+function renderSpell(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-spell');
+  if(!el||!s.spellWord)return;
+  const item=s.spellItem;
+  const isShape=item&&item.points;
+  const icon=isShape?shapeIcon(item,60,item.color):(item?(item.emoji||item.numeral||'?'):'?');
+  const blanks=s.spellWord.split('').map((l,i)=>{
+    const filled=i<s.spellEntered.length;
+    return`<div class="spell-blank${filled?' filled':''}">${filled?s.spellEntered[i]:''}</div>`;
+  }).join('');
+  const bank=s.spellBank.map((l,i)=>{
+    const usedCount=s.spellEntered.filter(x=>x===l).length;
+    const wordCount=s.spellWord.split('').filter(x=>x===l).length;
+    const used=usedCount>=wordCount;
+    return`<button class="spell-letter-btn${used?' used':''}" id="${game}-sl-${i}" onclick="tapSpellLetter('${game}','${l}',${i})">${l}</button>`;
+  }).join('');
+  const prog=`<div class="spell-prog">Word ${(s.spellIdx%s.spellItems.length)+1} of ${s.spellItems.length}</div>`;
+  el.innerHTML=`${prog}<div class="spell-icon">${icon}</div><div class="spell-blanks">${blanks}</div><div class="spell-letter-bank">${bank}</div>`;
+}
+
+function tapSpellLetter(game,letter,btnIdx){
+  const s=state[game];
+  if(!s.spellWord||s.spellEntered.length>=s.spellWord.length)return;
+  const pos=s.spellEntered.length;
+  const expected=s.spellWord[pos];
+  if(letter===expected){
+    s.spellEntered.push(letter);
+    speak(letter);
+    renderSpell(game);
+    if(s.spellEntered.length===s.spellWord.length){
+      setTimeout(()=>{
+        speak('Well done! You spelled '+s.spellItem.name+'!');
+        setTimeout(()=>{s.spellIdx++;_loadSpellWord(game);renderSpell(game);},2000);
+      },400);
+    }
+  }else{
+    speak('Try again!');
+    const btn=document.getElementById(game+'-sl-'+btnIdx);
+    if(btn){btn.classList.add('wrong-flash');setTimeout(()=>btn.classList.remove('wrong-flash'),500);}
+  }
+}
+
+// ─── TRACE GAME ───────────────────────────────────────────────────
+function buildTrace(game){
+  const s=state[game];
+  s.traceIdx=0;
+  s.traceData=game==='alphabet'?ALPHABET:NUMBERS;
+}
+
+function renderTrace(game){
+  const s=state[game];
+  const el=document.getElementById(game+'-trace');
+  if(!el||!s.traceData)return;
+  const item=s.traceData[s.traceIdx%s.traceData.length];
+  const guide=game==='alphabet'?item.name:(item.numeral||item.name);
+  const total=s.traceData.length;
+  const prog=`<div class="spell-prog">${s.traceIdx+1} of ${total}</div>`;
+  const label=game==='alphabet'?`${item.name} is for ${item.word}`:`${item.name} — ${item.numeral}`;
+  el.innerHTML=`${prog}<div class="trace-label">${label}</div><div class="trace-canvas-wrap"><div class="trace-guide">${guide}</div><canvas class="trace-canvas" id="${game}-trace-canvas" width="280" height="280"></canvas></div><div class="trace-btns"><button class="trace-btn clear" onclick="clearTrace('${game}')">↺ Clear</button><button class="trace-btn next" onclick="nextTrace('${game}')">Next →</button></div>`;
+  const canvas=document.getElementById(game+'-trace-canvas');
+  if(canvas)_setupTraceCanvas(canvas);
+  speak(game==='alphabet'?`Trace the letter ${item.name}. ${item.name} is for ${item.word}.`:`Trace the number ${item.name}.`);
+}
+
+function clearTrace(game){
+  const canvas=document.getElementById(game+'-trace-canvas');
+  if(canvas){const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);}
+}
+
+function nextTrace(game){
+  const s=state[game];
+  s.traceIdx=(s.traceIdx+1)%s.traceData.length;
+  renderTrace(game);
+}
+
+function _setupTraceCanvas(canvas){
+  let drawing=false;
+  const ctx=canvas.getContext('2d');
+  ctx.strokeStyle='#A77BFF';ctx.lineWidth=8;ctx.lineCap='round';ctx.lineJoin='round';
+  const pos=(e)=>{const r=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(canvas.width/r.width),y:(t.clientY-r.top)*(canvas.height/r.height)};};
+  const start=(e)=>{e.preventDefault();drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);};
+  const move=(e)=>{e.preventDefault();if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();};
+  const end=()=>{drawing=false;};
+  canvas.addEventListener('mousedown',start);canvas.addEventListener('mousemove',move);canvas.addEventListener('mouseup',end);canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});canvas.addEventListener('touchmove',move,{passive:false});canvas.addEventListener('touchend',end);
+}
+
+// ─── ANIMALS ─────────────────────────────────────────────────────
+function initAnimals(){
+  const s=state.animals;s.mode='learn';s.active=null;
+  document.getElementById('animals-info').style.display='none';
+  document.getElementById('animals-info').classList.remove('filled','ready');
+  document.getElementById('animals-info').innerHTML='';
+  const lc=document.getElementById('animals-learn-cards');lc.innerHTML='';
+  ANIMALS.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='an-'+a.name;
+    b.style.background=`linear-gradient(135deg,${a.color},${a.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${a.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${a.emoji}</div><div class="lc-name">${a.name}</div><div class="lc-sub">${a.sound}!</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('animals',a,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${a.emoji}</span><div><div class="ic-name">${a.name}</div><div class="ic-sub">Says: ${a.sound}!</div></div></div><div class="ic-fact">${a.fact}</div></div>`,
+        `${a.name}. ${a.sound}! ${a.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('animals');
+  speakNarration('Let\'s meet the animals!',ANIMALS.map(x=>({id:'an-'+x.name,name:x.name+'. '+x.sound})),'Tap any animal to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('animals-info').classList.add('ready');});
+}
+
+// ─── FRUITS ──────────────────────────────────────────────────────
+function initFruits(){
+  const s=state.fruits;s.mode='learn';s.active=null;
+  document.getElementById('fruits-info').style.display='none';
+  document.getElementById('fruits-info').classList.remove('filled','ready');
+  document.getElementById('fruits-info').innerHTML='';
+  const lc=document.getElementById('fruits-learn-cards');lc.innerHTML='';
+  FRUITS.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='fr-'+f.name;
+    b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${f.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${f.emoji}</div><div class="lc-name">${f.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('fruits',f,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${f.emoji}</span><div><div class="ic-name">${f.name}</div></div></div><div class="ic-fact">${f.fact}</div></div>`,
+        `${f.name}. ${f.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('fruits');
+  speakNarration('Let\'s explore delicious fruits!',FRUITS.map(x=>({id:'fr-'+x.name,name:x.name})),'Tap any fruit to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('fruits-info').classList.add('ready');});
+}
+
+// ─── WEATHER ─────────────────────────────────────────────────────
+function initWeather(){
+  const s=state.weather;s.mode='learn';s.active=null;
+  document.getElementById('weather-info').style.display='none';
+  document.getElementById('weather-info').classList.remove('filled','ready');
+  document.getElementById('weather-info').innerHTML='';
+  const lc=document.getElementById('weather-learn-cards');lc.innerHTML='';
+  WEATHER.forEach(w=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='we-'+w.name;
+    b.style.background=`linear-gradient(135deg,${w.color},${w.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${w.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${w.emoji}</div><div class="lc-name">${w.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('weather',w,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${w.emoji}</span><div><div class="ic-name">${w.name}</div></div></div><div class="ic-fact">${w.fact}</div></div>`,
+        `${w.name}. ${w.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('weather');
+  speakNarration('Let\'s learn about the weather!',WEATHER.map(x=>({id:'we-'+x.name,name:x.name})),'Tap any weather type to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('weather-info').classList.add('ready');});
+}
+
+// ─── FAMILY ──────────────────────────────────────────────────────
+function initFamily(){
+  const s=state.family;s.mode='learn';s.active=null;
+  document.getElementById('family-info').style.display='none';
+  document.getElementById('family-info').classList.remove('filled','ready');
+  document.getElementById('family-info').innerHTML='';
+  const lc=document.getElementById('family-learn-cards');lc.innerHTML='';
+  FAMILY.forEach(f=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='fa-'+f.name;
+    b.style.background=`linear-gradient(135deg,${f.color},${f.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${f.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${f.emoji}</div><div class="lc-name">${f.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('family',f,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${f.emoji}</span><div><div class="ic-name">${f.name}</div></div></div><div class="ic-fact">${f.fact}</div></div>`,
+        `${f.name}. ${f.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('family');
+  speakNarration('Let\'s meet the family!',FAMILY.map(x=>({id:'fa-'+x.name,name:x.name})),'Tap any family member to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('family-info').classList.add('ready');});
+}
+
+// ─── COUNTRIES ───────────────────────────────────────────────────
+function initCountries(){
+  const s=state.countries;s.mode='learn';s.active=null;
+  document.getElementById('countries-info').style.display='none';
+  document.getElementById('countries-info').classList.remove('filled','ready');
+  document.getElementById('countries-info').innerHTML='';
+  const lc=document.getElementById('countries-learn-cards');lc.innerHTML='';
+  COUNTRIES.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='learn-card card-pre';b.id='co-'+c.name;
+    b.style.background=`linear-gradient(135deg,${c.color},${c.color}bb)`;
+    b.style.boxShadow=`0 12px 30px ${c.color}55,0 2px 0 rgba(255,255,255,0.85) inset`;
+    b.innerHTML=`<div class="lc-icon">${c.emoji}</div><div class="lc-name">${c.name}</div>`;
+    b.onclick=()=>{
+      b.classList.toggle('active');
+      showInfo('countries',c,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${c.emoji}</span><div><div class="ic-name">${c.name}</div></div></div><div class="ic-fact">${c.fact}</div></div>`,
+        `${c.name}. ${c.fact}`
+      );
+    };
+    lc.appendChild(b);
+  });
+  renderMode('countries');
+  speakNarration('Let\'s discover countries around the world!',COUNTRIES.map(x=>({id:'co-'+x.name,name:x.name})),'Tap any country to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('countries-info').classList.add('ready');});
 }
 
 // ─── SPARKLES ────────────────────────────────────────────────────
