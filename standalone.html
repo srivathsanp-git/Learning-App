@@ -483,10 +483,10 @@ input,textarea{-webkit-user-select:text;user-select:text}
         <div class="tc-title">Family</div>
         <div class="tc-desc">Mom, Dad, Sister, Brother…</div>
       </button>
-      <button class="topic-card" style="background:linear-gradient(135deg,#7FB4FF,#4A8FFF);box-shadow:0 10px 26px rgba(127,180,255,0.4)" onclick="onHomeTopic('countries')">
-        <div class="tc-icon">🌍</div>
-        <div class="tc-title">Countries</div>
-        <div class="tc-desc">Flags of the world!</div>
+      <button class="topic-card" style="background:linear-gradient(135deg,#3CB371,#2E8B57);box-shadow:0 10px 26px rgba(60,179,113,0.4)" onclick="onHomeTopic('vegetables')">
+        <div class="tc-icon">🥦</div>
+        <div class="tc-title">Vegetables</div>
+        <div class="tc-desc">Carrots, broccoli &amp; more!</div>
       </button>
     </div>
 
@@ -887,38 +887,38 @@ input,textarea{-webkit-user-select:text;user-select:text}
   <div class="spell-section" id="family-spell"></div>
 </div>
 
-<!-- COUNTRIES -->
-<div class="screen" id="countries">
+<!-- VEGETABLES -->
+<div class="screen" id="vegetables">
   <div class="game-header">
     <button class="back-btn" onclick="go('home')">← Home</button>
-    <span class="g-title" id="countries-title">🌍 Countries</span>
+    <span class="g-title" id="vegetables-title">🥦 Vegetables</span>
     <button class="speak-btn" onclick="replaySpeak()">🔊</button>
   </div>
-  <div class="mode-tabs" id="countries-tabs">
-    <button class="mode-tab active" data-mode="learn" onclick="setMode('countries','learn')">📖 Learn</button>
-    <button class="mode-tab" data-mode="quiz" onclick="setMode('countries','quiz')">🎯 Quiz</button>
-    <button class="mode-tab" data-mode="match" onclick="setMode('countries','match')">🧩 Match</button>
-    <button class="mode-tab" data-mode="memory" onclick="setMode('countries','memory')">🃏 Memory</button>
-    <button class="mode-tab" data-mode="spell" onclick="setMode('countries','spell')">🔤 Spell</button>
+  <div class="mode-tabs" id="vegetables-tabs">
+    <button class="mode-tab active" data-mode="learn" onclick="setMode('vegetables','learn')">📖 Learn</button>
+    <button class="mode-tab" data-mode="quiz" onclick="setMode('vegetables','quiz')">🎯 Quiz</button>
+    <button class="mode-tab" data-mode="match" onclick="setMode('vegetables','match')">🧩 Match</button>
+    <button class="mode-tab" data-mode="memory" onclick="setMode('vegetables','memory')">🃏 Memory</button>
+    <button class="mode-tab" data-mode="spell" onclick="setMode('vegetables','spell')">🔤 Spell</button>
   </div>
-  <div class="learn-section" id="countries-learn">
-    <p class="learn-prompt">Let's discover countries around the world! 🌍</p>
-    <div class="mini-grid" id="countries-learn-cards"></div>
-    <div id="countries-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
+  <div class="learn-section" id="vegetables-learn">
+    <p class="learn-prompt">Let's explore yummy vegetables! 🥦</p>
+    <div class="mini-grid" id="vegetables-learn-cards"></div>
+    <div id="vegetables-info" style="display:none;width:100%;flex-direction:column;align-items:center;padding:0 16px"></div>
   </div>
-  <div class="quiz-section" id="countries-quiz">
-    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="countries-prog-fill"></div></div></div>
+  <div class="quiz-section" id="vegetables-quiz">
+    <div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" id="vegetables-prog-fill"></div></div></div>
     <div class="score-row">
-      <span class="score-badge" id="countries-score">✨ Score: 0</span>
-      <span class="prog-badge" id="countries-prog">Q 1 of 10</span>
+      <span class="score-badge" id="vegetables-score">✨ Score: 0</span>
+      <span class="prog-badge" id="vegetables-prog">Q 1 of 8</span>
     </div>
-    <div class="q-card" id="countries-qcard"></div>
-    <div class="opts-grid" id="countries-opts"></div>
-    <button class="next-btn" id="countries-next" style="display:none" onclick="nextQ('countries')">Next ➡</button>
+    <div class="q-card" id="vegetables-qcard"></div>
+    <div class="opts-grid" id="vegetables-opts"></div>
+    <button class="next-btn" id="vegetables-next" style="display:none" onclick="nextQ('vegetables')">Next ➡</button>
   </div>
-  <div class="match-section" id="countries-match"></div>
-  <div class="memory-section" id="countries-memory"></div>
-  <div class="spell-section" id="countries-spell"></div>
+  <div class="match-section" id="vegetables-match"></div>
+  <div class="memory-section" id="vegetables-memory"></div>
+  <div class="spell-section" id="vegetables-spell"></div>
 </div>
 
 <script>
@@ -1199,19 +1199,19 @@ const FAMILY=[
   {name:'Grandpa', emoji:'👴',color:'#90EE90',fact:'Grandpa knows so many amazing and fun things!'},
 ];
 
-const COUNTRIES=[
-  {name:'USA',       emoji:'🇺🇸',color:'#B22234',fact:'The USA has 50 states and the Statue of Liberty!'},
-  {name:'UK',        emoji:'🇬🇧',color:'#012169',fact:'The UK is home to Big Ben and the royal family!'},
-  {name:'India',     emoji:'🇮🇳',color:'#FF9933',fact:'India is famous for the beautiful Taj Mahal!'},
-  {name:'France',    emoji:'🇫🇷',color:'#0055A4',fact:'France has the tall and beautiful Eiffel Tower!'},
-  {name:'Japan',     emoji:'🇯🇵',color:'#BC002D',fact:'Japan is known for cherry blossoms and sushi!'},
-  {name:'Australia', emoji:'🇦🇺',color:'#00008B',fact:'Australia has kangaroos and the Great Barrier Reef!'},
-  {name:'Brazil',    emoji:'🇧🇷',color:'#009C3B',fact:'Brazil has the amazing Amazon rainforest!'},
-  {name:'Canada',    emoji:'🇨🇦',color:'#FF0000',fact:'Canada has a beautiful maple leaf on its flag!'},
+const VEGETABLES=[
+  {name:'Carrot',   emoji:'🥕',color:'#FF8C00',fact:'Carrots help you see better and rabbits love them!'},
+  {name:'Broccoli', emoji:'🥦',color:'#3CB371',fact:'Broccoli looks like a tiny tree and is super healthy!'},
+  {name:'Corn',     emoji:'🌽',color:'#FFD700',fact:'Corn grows tall on stalks and has hundreds of kernels!'},
+  {name:'Tomato',   emoji:'🍅',color:'#FF4444',fact:'Tomatoes are a fruit but we use them as a vegetable!'},
+  {name:'Potato',   emoji:'🥔',color:'#DEB887',fact:'Potatoes grow underground and make great chips and mash!'},
+  {name:'Peas',     emoji:'🫛',color:'#90EE90',fact:'Peas grow in pods and are tiny and perfectly round!'},
+  {name:'Onion',    emoji:'🧅',color:'#DDA0DD',fact:'Onions make you cry when you cut them!'},
+  {name:'Cucumber', emoji:'🥒',color:'#2E8B57',fact:'Cucumbers are cool and refreshing and mostly water!'},
 ];
 
 // ─── STATE ───────────────────────────────────────────────────────
-const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet','animals','fruits','weather','family','countries'];
+const TOPICS=['seasons','months','days','numbers','shapes','colors','alphabet','animals','fruits','weather','family','vegetables'];
 const state={};
 TOPICS.forEach(t=>{state[t]={mode:'learn',score:0,qi:0,questions:[],active:null,attempts:0,locked:false,memCards:[],memFlipped:[],memMoves:0,memMatched:0,spellItems:[],spellIdx:0,spellWord:'',spellEntered:[],spellBank:[],spellItem:null,traceIdx:0,traceData:null};});
 state.home={mode:'learn',score:0,qi:0,questions:[],attempts:0,locked:false,matchItems:null,matchLabels:[],matchSelected:null,matchDone:{},matchPool:[],matchRound:0,matchScore:0};
@@ -1241,7 +1241,7 @@ function go(id){
   else if(id==='fruits') initFruits();
   else if(id==='weather') initWeather();
   else if(id==='family') initFamily();
-  else if(id==='countries') initCountries();
+  else if(id==='vegetables') initVegetables();
   else cancelSpeech();
 }
 
@@ -1298,7 +1298,7 @@ function setMode(game,mode){
 
 function renderMode(game){
   const s=state[game];
-  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F',animals:'#FFB347',fruits:'#FF6B6B',weather:'#87CEEB',family:'#DDA0DD',countries:'#7FB4FF'}[game]||'var(--primary)';
+  const tabColor={seasons:'#FF9AC4',months:'#7AC8FF',days:'#FFB347',numbers:'#7FE0A5',shapes:'#FF7AC4',colors:'#C4A7FF',alphabet:'#FFCC6F',animals:'#FFB347',fruits:'#FF6B6B',weather:'#87CEEB',family:'#DDA0DD',vegetables:'#3CB371'}[game]||'var(--primary)';
   document.querySelectorAll('#'+game+'-tabs .mode-tab').forEach(btn=>{
     const active=btn.dataset.mode===s.mode;
     btn.classList.toggle('active',active);
@@ -1451,12 +1451,12 @@ function buildQ(game){
       qs.push({prompt:`${f.emoji} Who is this family member?`,answer:f.name,hint:f.fact,icon:f.emoji,color:f.color,options:pickOpts(FAMILY,f,3)});
     });
     state.family.questions=shuffle(qs).slice(0,8);
-  }else if(game==='countries'){
-    COUNTRIES.forEach(c=>{
-      qs.push({prompt:`${c.emoji} Which country has this flag?`,answer:c.name,hint:c.fact,icon:c.emoji,color:c.color,options:pickOpts(COUNTRIES,c,3)});
-      qs.push({prompt:c.fact.split('!')[0]+'! Which country is this?',answer:c.name,hint:c.fact,icon:c.emoji,color:c.color,options:pickOpts(COUNTRIES,c,3)});
+  }else if(game==='vegetables'){
+    VEGETABLES.forEach(v=>{
+      qs.push({prompt:`${v.emoji} What vegetable is this?`,answer:v.name,hint:v.fact,icon:v.emoji,color:v.color,options:pickOpts(VEGETABLES,v,3)});
+      qs.push({prompt:v.fact.split('!')[0]+'! What vegetable is this?',answer:v.name,hint:v.fact,icon:v.emoji,color:v.color,options:pickOpts(VEGETABLES,v,3)});
     });
-    state.countries.questions=shuffle(qs).slice(0,10);
+    state.vegetables.questions=shuffle(qs).slice(0,10);
   }else if(game==='home'){
     let all=[];
     TOPICS.forEach(g=>{const prev=state[g].questions;buildQ(g);all.push(...state[g].questions);state[g].questions=prev;});
@@ -1492,9 +1492,9 @@ function renderQ(game){
     else if(game==='fruits') optItem=FRUITS.find(x=>x.name===opt);
     else if(game==='weather') optItem=WEATHER.find(x=>x.name===opt);
     else if(game==='family') optItem=FAMILY.find(x=>x.name===opt);
-    else if(game==='countries') optItem=COUNTRIES.find(x=>x.name===opt);
+    else if(game==='vegetables') optItem=VEGETABLES.find(x=>x.name===opt);
     // Fallback: search all arrays so icons always resolve
-    if(!optItem) optItem=SEASONS.find(x=>x.name===opt)||MONTHS.find(x=>x.name===opt)||DAYS.find(x=>x.name===opt)||NUMBERS.find(x=>x.name===opt)||SHAPES.find(x=>x.name===opt)||COLORS.find(x=>x.name===opt)||ALPHABET.find(x=>x.name===opt||x.word===opt)||ANIMALS.find(x=>x.name===opt)||FRUITS.find(x=>x.name===opt)||WEATHER.find(x=>x.name===opt)||FAMILY.find(x=>x.name===opt)||COUNTRIES.find(x=>x.name===opt);
+    if(!optItem) optItem=SEASONS.find(x=>x.name===opt)||MONTHS.find(x=>x.name===opt)||DAYS.find(x=>x.name===opt)||NUMBERS.find(x=>x.name===opt)||SHAPES.find(x=>x.name===opt)||COLORS.find(x=>x.name===opt)||ALPHABET.find(x=>x.name===opt||x.word===opt)||ANIMALS.find(x=>x.name===opt)||FRUITS.find(x=>x.name===opt)||WEATHER.find(x=>x.name===opt)||FAMILY.find(x=>x.name===opt)||VEGETABLES.find(x=>x.name===opt);
     const isShape=optItem&&optItem.points;
     const optIcon=isShape?shapeIcon(optItem,30,optItem.color):(optItem?(optItem.emoji||optItem.numeral||'❓'):'❓');
     const b=document.createElement('button');
@@ -1560,7 +1560,7 @@ function buildMatch(game){
   else if(game==='fruits') pool=shuffle([...FRUITS]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='weather') pool=WEATHER.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='family') pool=FAMILY.map(x=>({name:x.name,icon:x.emoji,color:x.color}));
-  else if(game==='countries') pool=shuffle([...COUNTRIES]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
+  else if(game==='vegetables') pool=shuffle([...VEGETABLES]).slice(0,6).map(x=>({name:x.name,icon:x.emoji,color:x.color}));
   else if(game==='home'){
     TOPICS.forEach(g=>{
       const prev={matchItems:state[g].matchItems,matchLabels:state[g].matchLabels,matchDone:state[g].matchDone,matchSelected:state[g].matchSelected};
@@ -1936,7 +1936,7 @@ function _topicData(game){
   if(game==='fruits')return FRUITS;
   if(game==='weather')return WEATHER;
   if(game==='family')return FAMILY;
-  if(game==='countries')return COUNTRIES;
+  if(game==='vegetables')return VEGETABLES;
   return [];
 }
 
@@ -2212,30 +2212,30 @@ function initFamily(){
   speakNarration('Let\'s meet the family!',FAMILY.map(x=>({id:'fa-'+x.name,name:x.name})),'Tap any family member to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('family-info').classList.add('ready');});
 }
 
-// ─── COUNTRIES ───────────────────────────────────────────────────
-function initCountries(){
-  const s=state.countries;s.mode='learn';s.active=null;
-  document.getElementById('countries-info').style.display='none';
-  document.getElementById('countries-info').classList.remove('filled','ready');
-  document.getElementById('countries-info').innerHTML='';
-  const lc=document.getElementById('countries-learn-cards');lc.innerHTML='';
-  COUNTRIES.forEach(c=>{
+// ─── VEGETABLES ──────────────────────────────────────────────────
+function initVegetables(){
+  const s=state.vegetables;s.mode='learn';s.active=null;
+  document.getElementById('vegetables-info').style.display='none';
+  document.getElementById('vegetables-info').classList.remove('filled','ready');
+  document.getElementById('vegetables-info').innerHTML='';
+  const lc=document.getElementById('vegetables-learn-cards');lc.innerHTML='';
+  VEGETABLES.forEach(v=>{
     const b=document.createElement('button');
-    b.className='mini-card card-pre';b.id='co-'+c.name;
-    b.style.background=`linear-gradient(135deg,${c.color},${c.color}bb)`;
-    b.style.boxShadow=`0 8px 20px ${c.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
-    b.innerHTML=`<div class="mi-emoji">${c.emoji}</div><div class="mi-name">${c.name}</div>`;
+    b.className='mini-card card-pre';b.id='vg-'+v.name;
+    b.style.background=`linear-gradient(135deg,${v.color},${v.color}bb)`;
+    b.style.boxShadow=`0 8px 20px ${v.color}55,0 2px 0 rgba(255,255,255,0.8) inset`;
+    b.innerHTML=`<div class="mi-emoji">${v.emoji}</div><div class="mi-name">${v.name}</div>`;
     b.onclick=()=>{
       b.classList.toggle('active');
-      showInfo('countries',c,
-        `<div class="info-card"><div class="ic-row"><span class="ic-big">${c.emoji}</span><div><div class="ic-name">${c.name}</div></div></div><div class="ic-fact">${c.fact}</div></div>`,
-        `${c.name}. ${c.fact}`
+      showInfo('vegetables',v,
+        `<div class="info-card"><div class="ic-row"><span class="ic-big">${v.emoji}</span><div><div class="ic-name">${v.name}</div></div></div><div class="ic-fact">${v.fact}</div></div>`,
+        `${v.name}. ${v.fact}`
       );
     };
     lc.appendChild(b);
   });
-  renderMode('countries');
-  speakNarration('Let\'s discover countries around the world!',COUNTRIES.map(x=>({id:'co-'+x.name,name:x.name})),'Tap any country to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('countries-info').classList.add('ready');});
+  renderMode('vegetables');
+  speakNarration('Let\'s explore yummy vegetables!',VEGETABLES.map(x=>({id:'vg-'+x.name,name:x.name})),'Tap any vegetable to learn more, or try Quiz, Match, Memory or Spell!',()=>{document.getElementById('vegetables-info').classList.add('ready');});
 }
 
 // ─── SPARKLES ────────────────────────────────────────────────────
