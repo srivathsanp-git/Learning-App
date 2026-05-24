@@ -1573,7 +1573,7 @@ function buildMatch(game){
     _loadMatchRound('home');
     return;
   }
-  const items=shuffle(pool).slice(0,4);
+  const items=shuffle(pool).slice(0,5);
   s.matchItems=items;
   s.matchLabels=shuffle(items.map(x=>x.name));
   s.matchSelected=null;
@@ -1582,8 +1582,8 @@ function buildMatch(game){
 
 function _loadMatchRound(game){
   const s=state[game];
-  const start=s.matchRound*4;
-  const items=(s.matchPool||[]).slice(start,start+4);
+  const start=s.matchRound*5;
+  const items=(s.matchPool||[]).slice(start,start+5);
   s.matchItems=items;
   s.matchLabels=shuffle(items.map(x=>x.name));
   s.matchSelected=null;
@@ -1601,7 +1601,7 @@ function renderMatch(game){
   // Build round-progress header for home (mirrors quiz layout)
   let progressHTML='';
   if(game==='home'&&s.matchPool&&s.matchPool.length){
-    const totalRounds=Math.ceil(s.matchPool.length/4);
+    const totalRounds=Math.ceil(s.matchPool.length/5);
     const pct=Math.round((s.matchRound/totalRounds)*100);
     progressHTML=`<div class="quiz-prog-track"><div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div></div><div class="score-row"><span class="score-badge">✨ Matched: ${s.matchScore}</span><span class="prog-badge">Round ${s.matchRound+1} of ${totalRounds}</span></div>`;
   }
@@ -1712,7 +1712,7 @@ function _resolveMatch(game,dragged,target){
     if(s.matchItems.every(x=>s.matchDone[x.name])){
       if(game==='home'&&s.matchPool&&s.matchPool.length){
         s.matchScore=(s.matchScore||0)+s.matchItems.length;
-        const totalRounds=Math.ceil(s.matchPool.length/4);
+        const totalRounds=Math.ceil(s.matchPool.length/5);
         if((s.matchRound+1)<totalRounds){
           setTimeout(()=>{s.matchRound++;_loadMatchRound(game);renderMatch(game);speak('Next round! Match the pictures!');},1800);
         }else{
